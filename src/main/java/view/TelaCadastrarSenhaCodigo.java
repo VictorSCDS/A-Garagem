@@ -57,7 +57,7 @@ public class TelaCadastrarSenhaCodigo extends JFrame {
         tituloCodigo.setBounds(390, 200, 400, 35);
         painelBrancoFundo.add(tituloCodigo);
 
-        codigoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("", Color.GRAY, Color.GRAY, Color.WHITE, 0, 40);
+        codigoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o código", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         codigoAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         codigoAreaText.setBounds(290, 250, 600, 50);
         painelBrancoFundo.add(codigoAreaText);

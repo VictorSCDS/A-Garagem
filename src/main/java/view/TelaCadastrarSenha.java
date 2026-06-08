@@ -57,7 +57,7 @@ public class TelaCadastrarSenha extends JFrame {
         tituloEmail.setBounds(390, 200, 400, 35);
         painelBrancoFundo.add(tituloEmail);
 
-        emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("", Color.GRAY, Color.GRAY, Color.WHITE, 0, 40);
+        emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite seu e-mail", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         emailAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         emailAreaText.setBounds(290, 250, 600, 50);
         painelBrancoFundo.add(emailAreaText);
