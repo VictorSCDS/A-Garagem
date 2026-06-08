@@ -62,41 +62,41 @@ public class TelaCadastrarCliente extends JFrame {
         JLabel lblNome = new JLabel("Nome");
         lblNome.setHorizontalAlignment(SwingConstants.CENTER);
         lblNome.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblNome.setBounds(310, 60, 200, 35);
+        lblNome.setBounds(266, 63, 200, 35);
         painelBrancoFundo.add(lblNome);
-        nomeAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("", Color.GRAY, Color.GRAY, Color.WHITE, 0, 40);
+        nomeAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o nome", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         nomeAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        nomeAreaText.setBounds(240, 110, 350, 50);
+        nomeAreaText.setBounds(139, 110, 462, 50);
         painelBrancoFundo.add(nomeAreaText);
 
         JLabel lblCpf = new JLabel("CPF");
         lblCpf.setHorizontalAlignment(SwingConstants.CENTER);
         lblCpf.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblCpf.setBounds(700, 60, 200, 35);
+        lblCpf.setBounds(793, 63, 200, 35);
         painelBrancoFundo.add(lblCpf);
-        cpfAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("", Color.GRAY, Color.GRAY, Color.WHITE, 0, 40);
+        cpfAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o CPF", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         cpfAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        cpfAreaText.setBounds(640, 110, 350, 50);
+        cpfAreaText.setBounds(662, 110, 462, 50);
         painelBrancoFundo.add(cpfAreaText);
 
         JLabel lblTelefone = new JLabel("Telefone");
         lblTelefone.setHorizontalAlignment(SwingConstants.CENTER);
         lblTelefone.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblTelefone.setBounds(310, 280, 200, 35);
+        lblTelefone.setBounds(266, 283, 200, 35);
         painelBrancoFundo.add(lblTelefone);
-        telefoneAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("", Color.GRAY, Color.GRAY, Color.WHITE, 0, 40);
+        telefoneAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o telefone", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         telefoneAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        telefoneAreaText.setBounds(240, 330, 350, 50);
+        telefoneAreaText.setBounds(139, 330, 462, 50);
         painelBrancoFundo.add(telefoneAreaText);
 
         JLabel lblEmail = new JLabel("E-mail");
         lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
         lblEmail.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblEmail.setBounds(700, 280, 200, 35);
+        lblEmail.setBounds(793, 280, 200, 35);
         painelBrancoFundo.add(lblEmail);
-        emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("", Color.GRAY, Color.GRAY, Color.WHITE, 0, 40);
+        emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o e-mail", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         emailAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        emailAreaText.setBounds(640, 330, 350, 50);
+        emailAreaText.setBounds(662, 330, 462, 50);
         painelBrancoFundo.add(emailAreaText);
 
         EstilizacaoRedonda.BotaoRedondo botaoAdicionar = new EstilizacaoRedonda.BotaoRedondo("ADICIONAR E AVANÇAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);

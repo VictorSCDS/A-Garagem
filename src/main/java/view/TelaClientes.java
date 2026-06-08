@@ -55,7 +55,7 @@ public class TelaClientes extends JFrame {
         botaoFiltros.setBounds(80, 100, 160, 45);
         painelPretoFundo.add(botaoFiltros);
 
-        EstilizacaoRedonda.CaixaTextoRedonda campoBusca = new EstilizacaoRedonda.CaixaTextoRedonda("Buscar", Color.LIGHT_GRAY, Color.LIGHT_GRAY, Color.DARK_GRAY, 0, 40);
+        EstilizacaoRedonda.CaixaTextoRedonda campoBusca = new EstilizacaoRedonda.CaixaTextoRedonda("Buscar", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         campoBusca.setFont(new Font("SansSerif", Font.PLAIN, 16));
         campoBusca.setBounds(300, 100, 600, 45);
         painelPretoFundo.add(campoBusca);
@@ -63,7 +63,7 @@ public class TelaClientes extends JFrame {
         EstilizacaoRedonda.BotaoRedondo botaoBuscar = new EstilizacaoRedonda.BotaoRedondo("BUSCAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoBuscar.setForeground(Color.WHITE);
         botaoBuscar.setFont(new Font("SansSerif", Font.BOLD, 16));
-        botaoBuscar.setBounds(920, 100, 160, 45);
+        botaoBuscar.setBounds(948, 100, 160, 45);
         painelPretoFundo.add(botaoBuscar);
 
         EstilizacaoRedonda.BotaoRedondo botaoCadastrar = new EstilizacaoRedonda.BotaoRedondo("CADASTRAR CLIENTE",Color.BLACK, Color.DARK_GRAY, Color.GRAY,40);
@@ -103,19 +103,14 @@ public class TelaClientes extends JFrame {
         telefoneCliente.setBounds(730, 20, 250, 60);
         painelCliente.add(telefoneCliente);
 
-        JLabel quantidadeVeiculos = new JLabel("Quantidade de veículos:");
-        quantidadeVeiculos.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        quantidadeVeiculos.setBounds(30, 90, 350, 60);
-        painelCliente.add(quantidadeVeiculos);
-
-        JLabel placaVeiculo = new JLabel("Placa do(os) Veículo(os):");
+        JLabel placaVeiculo = new JLabel("Placa do Veículo:");
         placaVeiculo.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        placaVeiculo.setBounds(420, 90, 360, 60);
+        placaVeiculo.setBounds(30, 90, 360, 60);
         painelCliente.add(placaVeiculo);
 
         JLabel modeloVeiculo = new JLabel("Modelo do veículo:");
         modeloVeiculo.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        modeloVeiculo.setBounds(730, 90, 250, 60);
+        modeloVeiculo.setBounds(430, 98, 250, 60);
         painelCliente.add(modeloVeiculo);
 
         EstilizacaoRedonda.BotaoRedondo botaoEditar = new EstilizacaoRedonda.BotaoRedondo("EDITAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);

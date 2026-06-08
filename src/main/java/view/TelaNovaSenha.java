@@ -52,7 +52,7 @@ public class TelaNovaSenha extends JFrame {
         tituloSenha.setBounds(390, 130, 400, 35);
         painelBrancoFundo.add(tituloSenha);
 
-        senhaAreaText = new EstilizacaoRedonda.CaixaSenhaRedonda("", Color.GRAY, Color.GRAY, Color.WHITE, 0, 40);
+        senhaAreaText = new EstilizacaoRedonda.CaixaSenhaRedonda("Digite sua nova senha", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         senhaAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         senhaAreaText.setBounds(290, 180, 600, 50);
         painelBrancoFundo.add(senhaAreaText);
@@ -63,7 +63,7 @@ public class TelaNovaSenha extends JFrame {
         tituloConfirmar.setBounds(390, 260, 400, 35);
         painelBrancoFundo.add(tituloConfirmar);
 
-        confirmarSenhaAreaText = new EstilizacaoRedonda.CaixaSenhaRedonda("", Color.GRAY, Color.GRAY, Color.WHITE, 0, 40);
+        confirmarSenhaAreaText = new EstilizacaoRedonda.CaixaSenhaRedonda("Confirme sua senha", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         confirmarSenhaAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         confirmarSenhaAreaText.setBounds(290, 310, 600, 50);
         painelBrancoFundo.add(confirmarSenhaAreaText);

@@ -1,5 +1,6 @@
 package view;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -7,6 +8,8 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -109,17 +112,35 @@ public class TelaLogin extends JFrame {
 				dispose();
 			}
 		});
-		
-		JLabel logoGaragem = new JLabel("Logo Aqui");
-		logoGaragem.setForeground(Color.WHITE);
-		logoGaragem.setHorizontalAlignment(SwingConstants.CENTER);
-		logoGaragem.setBounds(268, 86, 100, 30);
-		painelPretoFundo.add(logoGaragem);
+
+		try {
+			// 1. Criamos um objeto File (Ele mapeia o arquivo direto no seu HD)
+			java.io.File arquivoImagem = new java.io.File("src/main/resources/assets/imagens/logo.png");
+
+			// 2. O RADAR: Imprime no console onde o Java acha que está e se o arquivo existe!
+			System.out.println("================ DETETIVE JAVA ================");
+			System.out.println("Procurando na pasta exata: " + arquivoImagem.getAbsolutePath());
+			System.out.println("O arquivo realmente existe? " + arquivoImagem.exists());
+			System.out.println("===============================================");
+
+			// 3. Se existir, ele mostra a imagem na hora
+			if (arquivoImagem.exists()) {
+				ImageIcon iconeInicial = new ImageIcon(arquivoImagem.getAbsolutePath());
+				java.awt.Image imagemRedimensionada = iconeInicial.getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+
+				JLabel logoGaragem = new JLabel(new ImageIcon(imagemRedimensionada));
+				logoGaragem.setHorizontalAlignment(SwingConstants.CENTER);
+				logoGaragem.setBounds(921, 20, 229, 100);
+				painelBrancoFundo.add(logoGaragem);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		JLabel tituloGaragem = new JLabel("A Garagem");
 		tituloGaragem.setHorizontalAlignment(SwingConstants.CENTER);
 		tituloGaragem.setFont(new Font("Liberation Serif", Font.BOLD, 42));
-		tituloGaragem.setForeground(Color.WHITE);
+		tituloGaragem.setForeground(new Color(240, 240, 240));
 		tituloGaragem.setBounds(170, 200, 300, 50);
 		painelPretoFundo.add(tituloGaragem);
 		

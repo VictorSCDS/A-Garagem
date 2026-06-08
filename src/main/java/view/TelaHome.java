@@ -9,6 +9,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.ImageIcon;
+import java.awt.Image;
 
 public class TelaHome extends JFrame {
 
@@ -33,9 +35,12 @@ public class TelaHome extends JFrame {
         painelBrancoFundo.setBounds(50, 40, 1180, 600);
         painelPretoFundo.add(painelBrancoFundo);
 
-        JLabel logoGaragem = new JLabel("Logo Aqui");
+        ImageIcon iconeInicial = new ImageIcon("src/main/java/resoucers/assets/imagens/logo.png"); 
+        Image imagemRedimensiona = iconeInicial.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+        ImageIcon iconeFinal = new ImageIcon(imagemRedimensiona);
+        JLabel logoGaragem = new JLabel(iconeFinal);
         logoGaragem.setHorizontalAlignment(SwingConstants.CENTER);
-        logoGaragem.setBounds(1050, 20, 100, 100);
+        logoGaragem.setBounds(921, 20, 229, 100);
         painelBrancoFundo.add(logoGaragem);
 
         JLabel titulo = new JLabel("Home");
@@ -50,7 +55,7 @@ public class TelaHome extends JFrame {
         tituloIterat.setBounds(390, 90, 400, 30);
         painelBrancoFundo.add(tituloIterat);
 
-        EstilizacaoRedonda.BotaoRedondo botaoOrdemServico = new EstilizacaoRedonda.BotaoRedondo("<html><center>Ordem de<br>Serviço</center></html>", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoOrdemServico = new EstilizacaoRedonda.BotaoRedondo("Ordem Serviço", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
         botaoOrdemServico.setForeground(Color.WHITE);
         botaoOrdemServico.setFont(new Font("SansSerif", Font.BOLD, 24));
         botaoOrdemServico.setBounds(150, 160, 260, 150);
