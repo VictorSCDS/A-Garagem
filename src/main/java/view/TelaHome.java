@@ -73,6 +73,13 @@ public class TelaHome extends JFrame {
         botaoEquipe.setFont(new Font("SansSerif", Font.BOLD, 24));
         botaoEquipe.setBounds(305, 340, 260, 150);
         painelBrancoFundo.add(botaoEquipe);
+        botaoEquipe.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TelaEquipe telaEquipe = new TelaEquipe();
+                telaEquipe.setVisible(true);
+                dispose();
+            }
+        });
 
         EstilizacaoRedonda.BotaoRedondo botaoFinanceiro = new EstilizacaoRedonda.BotaoRedondo("Financeiro", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
         botaoFinanceiro.setForeground(Color.WHITE);
