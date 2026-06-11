@@ -10,13 +10,13 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TelaClientes extends JFrame {
+public class TelaEquipe extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel painelPretoFundo;
-    private EstilizacaoRedonda.PainelRedondo painelCliente;
+    private EstilizacaoRedonda.PainelRedondo painelFuncionario;
 
-    public TelaClientes() {
+    public TelaEquipe() {
 
         setBackground(Color.DARK_GRAY);
         setSize(1280, 720);
@@ -36,7 +36,7 @@ public class TelaClientes extends JFrame {
         barraSuperior.setLayout(null);
         painelPretoFundo.add(barraSuperior);
 
-        JLabel titulo = new JLabel("Clientes");
+        JLabel titulo = new JLabel("Equipe");
         titulo.setForeground(Color.WHITE);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Liberation Serif", Font.BOLD, 34));
@@ -56,7 +56,7 @@ public class TelaClientes extends JFrame {
             logoGaragem.setForeground(Color.WHITE);
         }
         barraSuperior.add(logoGaragem);
-        
+
         EstilizacaoRedonda.BotaoRedondo botaoFiltros = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoFiltros.setForeground(Color.WHITE);
         botaoFiltros.setFont(new Font("SansSerif", Font.BOLD, 18));
@@ -72,11 +72,11 @@ public class TelaClientes extends JFrame {
         }
         painelPretoFundo.add(botaoFiltros);
         
-        EstilizacaoRedonda.CaixaTextoRedonda campoBusca = new EstilizacaoRedonda.CaixaTextoRedonda("Buscar", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
+        EstilizacaoRedonda.CaixaTextoRedonda campoBusca = new EstilizacaoRedonda.CaixaTextoRedonda("Buscar", Color.LIGHT_GRAY, Color.LIGHT_GRAY, Color.DARK_GRAY, 0, 40);
         campoBusca.setFont(new Font("SansSerif", Font.PLAIN, 16));
         campoBusca.setBounds(300, 100, 600, 45);
         painelPretoFundo.add(campoBusca);
-        
+
         EstilizacaoRedonda.BotaoRedondo botaoBuscar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoBuscar.setForeground(Color.WHITE);
         botaoBuscar.setFont(new Font("SansSerif", Font.BOLD, 18));
@@ -92,57 +92,55 @@ public class TelaClientes extends JFrame {
         }
         painelPretoFundo.add(botaoBuscar);
 
-        EstilizacaoRedonda.BotaoRedondo botaoCadastrar = new EstilizacaoRedonda.BotaoRedondo("CADASTRAR CLIENTE",Color.BLACK, Color.DARK_GRAY, Color.GRAY,40);
+        EstilizacaoRedonda.BotaoRedondo botaoCadastrar = new EstilizacaoRedonda.BotaoRedondo("CADASTRAR FUNCIONÁRIO", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoCadastrar.setForeground(Color.WHITE);
         botaoCadastrar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoCadastrar.setBounds(430, 170, 420, 50);
+        botaoCadastrar.setBounds(390, 170, 500, 50);
+        painelPretoFundo.add(botaoCadastrar);
         botaoCadastrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TelaCadastrarCliente telaCadastrarCliente = new TelaCadastrarCliente();
-                telaCadastrarCliente.setVisible(true);
                 dispose();
             }
         });
-        
-        painelPretoFundo.add(botaoCadastrar);
-        painelCliente = new EstilizacaoRedonda.PainelRedondo(null, 30, 4, Color.WHITE, Color.BLACK);
-        painelCliente.setBounds(40, 250, 1160, 170);
-        painelPretoFundo.add(painelCliente);
 
-        JLabel nomeCliente = new JLabel("Nome:");
-        nomeCliente.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        nomeCliente.setBounds(30, 20, 180, 60);
-        painelCliente.add(nomeCliente);
+        painelFuncionario = new EstilizacaoRedonda.PainelRedondo(null, 30, 4, Color.WHITE, Color.BLACK);
+        painelFuncionario.setBounds(30, 250, 1200, 150);
+        painelPretoFundo.add(painelFuncionario);
 
-        JLabel cpfCliente = new JLabel("CPF:");
-        cpfCliente.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        cpfCliente.setBounds(190, 20, 220, 60);
-        painelCliente.add(cpfCliente);
+        JLabel nomeFuncionario = new JLabel("Nome:");
+        nomeFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        nomeFuncionario.setBounds(25, 20, 120, 50);
+        painelFuncionario.add(nomeFuncionario);
 
-        JLabel emailCliente = new JLabel("E-mail:");
-        emailCliente.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        emailCliente.setBounds(430, 20, 300, 60);
-        painelCliente.add(emailCliente);
+        JLabel cpfFuncionario = new JLabel("CPF:");
+        cpfFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        cpfFuncionario.setBounds(25, 82, 220, 50);
+        painelFuncionario.add(cpfFuncionario);
 
-        JLabel telefoneCliente = new JLabel("Telefone:");
-        telefoneCliente.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        telefoneCliente.setBounds(730, 20, 250, 60);
-        painelCliente.add(telefoneCliente);
+        JLabel emailFuncionario = new JLabel("E-mail:");
+        emailFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        emailFuncionario.setBounds(317, 20, 280, 50);
+        painelFuncionario.add(emailFuncionario);
 
-        JLabel placaVeiculo = new JLabel("Placa do Veículo:");
-        placaVeiculo.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        placaVeiculo.setBounds(30, 90, 360, 60);
-        painelCliente.add(placaVeiculo);
+        JLabel telefoneFuncionario = new JLabel("Telefone:");
+        telefoneFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        telefoneFuncionario.setBounds(317, 82, 220, 50);
+        painelFuncionario.add(telefoneFuncionario);
 
-        JLabel modeloVeiculo = new JLabel("Modelo do veículo:");
-        modeloVeiculo.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        modeloVeiculo.setBounds(430, 98, 250, 60);
-        painelCliente.add(modeloVeiculo);
-        
+        JLabel cargoFuncionario = new JLabel("Cargo:");
+        cargoFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        cargoFuncionario.setBounds(806, 20, 150, 50);
+        painelFuncionario.add(cargoFuncionario);
+
+        JLabel admissaoFuncionario = new JLabel("Admissão:");
+        admissaoFuncionario.setFont(new Font("SansSerif", Font.PLAIN, 20));
+        admissaoFuncionario.setBounds(806, 82, 160, 50);
+        painelFuncionario.add(admissaoFuncionario);
+
         EstilizacaoRedonda.BotaoRedondo botaoEditar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoEditar.setForeground(Color.WHITE);
         botaoEditar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoEditar.setBounds(1070, 58, 60, 50);
+        botaoEditar.setBounds(1115, 50, 60, 50);
         java.net.URL urlIconeEditar = getClass().getResource("/assets/imagens/iconeEditar.png"); 
         if (urlIconeEditar != null) {
             java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeEditar).getImage();
@@ -152,7 +150,7 @@ public class TelaClientes extends JFrame {
         } else {
             System.out.println("Ícone do botão editar não encontrado!");
         }
-        painelCliente.add(botaoEditar);
+        painelFuncionario.add(botaoEditar);
         botaoEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TelaEditarCliente telaEditarCliente = new TelaEditarCliente();
@@ -161,19 +159,10 @@ public class TelaClientes extends JFrame {
             }
         });
 
-        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("VOLTAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoVoltar.setForeground(Color.WHITE);
         botaoVoltar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoVoltar.setBounds(1130, 600, 90, 50);
-        java.net.URL urlIconeSair = getClass().getResource("/assets/imagens/iconVoltar.png"); 
-        if (urlIconeSair != null) {
-            java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeSair).getImage();
-            java.awt.Image iconeRedimensionado = iconeOriginal.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
-            botaoVoltar.setIcon(new javax.swing.ImageIcon(iconeRedimensionado));
-            botaoVoltar.setIconTextGap(10); 
-        } else {
-            System.out.println("Ícone do botão sair não encontrado!");
-        }
+        botaoVoltar.setBounds(1050, 600, 140, 50);
         painelPretoFundo.add(botaoVoltar);
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -182,6 +171,5 @@ public class TelaClientes extends JFrame {
                 dispose();
             }
         });
-
-            }
-        }
+    }
+}

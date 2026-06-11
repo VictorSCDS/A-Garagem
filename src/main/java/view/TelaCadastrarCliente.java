@@ -50,11 +50,20 @@ public class TelaCadastrarCliente extends JFrame {
         titulo.setBounds(340, 10, 600, 50);
         faixaTitulo.add(titulo);
 
-        JLabel logoGaragem = new JLabel("Logo Aqui");
+        JLabel logoGaragem = new JLabel();
         logoGaragem.setHorizontalAlignment(SwingConstants.CENTER);
-        logoGaragem.setForeground(Color.WHITE);
-        logoGaragem.setBounds(1140, 5, 100, 70);
+        logoGaragem.setBounds(1170, 5, 100, 70);
+        java.net.URL urlImagem = getClass().getResource("/assets/imagens/logo.png");
+        if (urlImagem != null) {
+            java.awt.Image imagemOriginal = new javax.swing.ImageIcon(urlImagem).getImage();
+            java.awt.Image imagemRedimensionada = imagemOriginal.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+            logoGaragem.setIcon(new javax.swing.ImageIcon(imagemRedimensionada));
+        } else {
+            logoGaragem.setText("Logo Aqui");
+            logoGaragem.setForeground(Color.WHITE);
+        }
         faixaTitulo.add(logoGaragem);
+        
         painelBrancoFundo = new EstilizacaoRedonda.PainelRedondo(null, 0, 0, Color.WHITE, Color.WHITE);
         painelBrancoFundo.setBounds(0, 80, 1280, 640);
         painelPretoFundo.add(painelBrancoFundo);
@@ -99,21 +108,32 @@ public class TelaCadastrarCliente extends JFrame {
         emailAreaText.setBounds(662, 330, 462, 50);
         painelBrancoFundo.add(emailAreaText);
 
-        EstilizacaoRedonda.BotaoRedondo botaoAdicionar = new EstilizacaoRedonda.BotaoRedondo("ADICIONAR E AVANÇAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoAdicionar = new EstilizacaoRedonda.BotaoRedondo("ADICIONAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoAdicionar.setForeground(Color.WHITE);
         botaoAdicionar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoAdicionar.setBounds(450, 480, 400, 50);
+        botaoAdicionar.setBounds(511, 480, 257, 50);
         painelBrancoFundo.add(botaoAdicionar);
         botaoAdicionar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	TelaClientes telaClientes = new TelaClientes();
+                telaClientes.setVisible(true);
                 dispose();
             }
         });
         
-        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("VOLTAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoVoltar.setForeground(Color.WHITE);
         botaoVoltar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoVoltar.setBounds(1100, 520, 140, 50);
+        botaoVoltar.setBounds(1100, 520, 90, 50);
+        java.net.URL urlIconeSair = getClass().getResource("/assets/imagens/iconVoltar.png"); 
+        if (urlIconeSair != null) {
+            java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeSair).getImage();
+            java.awt.Image iconeRedimensionado = iconeOriginal.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+            botaoVoltar.setIcon(new javax.swing.ImageIcon(iconeRedimensionado));
+            botaoVoltar.setIconTextGap(10); 
+        } else {
+            System.out.println("Ícone do botão sair não encontrado!");
+        }
         painelBrancoFundo.add(botaoVoltar);
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

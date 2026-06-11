@@ -42,21 +42,33 @@ public class TelaEditarCliente extends JFrame {
         faixaTitulo.setLayout(null);
         faixaTitulo.setBounds(0, 0, 1280, 80);
         painelPretoFundo.add(faixaTitulo);
-
+        
         JLabel titulo = new JLabel("Editar Cliente");
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setForeground(Color.WHITE);
         titulo.setFont(new Font("SansSerif", Font.BOLD, 32));
         titulo.setBounds(340, 10, 600, 50);
         faixaTitulo.add(titulo);
-
-        JLabel logoGaragem = new JLabel("Logo Aqui");
+        
+        JLabel logoGaragem = new JLabel();
         logoGaragem.setHorizontalAlignment(SwingConstants.CENTER);
-        logoGaragem.setForeground(Color.WHITE);
-        logoGaragem.setBounds(1140, 5, 100, 70);
-        faixaTitulo.add(logoGaragem);
+        logoGaragem.setBounds(1170, 5, 100, 70);
+        java.net.URL urlImagem = getClass().getResource("/assets/imagens/logo.png");
+        if (urlImagem != null) {
+            java.awt.Image imagemOriginal = new javax.swing.ImageIcon(urlImagem).getImage();
+            java.awt.Image imagemRedimensionada = imagemOriginal.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+            logoGaragem.setIcon(new javax.swing.ImageIcon(imagemRedimensionada));
+        } else {
+            logoGaragem.setText("Logo Aqui");
+            logoGaragem.setForeground(Color.WHITE);
+        }
+
+        
+        faixaTitulo.add(logoGaragem); 
+        
         painelBrancoFundo = new EstilizacaoRedonda.PainelRedondo(null, 0, 0, Color.WHITE, Color.WHITE);
         painelBrancoFundo.setBounds(0, 80, 1280, 640);
+        painelBrancoFundo.setLayout(null);
         painelPretoFundo.add(painelBrancoFundo);
 
         JLabel lblNome = new JLabel("Nome");
@@ -64,6 +76,7 @@ public class TelaEditarCliente extends JFrame {
         lblNome.setFont(new Font("Liberation Serif", Font.BOLD, 28));
         lblNome.setBounds(266, 63, 200, 35);
         painelBrancoFundo.add(lblNome);
+        
         nomeAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o nome", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         nomeAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         nomeAreaText.setBounds(139, 110, 462, 50);
@@ -99,21 +112,32 @@ public class TelaEditarCliente extends JFrame {
         emailAreaText.setBounds(662, 330, 462, 50);
         painelBrancoFundo.add(emailAreaText);
 
-        EstilizacaoRedonda.BotaoRedondo botaoAdicionar = new EstilizacaoRedonda.BotaoRedondo("SALVAR E AVANÇAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoAdicionar = new EstilizacaoRedonda.BotaoRedondo("SALVAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoAdicionar.setForeground(Color.WHITE);
         botaoAdicionar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoAdicionar.setBounds(450, 480, 400, 50);
+        botaoAdicionar.setBounds(502, 480, 257, 50);
         painelBrancoFundo.add(botaoAdicionar);
         botaoAdicionar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                dispose();
+            	TelaClientes telaClientes = new TelaClientes();
+                telaClientes.setVisible(true);
+                dispose();;
             }
         });
         
-        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("VOLTAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoVoltar.setForeground(Color.WHITE);
         botaoVoltar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoVoltar.setBounds(1100, 520, 140, 50);
+        botaoVoltar.setBounds(1130, 520, 90, 50);
+        java.net.URL urlIconeSair = getClass().getResource("/assets/imagens/iconVoltar.png"); 
+        if (urlIconeSair != null) {
+            java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeSair).getImage();
+            java.awt.Image iconeRedimensionado = iconeOriginal.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+            botaoVoltar.setIcon(new javax.swing.ImageIcon(iconeRedimensionado));
+            botaoVoltar.setIconTextGap(10); 
+        } else {
+            System.out.println("Ícone do botão sair não encontrado!");
+        }
         painelBrancoFundo.add(botaoVoltar);
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

@@ -1,6 +1,5 @@
 package view;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -8,8 +7,6 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.awt.Image;
-
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -113,28 +110,26 @@ public class TelaLogin extends JFrame {
 			}
 		});
 
-		try {
-			// 1. Criamos um objeto File (Ele mapeia o arquivo direto no seu HD)
-			java.io.File arquivoImagem = new java.io.File("src/main/resources/assets/imagens/logo.png");
-
-			// 2. O RADAR: Imprime no console onde o Java acha que está e se o arquivo existe!
-			System.out.println("================ DETETIVE JAVA ================");
-			System.out.println("Procurando na pasta exata: " + arquivoImagem.getAbsolutePath());
-			System.out.println("O arquivo realmente existe? " + arquivoImagem.exists());
-			System.out.println("===============================================");
-
-			// 3. Se existir, ele mostra a imagem na hora
-			if (arquivoImagem.exists()) {
-				ImageIcon iconeInicial = new ImageIcon(arquivoImagem.getAbsolutePath());
-				java.awt.Image imagemRedimensionada = iconeInicial.getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
-
-				JLabel logoGaragem = new JLabel(new ImageIcon(imagemRedimensionada));
-				logoGaragem.setHorizontalAlignment(SwingConstants.CENTER);
-				logoGaragem.setBounds(921, 20, 229, 100);
-				painelBrancoFundo.add(logoGaragem);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		java.net.URL urlImagem = getClass().getResource("/assets/imagens/logo.png");
+		if (urlImagem != null) {
+			java.awt.Image imagemOriginal = new javax.swing.ImageIcon(urlImagem).getImage();
+			java.awt.image.BufferedImage imgRedimensionada = new java.awt.image.BufferedImage(
+					150, 150, java.awt.image.BufferedImage.TYPE_INT_ARGB
+			);
+			java.awt.Graphics2D g2d = imgRedimensionada.createGraphics();
+			g2d.setRenderingHint(java.awt.RenderingHints.KEY_INTERPOLATION, java.awt.RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+			g2d.setRenderingHint(java.awt.RenderingHints.KEY_RENDERING, java.awt.RenderingHints.VALUE_RENDER_QUALITY);
+			g2d.setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.drawImage(imagemOriginal, 0, 0, 150, 150, null);
+			g2d.dispose();
+			javax.swing.JLabel logoGaragem = new javax.swing.JLabel(new javax.swing.ImageIcon(imgRedimensionada));
+			logoGaragem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+			logoGaragem.setBounds(250, 50, 150, 150);
+			painelPretoFundo.add(logoGaragem);
+			painelPretoFundo.revalidate();
+			painelPretoFundo.repaint();
+		} else {
+			System.out.println("Imagem não encontrada. Problem no caminho!");
 		}
 		
 		JLabel tituloGaragem = new JLabel("A Garagem");
