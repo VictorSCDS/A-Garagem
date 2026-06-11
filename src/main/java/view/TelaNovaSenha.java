@@ -35,9 +35,18 @@ public class TelaNovaSenha extends JFrame {
         painelBrancoFundo.setBounds(50, 40, 1180, 600);
         painelPretoFundo.add(painelBrancoFundo);
 
-        JLabel logoGaragem = new JLabel("Logo Aqui");
+        JLabel logoGaragem = new JLabel();
         logoGaragem.setHorizontalAlignment(SwingConstants.CENTER);
-        logoGaragem.setBounds(1050, 20, 100, 100);
+        logoGaragem.setBounds(1050, 20, 100, 70); 
+        java.net.URL urlImagem = getClass().getResource("/assets/imagens/logo.png");
+        if (urlImagem != null) {
+            java.awt.Image imagemOriginal = new javax.swing.ImageIcon(urlImagem).getImage();
+            java.awt.Image imagemRedimensionada = imagemOriginal.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+            logoGaragem.setIcon(new javax.swing.ImageIcon(imagemRedimensionada));
+        } else {
+            logoGaragem.setText("Logo Aqui");
+            logoGaragem.setForeground(Color.BLACK); 
+        }
         painelBrancoFundo.add(logoGaragem);
 
         JLabel titulo = new JLabel("Nova Senha");
@@ -81,27 +90,25 @@ public class TelaNovaSenha extends JFrame {
             }
         });
 
-        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("VOLTAR", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoVoltar.setForeground(Color.WHITE);
         botaoVoltar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoVoltar.setBounds(870, 520, 130, 50);
+        botaoVoltar.setBounds(1020, 520, 90, 50);
+        java.net.URL urlIconeSair = getClass().getResource("/assets/imagens/iconVoltar.png"); 
+        if (urlIconeSair != null) {
+            java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeSair).getImage();
+            java.awt.Image iconeRedimensionado = iconeOriginal.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+            botaoVoltar.setIcon(new javax.swing.ImageIcon(iconeRedimensionado));
+            botaoVoltar.setIconTextGap(10); 
+        } else {
+            System.out.println("Ícone do botão sair não encontrado!");
+        }
         painelBrancoFundo.add(botaoVoltar);
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TelaCadastrarSenhaCodigo telaCodigo = new TelaCadastrarSenhaCodigo();
                 telaCodigo.setVisible(true);
                 dispose();
-            }
-        });
-
-        EstilizacaoRedonda.BotaoRedondo botaoSair = new EstilizacaoRedonda.BotaoRedondo("SAIR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
-        botaoSair.setForeground(Color.WHITE);
-        botaoSair.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoSair.setBounds(1020, 520, 130, 50);
-        painelBrancoFundo.add(botaoSair);
-        botaoSair.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
             }
         });
     }

@@ -85,6 +85,13 @@ public class TelaHome extends JFrame {
         botaoEquipe.setFont(new Font("SansSerif", Font.BOLD, 24));
         botaoEquipe.setBounds(305, 340, 260, 150);
         painelBrancoFundo.add(botaoEquipe);
+        botaoEquipe.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TelaEquipe telaEquipe = new TelaEquipe();
+                telaEquipe.setVisible(true);
+                dispose();
+            }
+        });
 
         EstilizacaoRedonda.BotaoRedondo botaoFinanceiro = new EstilizacaoRedonda.BotaoRedondo("Financeiro", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
         botaoFinanceiro.setForeground(Color.WHITE);
@@ -92,10 +99,19 @@ public class TelaHome extends JFrame {
         botaoFinanceiro.setBounds(615, 340, 260, 150);
         painelBrancoFundo.add(botaoFinanceiro);
 
-        EstilizacaoRedonda.BotaoRedondo botaoSair = new EstilizacaoRedonda.BotaoRedondo("SAIR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoSair = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoSair.setForeground(Color.WHITE);
         botaoSair.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoSair.setBounds(1020, 520, 130, 50);
+        botaoSair.setBounds(1020, 520, 90, 50);
+        java.net.URL urlIconeSair = getClass().getResource("/assets/imagens/iconVoltar.png"); 
+        if (urlIconeSair != null) {
+            java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeSair).getImage();
+            java.awt.Image iconeRedimensionado = iconeOriginal.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+            botaoSair.setIcon(new javax.swing.ImageIcon(iconeRedimensionado));
+            botaoSair.setIconTextGap(10); 
+        } else {
+            System.out.println("Ícone do botão sair não encontrado!");
+        }
         painelBrancoFundo.add(botaoSair);
         botaoSair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
