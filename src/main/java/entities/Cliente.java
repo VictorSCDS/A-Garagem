@@ -1,32 +1,34 @@
 package entities;
 
-import java.sql.Date;
 import java.util.Objects;
 
-public class Funcionario {
+public class Cliente {
 	private int id;
 	private String nome;
 	private String cpf;
-	private Cargo cargo;
 	private String telefone;
 	private String email;
-	private Date dataAdmissao;
 	
-	public Funcionario() {}
+	public Cliente() {}
 	
-	public Funcionario(int id, String nome, String cpf, Cargo cargo, String telefone, String email, Date dataAdmissao) {
+	public Cliente(String nome, String cpf, String telefone, String email) {
+		this.nome = nome;
+		this.cpf = cpf;
+		this.telefone = telefone;
+		this.email = email;
+	}
+
+	public Cliente(int id, String nome, String cpf, String telefone, String email) {
 		this.id = id;
 		this.nome = nome;
 		this.cpf = cpf;
-		this.cargo = cargo;
 		this.telefone = telefone;
 		this.email = email;
-		this.dataAdmissao = dataAdmissao;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cargo, cpf, dataAdmissao, email, id, nome, telefone);
+		return Objects.hash(cpf, email, id, nome, telefone);
 	}
 
 	@Override
@@ -37,16 +39,15 @@ public class Funcionario {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Funcionario other = (Funcionario) obj;
-		return cargo == other.cargo && Objects.equals(cpf, other.cpf)
-				&& Objects.equals(dataAdmissao, other.dataAdmissao) && Objects.equals(email, other.email)
-				&& id == other.id && Objects.equals(nome, other.nome) && Objects.equals(telefone, other.telefone);
+		Cliente other = (Cliente) obj;
+		return Objects.equals(cpf, other.cpf) && Objects.equals(email, other.email) && id == other.id
+				&& Objects.equals(nome, other.nome) && Objects.equals(telefone, other.telefone);
 	}
 
 	@Override
 	public String toString() {
-		return "Funcionario [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", cargo=" + cargo + ", telefone="
-				+ telefone + ", email=" + email + ", dataAdmissao=" + dataAdmissao + "]";
+		return "Cliente [id=" + id + ", nome=" + nome + ", cpf=" + cpf + ", telefone=" + telefone + ", email=" + email
+				+ "]";
 	}
 
 	public int getId() {
@@ -56,7 +57,7 @@ public class Funcionario {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
@@ -66,11 +67,7 @@ public class Funcionario {
 	}
 
 	public String getCpf() {
-		return cpf;
-	}
-
-	public Cargo getCargo() {
-		return cargo;
+		return this.cpf;
 	}
 
 	public String getTelefone() {
@@ -87,10 +84,6 @@ public class Funcionario {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public Date getDataAdmissao() {
-		return dataAdmissao;
 	}
 	
 }
