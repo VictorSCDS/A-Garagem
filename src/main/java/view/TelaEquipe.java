@@ -60,7 +60,7 @@ public class TelaEquipe extends JFrame {
         EstilizacaoRedonda.BotaoRedondo botaoFiltros = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoFiltros.setForeground(Color.WHITE);
         botaoFiltros.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoFiltros.setBounds(191, 92, 70, 60);
+        botaoFiltros.setBounds(236, 102, 70, 60);
         java.net.URL urlIconeFiltro = getClass().getResource("/assets/imagens/iconeFiltro.png"); 
         if (urlIconeFiltro != null) {
             java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeFiltro).getImage();
@@ -72,15 +72,15 @@ public class TelaEquipe extends JFrame {
         }
         painelPretoFundo.add(botaoFiltros);
         
-        EstilizacaoRedonda.CaixaTextoRedonda campoBusca = new EstilizacaoRedonda.CaixaTextoRedonda("Buscar", Color.LIGHT_GRAY, Color.LIGHT_GRAY, Color.DARK_GRAY, 0, 40);
+        EstilizacaoRedonda.CaixaTextoRedonda campoBusca = new EstilizacaoRedonda.CaixaTextoRedonda("Buscar", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         campoBusca.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        campoBusca.setBounds(300, 100, 600, 45);
+        campoBusca.setBounds(340, 107, 600, 45);
         painelPretoFundo.add(campoBusca);
-
+        
         EstilizacaoRedonda.BotaoRedondo botaoBuscar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoBuscar.setForeground(Color.WHITE);
         botaoBuscar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoBuscar.setBounds(944, 92, 70, 60);
+        botaoBuscar.setBounds(979, 102, 70, 60);
         java.net.URL urlIconeBuscar = getClass().getResource("/assets/imagens/iconeBuscar.png"); 
         if (urlIconeBuscar != null) {
             java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeBuscar).getImage();
@@ -95,10 +95,12 @@ public class TelaEquipe extends JFrame {
         EstilizacaoRedonda.BotaoRedondo botaoCadastrar = new EstilizacaoRedonda.BotaoRedondo("CADASTRAR FUNCIONÁRIO", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoCadastrar.setForeground(Color.WHITE);
         botaoCadastrar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoCadastrar.setBounds(390, 170, 500, 50);
+        botaoCadastrar.setBounds(430, 170, 420, 50);
         painelPretoFundo.add(botaoCadastrar);
         botaoCadastrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+            	TelaCadastrarFuncionario telaCadastrarFuncionario = new TelaCadastrarFuncionario();
+                telaCadastrarFuncionario.setVisible(true);
                 dispose();
             }
         });
@@ -153,16 +155,25 @@ public class TelaEquipe extends JFrame {
         painelFuncionario.add(botaoEditar);
         botaoEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TelaEditarCliente telaEditarCliente = new TelaEditarCliente();
-                telaEditarCliente.setVisible(true);
+                TelaEditarFuncionario telaEditarFuncionario = new TelaEditarFuncionario();
+                telaEditarFuncionario.setVisible(true);
                 dispose();
             }
         });
 
-        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("VOLTAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoVoltar.setForeground(Color.WHITE);
         botaoVoltar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoVoltar.setBounds(1050, 600, 140, 50);
+        botaoVoltar.setBounds(1130, 600, 90, 50);
+        java.net.URL urlIconeSair = getClass().getResource("/assets/imagens/iconVoltar.png"); 
+        if (urlIconeSair != null) {
+            java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeSair).getImage();
+            java.awt.Image iconeRedimensionado = iconeOriginal.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
+            botaoVoltar.setIcon(new javax.swing.ImageIcon(iconeRedimensionado));
+            botaoVoltar.setIconTextGap(10); 
+        } else {
+            System.out.println("Ícone do botão sair não encontrado!");
+        }
         painelPretoFundo.add(botaoVoltar);
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

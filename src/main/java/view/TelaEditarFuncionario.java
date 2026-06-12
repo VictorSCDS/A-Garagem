@@ -10,7 +10,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TelaEditarCliente extends JFrame {
+public class TelaEditarFuncionario extends JFrame {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,10 +20,12 @@ public class TelaEditarCliente extends JFrame {
 
     private EstilizacaoRedonda.CaixaTextoRedonda nomeAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda cpfAreaText;
+    private EstilizacaoRedonda.CaixaTextoRedonda cargoAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda telefoneAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda emailAreaText;
+    private EstilizacaoRedonda.CaixaTextoRedonda dataAdmissaoAreaText;
 
-    public TelaEditarCliente() {
+    public TelaEditarFuncionario() {
 
         setBackground(Color.WHITE);
         setSize(1280, 720);
@@ -42,14 +44,14 @@ public class TelaEditarCliente extends JFrame {
         faixaTitulo.setLayout(null);
         faixaTitulo.setBounds(0, 0, 1280, 80);
         painelPretoFundo.add(faixaTitulo);
-        
-        JLabel titulo = new JLabel("Editar Cliente");
+
+        JLabel titulo = new JLabel("Editar Funcionário");
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setForeground(Color.WHITE);
         titulo.setFont(new Font("SansSerif", Font.BOLD, 32));
         titulo.setBounds(340, 10, 600, 50);
         faixaTitulo.add(titulo);
-        
+
         JLabel logoGaragem = new JLabel();
         logoGaragem.setHorizontalAlignment(SwingConstants.CENTER);
         logoGaragem.setBounds(1170, 5, 100, 70);
@@ -62,9 +64,7 @@ public class TelaEditarCliente extends JFrame {
             logoGaragem.setText("Logo Aqui");
             logoGaragem.setForeground(Color.WHITE);
         }
-
-        
-        faixaTitulo.add(logoGaragem); 
+        faixaTitulo.add(logoGaragem);
         
         painelBrancoFundo = new EstilizacaoRedonda.PainelRedondo(null, 0, 0, Color.WHITE, Color.WHITE);
         painelBrancoFundo.setBounds(0, 80, 1280, 640);
@@ -74,54 +74,79 @@ public class TelaEditarCliente extends JFrame {
         JLabel lblNome = new JLabel("Nome");
         lblNome.setHorizontalAlignment(SwingConstants.CENTER);
         lblNome.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblNome.setBounds(266, 63, 200, 35);
+        lblNome.setBounds(160, 110, 200, 35);
         painelBrancoFundo.add(lblNome);
         
-        nomeAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o nome", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
+        nomeAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o nome", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
         nomeAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        nomeAreaText.setBounds(139, 110, 462, 50);
+        nomeAreaText.setBounds(100, 160, 320, 50);
         painelBrancoFundo.add(nomeAreaText);
 
         JLabel lblCpf = new JLabel("CPF");
         lblCpf.setHorizontalAlignment(SwingConstants.CENTER);
         lblCpf.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblCpf.setBounds(793, 63, 200, 35);
+        lblCpf.setBounds(540, 110, 200, 35);
         painelBrancoFundo.add(lblCpf);
-        cpfAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o CPF", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
+        
+        cpfAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o CPF", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
         cpfAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        cpfAreaText.setBounds(662, 110, 462, 50);
+        cpfAreaText.setBounds(480, 160, 320, 50);
         painelBrancoFundo.add(cpfAreaText);
+
+        JLabel lblCargo = new JLabel("Cargo");
+        lblCargo.setHorizontalAlignment(SwingConstants.CENTER);
+        lblCargo.setFont(new Font("Liberation Serif", Font.BOLD, 28));
+        lblCargo.setBounds(920, 110, 200, 35);
+        painelBrancoFundo.add(lblCargo);
+        
+        cargoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o cargo", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
+        cargoAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        cargoAreaText.setBounds(860, 160, 320, 50);
+        painelBrancoFundo.add(cargoAreaText);
 
         JLabel lblTelefone = new JLabel("Telefone");
         lblTelefone.setHorizontalAlignment(SwingConstants.CENTER);
         lblTelefone.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblTelefone.setBounds(266, 283, 200, 35);
+        lblTelefone.setBounds(160, 310, 200, 35);
         painelBrancoFundo.add(lblTelefone);
-        telefoneAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o telefone", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
+        
+        telefoneAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o telefone", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
         telefoneAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        telefoneAreaText.setBounds(139, 330, 462, 50);
+        telefoneAreaText.setBounds(100, 360, 320, 50);
         painelBrancoFundo.add(telefoneAreaText);
 
         JLabel lblEmail = new JLabel("E-mail");
         lblEmail.setHorizontalAlignment(SwingConstants.CENTER);
         lblEmail.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblEmail.setBounds(793, 280, 200, 35);
+        lblEmail.setBounds(540, 310, 200, 35);
         painelBrancoFundo.add(lblEmail);
-        emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o e-mail", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
+        
+        emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o e-mail", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
         emailAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        emailAreaText.setBounds(662, 330, 462, 50);
+        emailAreaText.setBounds(480, 360, 320, 50);
         painelBrancoFundo.add(emailAreaText);
+
+        JLabel lblDataAdmissao = new JLabel("Data admissão");
+        lblDataAdmissao.setHorizontalAlignment(SwingConstants.CENTER);
+        lblDataAdmissao.setFont(new Font("Liberation Serif", Font.BOLD, 28));
+        lblDataAdmissao.setBounds(920, 310, 200, 35);
+        painelBrancoFundo.add(lblDataAdmissao);
+        
+        dataAdmissaoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("DD/MM/AAAA", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
+        dataAdmissaoAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        dataAdmissaoAreaText.setBounds(860, 360, 320, 50);
+        painelBrancoFundo.add(dataAdmissaoAreaText);
 
         EstilizacaoRedonda.BotaoRedondo botaoSalvar = new EstilizacaoRedonda.BotaoRedondo("SALVAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoSalvar.setForeground(Color.WHITE);
         botaoSalvar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoSalvar.setBounds(502, 480, 257, 50);
+        botaoSalvar.setBounds(510, 520, 260, 50);
         painelBrancoFundo.add(botaoSalvar);
         botaoSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	TelaClientes telaClientes = new TelaClientes();
-                telaClientes.setVisible(true);
-                dispose();;
+            	TelaEquipe telaEquipe = new TelaEquipe();
+                telaEquipe.setVisible(true);
+                dispose();
             }
         });
         
@@ -132,16 +157,16 @@ public class TelaEditarCliente extends JFrame {
         painelBrancoFundo.add(botaoApagar);
         botaoApagar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	TelaClientes telaClientes = new TelaClientes();
-                telaClientes.setVisible(true);
-                dispose();;
+            	TelaEquipe telaEquipe = new TelaEquipe();
+                telaEquipe.setVisible(true);
+                dispose();
             }
         });
         
         EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoVoltar.setForeground(Color.WHITE);
         botaoVoltar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoVoltar.setBounds(1130, 520, 90, 50);
+        botaoVoltar.setBounds(1100, 520, 90, 50);
         java.net.URL urlIconeSair = getClass().getResource("/assets/imagens/iconVoltar.png"); 
         if (urlIconeSair != null) {
             java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeSair).getImage();
@@ -154,8 +179,8 @@ public class TelaEditarCliente extends JFrame {
         painelBrancoFundo.add(botaoVoltar);
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TelaClientes telaClientes = new TelaClientes();
-                telaClientes.setVisible(true);
+                TelaEquipe telaEquipe = new TelaEquipe();
+                telaEquipe.setVisible(true);
                 dispose();
             }
         });

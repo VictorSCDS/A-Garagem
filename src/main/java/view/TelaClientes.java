@@ -60,7 +60,7 @@ public class TelaClientes extends JFrame {
         EstilizacaoRedonda.BotaoRedondo botaoFiltros = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoFiltros.setForeground(Color.WHITE);
         botaoFiltros.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoFiltros.setBounds(191, 92, 70, 60);
+        botaoFiltros.setBounds(236, 102, 70, 60);
         java.net.URL urlIconeFiltro = getClass().getResource("/assets/imagens/iconeFiltro.png"); 
         if (urlIconeFiltro != null) {
             java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeFiltro).getImage();
@@ -74,13 +74,13 @@ public class TelaClientes extends JFrame {
         
         EstilizacaoRedonda.CaixaTextoRedonda campoBusca = new EstilizacaoRedonda.CaixaTextoRedonda("Buscar", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
         campoBusca.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        campoBusca.setBounds(300, 100, 600, 45);
+        campoBusca.setBounds(340, 107, 600, 45);
         painelPretoFundo.add(campoBusca);
         
         EstilizacaoRedonda.BotaoRedondo botaoBuscar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoBuscar.setForeground(Color.WHITE);
         botaoBuscar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoBuscar.setBounds(944, 92, 70, 60);
+        botaoBuscar.setBounds(979, 102, 70, 60);
         java.net.URL urlIconeBuscar = getClass().getResource("/assets/imagens/iconeBuscar.png"); 
         if (urlIconeBuscar != null) {
             java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeBuscar).getImage();
