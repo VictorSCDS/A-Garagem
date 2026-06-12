@@ -60,6 +60,13 @@ public class TelaHome extends JFrame {
         botaoOrdemServico.setFont(new Font("SansSerif", Font.BOLD, 24));
         botaoOrdemServico.setBounds(150, 160, 260, 150);
         painelBrancoFundo.add(botaoOrdemServico);
+        botaoOrdemServico.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TelaOrdemServico telaOrdemServico = new TelaOrdemServico();
+                telaOrdemServico.setVisible(true);
+                dispose();
+            }
+        });
 
         EstilizacaoRedonda.BotaoRedondo botaoClientes = new EstilizacaoRedonda.BotaoRedondo("Clientes", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
         botaoClientes.setForeground(Color.WHITE);
