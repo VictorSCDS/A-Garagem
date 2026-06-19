@@ -86,6 +86,13 @@ public class TelaHome extends JFrame {
         botaoEstoque.setFont(new Font("SansSerif", Font.BOLD, 24));
         botaoEstoque.setBounds(770, 160, 260, 150);
         painelBrancoFundo.add(botaoEstoque);
+        botaoEstoque.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TelaEstoque telaEstoque = new TelaEstoque();
+                telaEstoque.setVisible(true);
+                dispose();
+            }
+        });
 
         EstilizacaoRedonda.BotaoRedondo botaoEquipe = new EstilizacaoRedonda.BotaoRedondo("Equipe", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
         botaoEquipe.setForeground(Color.WHITE);
@@ -100,11 +107,18 @@ public class TelaHome extends JFrame {
             }
         });
 
-        EstilizacaoRedonda.BotaoRedondo botaoFinanceiro = new EstilizacaoRedonda.BotaoRedondo("Financeiro", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoFinanceiro = new EstilizacaoRedonda.BotaoRedondo("Finanças", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 40);
         botaoFinanceiro.setForeground(Color.WHITE);
         botaoFinanceiro.setFont(new Font("SansSerif", Font.BOLD, 24));
         botaoFinanceiro.setBounds(615, 340, 260, 150);
         painelBrancoFundo.add(botaoFinanceiro);
+        botaoFinanceiro.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                TelaFinancas telaFinancas = new TelaFinancas();
+                telaFinancas.setVisible(true);
+                dispose();
+            }
+        });
 
         EstilizacaoRedonda.BotaoRedondo botaoSair = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoSair.setForeground(Color.WHITE);

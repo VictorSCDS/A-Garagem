@@ -10,13 +10,13 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TelaOrdemServico extends JFrame {
+public class TelaEstoque extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private JPanel painelPretoFundo;
     private EstilizacaoRedonda.PainelRedondo painelServico;
 
-    public TelaOrdemServico() {
+    public TelaEstoque() {
 
         setBackground(Color.DARK_GRAY);
         setSize(1280, 720);
@@ -36,7 +36,7 @@ public class TelaOrdemServico extends JFrame {
         barraSuperior.setLayout(null);
         painelPretoFundo.add(barraSuperior);
 
-        JLabel titulo = new JLabel("Ordem de Serviço");
+        JLabel titulo = new JLabel("Estoque");
         titulo.setForeground(Color.WHITE);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Liberation Serif", Font.BOLD, 34));
@@ -92,15 +92,15 @@ public class TelaOrdemServico extends JFrame {
         }
         painelPretoFundo.add(botaoBuscar);
 
-        EstilizacaoRedonda.BotaoRedondo botaoNovoServico = new EstilizacaoRedonda.BotaoRedondo("NOVO SERVIÇO", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        EstilizacaoRedonda.BotaoRedondo botaoNovoServico = new EstilizacaoRedonda.BotaoRedondo("ADICIONAR PRODUTO", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoNovoServico.setForeground(Color.WHITE);
         botaoNovoServico.setFont(new Font("SansSerif", Font.BOLD, 18));
         botaoNovoServico.setBounds(430, 180, 420, 50);
         painelPretoFundo.add(botaoNovoServico);
         botaoNovoServico.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	TelaNovoServico telaNovoServico = new TelaNovoServico();
-                telaNovoServico.setVisible(true);
+            	TelaNovoEstoque telaNovoEstoque = new TelaNovoEstoque();
+                telaNovoEstoque.setVisible(true);
                 dispose();
             }
         });
@@ -109,34 +109,34 @@ public class TelaOrdemServico extends JFrame {
         painelServico.setBounds(30, 260, 1200, 140);
         painelPretoFundo.add(painelServico);
 
-        JLabel lblCliente = new JLabel("Cliente:");
+        JLabel lblCliente = new JLabel("Nome:");
         lblCliente.setFont(new Font("SansSerif", Font.PLAIN, 18));
         lblCliente.setBounds(25, 20, 100, 50);
         painelServico.add(lblCliente);
 
-        JLabel lblVeiculo = new JLabel("Veículo:");
+        JLabel lblVeiculo = new JLabel("Marca:");
         lblVeiculo.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        lblVeiculo.setBounds(291, 20, 100, 50);
+        lblVeiculo.setBounds(419, 20, 100, 50);
         painelServico.add(lblVeiculo);
 
-        JLabel lblPlaca = new JLabel("Placa:");
+        JLabel lblPlaca = new JLabel("ID:");
         lblPlaca.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        lblPlaca.setBounds(25, 78, 110, 50);
+        lblPlaca.setBounds(25, 70, 110, 50);
         painelServico.add(lblPlaca);
 
-        JLabel lblProblema = new JLabel("Problema:");
+        JLabel lblProblema = new JLabel("Valor de Venda:");
         lblProblema.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        lblProblema.setBounds(719, 13, 181, 65);
+        lblProblema.setBounds(784, 63, 181, 65);
         painelServico.add(lblProblema);
 
-        JLabel lblCusto = new JLabel("Custo atual:");
+        JLabel lblCusto = new JLabel("Valor de Compra:");
         lblCusto.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        lblCusto.setBounds(476, 20, 130, 50);
+        lblCusto.setBounds(785, 20, 190, 50);
         painelServico.add(lblCusto);
 
-        JLabel lblStatus = new JLabel("Status:");
+        JLabel lblStatus = new JLabel("Quantidade:");
         lblStatus.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        lblStatus.setBounds(291, 78, 150, 50);
+        lblStatus.setBounds(419, 70, 150, 50);
         painelServico.add(lblStatus);
 
         EstilizacaoRedonda.BotaoRedondo botaoEditar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
@@ -155,8 +155,8 @@ public class TelaOrdemServico extends JFrame {
         painelServico.add(botaoEditar);
         botaoEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TelaEditarServico telaEditarServico = new TelaEditarServico();
-                telaEditarServico.setVisible(true);
+                TelaEditarEstoque telaEditarEstoque = new TelaEditarEstoque();
+                telaEditarEstoque.setVisible(true);
                 dispose();
             }
         });

@@ -20,9 +20,7 @@ public class TelaNovoServico extends JFrame {
 
     private EstilizacaoRedonda.CaixaTextoRedonda clienteAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda veiculoAreaText;
-    private EstilizacaoRedonda.CaixaTextoRedonda placaAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda custoAtualAreaText;
-    private EstilizacaoRedonda.CaixaTextoRedonda dataAlteracaoAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda problemaAreaText;
     private EstilizacaoRedonda.ComboBoxRedondo<String> statusComboBox;
     private java.util.ArrayList<String> listaServicos = new java.util.ArrayList<>();
@@ -89,27 +87,16 @@ public class TelaNovoServico extends JFrame {
         clienteAreaText.setBounds(100, 150, 320, 50);
         painelBrancoFundo.add(clienteAreaText);
 
-        JLabel lblVeiculo = new JLabel("Veículo");
+        JLabel lblVeiculo = new JLabel("Veículo e Placa");
         lblVeiculo.setHorizontalAlignment(SwingConstants.CENTER);
         lblVeiculo.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblVeiculo.setBounds(540, 100, 200, 35);
+        lblVeiculo.setBounds(547, 100, 200, 35);
         painelBrancoFundo.add(lblVeiculo);
         
-        veiculoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o nome do veículo", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
+        veiculoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o nome do veículo e sua placa", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
         veiculoAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        veiculoAreaText.setBounds(480, 150, 320, 50);
+        veiculoAreaText.setBounds(454, 150, 377, 50);
         painelBrancoFundo.add(veiculoAreaText);
-
-        JLabel lblPlaca = new JLabel("Placa");
-        lblPlaca.setHorizontalAlignment(SwingConstants.CENTER);
-        lblPlaca.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblPlaca.setBounds(920, 100, 200, 35);
-        painelBrancoFundo.add(lblPlaca);
-        
-        placaAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o Tipo de veículo", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
-        placaAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        placaAreaText.setBounds(860, 150, 320, 50);
-        painelBrancoFundo.add(placaAreaText);
 
         JLabel lblTipoServico = new JLabel("Tipo de serviço");
         lblTipoServico.setHorizontalAlignment(SwingConstants.CENTER);
@@ -168,12 +155,12 @@ public class TelaNovoServico extends JFrame {
         JLabel lblCustoAtual = new JLabel("Custo atual");
         lblCustoAtual.setHorizontalAlignment(SwingConstants.CENTER);
         lblCustoAtual.setFont(new Font("Liberation Serif", Font.BOLD, 28));
-        lblCustoAtual.setBounds(540, 230, 200, 35);
+        lblCustoAtual.setBounds(920, 100, 200, 35);
         painelBrancoFundo.add(lblCustoAtual);
         
         custoAtualAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o custo atual em reais", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
         custoAtualAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        custoAtualAreaText.setBounds(480, 280, 320, 50);
+        custoAtualAreaText.setBounds(860, 150, 320, 50);
         painelBrancoFundo.add(custoAtualAreaText);
 
         JLabel lblStatus = new JLabel("Status");
@@ -241,17 +228,6 @@ public class TelaNovoServico extends JFrame {
                 }
             }
         });
-
-        JLabel lblDataAlt = new JLabel("<html><center>Data da ultima<br>alteração</center></html>");
-        lblDataAlt.setHorizontalAlignment(SwingConstants.CENTER);
-        lblDataAlt.setFont(new Font("Liberation Serif", Font.BOLD, 24));
-        lblDataAlt.setBounds(490, 350, 300, 60);
-        painelBrancoFundo.add(lblDataAlt);
-        
-        dataAlteracaoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("DD/MM/AAAA", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
-        dataAlteracaoAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        dataAlteracaoAreaText.setBounds(480, 435, 320, 50);
-        painelBrancoFundo.add(dataAlteracaoAreaText);
 
         JLabel lblProblema = new JLabel("Problema");
         lblProblema.setHorizontalAlignment(SwingConstants.CENTER);
