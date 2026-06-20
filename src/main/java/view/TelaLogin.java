@@ -14,6 +14,10 @@ import javax.swing.text.StyledDocument;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
+import utils.Hash;
+import dao.UsuarioDAO;
+import model.Usuario;
 
 public class TelaLogin extends JFrame {
 
@@ -103,11 +107,23 @@ public class TelaLogin extends JFrame {
 		botaoEntrar.setBounds(220, 550, 200, 50);
 		painelBrancoFundo.add(botaoEntrar);
 		botaoEntrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				TelaHome telaHome = new TelaHome();
-				telaHome.setVisible(true);
-				dispose();
-			}
+		    public void actionPerformed(ActionEvent e) {
+		    	String emailDigitado = emailAreaText.getText();
+		    	String senhaDigitada = new String(senhaAreaText.getPassword());
+		    	String hashDigitada = Hash.gerarHash(senhaDigitada);
+		    	
+		    	UsuarioDAO usuarioDAO = new UsuarioDAO();
+		    	Usuario usuario = usuarioDAO.buscarPorEmail(emailDigitado);
+
+		    	if(usuario != null && usuario.getSenhaHash() != null && usuario.getSenhaHash().equals(hashDigitada)) {
+		    	    TelaHome telaHome = new TelaHome();
+		    	    telaHome.setVisible(true);
+		    	    dispose();
+		    	}
+		    	else {
+		    	    JOptionPane.showMessageDialog(null,"Email ou senha incorretos.");
+		    	}
+		    }
 		});
 		
 		JLabel logoGaragem = new JLabel("Logo Aqui");
