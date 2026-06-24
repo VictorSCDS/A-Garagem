@@ -2,6 +2,7 @@ package utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import exceptions.DatabaseException;
@@ -26,14 +27,11 @@ public  class ConectorBD {
 	
 	private ConectorBD() {}
 	
-	public static Connection conectar() throws DatabaseException{
+	public static Connection conectar(){
 		try {
-			if(conn == null) {
-				conn = DriverManager.getConnection(URL_BD, USUARIO_BD, SENHA_BD);
-				return conn;
-			} else {
-				return conn;
-			}
+			if(conn == null || conn.isClosed()) conn = DriverManager.getConnection(URL_BD, USUARIO_BD, SENHA_BD);
+			return conn;
+
 		} catch(SQLException e) {
 			e.printStackTrace();
 			return null;
