@@ -9,6 +9,8 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
+import utils.Sessao;
 
 public class TelaCadastrarSenhaCodigo extends JFrame {
 
@@ -78,9 +80,16 @@ public class TelaCadastrarSenhaCodigo extends JFrame {
         painelBrancoFundo.add(botaoVerificar);
         botaoVerificar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                TelaNovaSenha telaNova = new TelaNovaSenha();
-                telaNova.setVisible(true);
-                dispose();
+
+            	if(codigoAreaText.getText().equals(Sessao.codigo)) {
+            	    TelaNovaSenha telaNova = new TelaNovaSenha();
+            	    telaNova.setVisible(true);
+            	    dispose();
+
+            	} 
+            	else {
+            	    JOptionPane.showMessageDialog(null,"Código inválido!");
+            	}
             }
         });
 

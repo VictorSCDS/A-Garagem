@@ -9,6 +9,11 @@ import java.awt.Font;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JOptionPane;
+import dao.UsuarioDAO;
+import utils.Email;
+import utils.Codigo;
+import utils.Sessao;
 
 public class TelaCadastrarSenha extends JFrame {
 
@@ -78,7 +83,28 @@ public class TelaCadastrarSenha extends JFrame {
         painelBrancoFundo.add(botaoEnviar);
         botaoEnviar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
+            	String email = emailAreaText.getText();
+
+            	if(email.isEmpty()) {
+            	    JOptionPane.showMessageDialog(null, "Digite um e-mail.");
+            	    return;
+            	}
+
+            	UsuarioDAO usuarioDAO = new UsuarioDAO();
+
+            	if(usuarioDAO.buscarPorEmail(email) == null) {
+            	    JOptionPane.showMessageDialog(null, "E-mail não encontrado.");
+            	    return;
+            	}
+
+            	String codigo = Codigo.gerar();
+            	Sessao.email = email;
+            	Sessao.codigo = codigo;
+                Email.enviar(email, "Código de recuperação", "Seu código é: " + codigo);
+                JOptionPane.showMessageDialog(null, "Código enviado para o e-mail.");
                 TelaCadastrarSenhaCodigo telaCodigo = new TelaCadastrarSenhaCodigo();
+                
                 telaCodigo.setVisible(true);
                 dispose();
             }

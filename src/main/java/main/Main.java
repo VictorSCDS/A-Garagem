@@ -1,6 +1,8 @@
 package main;
 
 import java.awt.EventQueue;
+import java.util.Scanner;
+
 import view.TelaLogin;
 
 public class Main {
