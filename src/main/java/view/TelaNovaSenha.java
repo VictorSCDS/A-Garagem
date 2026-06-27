@@ -11,7 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import utils.Hash;
-import dao.UsuarioDAO;
+import dao.FuncionarioDAO;
 import utils.Sessao;
 
 public class TelaNovaSenha extends JFrame {
@@ -102,8 +102,8 @@ public class TelaNovaSenha extends JFrame {
                 }
 
                 String hash = Hash.gerarHash(senha);
-                UsuarioDAO usuarioDAO = new UsuarioDAO();
-                usuarioDAO.atualizarSenha(Sessao.email, hash);
+                FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+                funcionarioDAO.atualizarSenha(Sessao.email, hash);
                 Sessao.codigo = null;
                 Sessao.email = null;
                 JOptionPane.showMessageDialog(null, "Senha cadastrada com sucesso!");

@@ -10,7 +10,7 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import dao.UsuarioDAO;
+import dao.FuncionarioDAO;
 import utils.Email;
 import utils.Codigo;
 import utils.Sessao;
@@ -91,12 +91,16 @@ public class TelaCadastrarSenha extends JFrame {
             	    return;
             	}
 
-            	UsuarioDAO usuarioDAO = new UsuarioDAO();
+            	FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 
-            	if(usuarioDAO.buscarPorEmail(email) == null) {
-            	    JOptionPane.showMessageDialog(null, "E-mail não encontrado.");
-            	    return;
-            	}
+                try{
+                    if(funcionarioDAO.buscarPorEmail(email) == null) {
+                        JOptionPane.showMessageDialog(null, "E-mail não encontrado.");
+                        return;
+                    }
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
 
             	String codigo = Codigo.gerar();
             	Sessao.email = email;

@@ -9,7 +9,7 @@ public enum Cargo {
         return Cargo.valueOf(str.toUpperCase());
     }
 
-    public static String estadoToString(Cargo cargo) {
+    public static String cargoToString(Cargo cargo) {
         return String.valueOf(cargo).replace("_", " ");
     }
 }

@@ -15,9 +15,10 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+
+import entities.Funcionario;
 import utils.Hash;
-import dao.UsuarioDAO;
-import model.Usuario;
+import dao.FuncionarioDAO;
 
 public class TelaLogin extends JFrame {
 
@@ -111,18 +112,23 @@ public class TelaLogin extends JFrame {
 		    	String emailDigitado = emailAreaText.getText();
 		    	String senhaDigitada = new String(senhaAreaText.getPassword());
 		    	String hashDigitada = Hash.gerarHash(senhaDigitada);
-		    	
-		    	UsuarioDAO usuarioDAO = new UsuarioDAO();
-		    	Usuario usuario = usuarioDAO.buscarPorEmail(emailDigitado);
 
-		    	if(usuario != null && usuario.getSenhaHash() != null && usuario.getSenhaHash().equals(hashDigitada)) {
-		    	    TelaHome telaHome = new TelaHome();
-		    	    telaHome.setVisible(true);
-		    	    dispose();
-		    	}
-		    	else {
-		    	    JOptionPane.showMessageDialog(null,"Email ou senha incorretos.");
-		    	}
+				try{
+					// TODO: CORRIGIR E CHAMAR O CONTROLLER COM UM DTO
+					FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+					Funcionario funcionario = funcionarioDAO.buscarPorEmail(emailDigitado).get();
+
+					if(funcionario != null && funcionario.getSenhaHash() != null && funcionario.getSenhaHash().equals(hashDigitada)) {
+						TelaHome telaHome = new TelaHome();
+						telaHome.setVisible(true);
+						dispose();
+					}
+					else {
+						JOptionPane.showMessageDialog(null,"Email ou senha incorretos.");
+					}
+				} catch (Exception ex) {
+					throw new RuntimeException(ex);
+				}
 		    }
 		});
 
