@@ -1,13 +1,20 @@
 package dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import entities.Cargo;
 import entities.Funcionario;
 import exceptions.DatabaseException;
 import utils.ConectorBD;
-import utils.Hash;
+
+import javax.xml.crypto.Data;
 
 public class FuncionarioDAO {
 
@@ -26,7 +33,7 @@ public class FuncionarioDAO {
             ps.setString(6, String.valueOf(funcionario.getDataAdmissao()));
             ps.setString(7, funcionario.getSenhaHash());
 
-            ps.execute();
+            ps.executeUpdate();
 
         }catch(SQLException e){
             e.printStackTrace();
@@ -65,7 +72,7 @@ public class FuncionarioDAO {
         return Optional.empty();
     }
     
-    public void atualizarSenha(String email, String senhaHash) throws DatabaseException {
+    public void atualizarSenha(String email, String senhaHash) throws DatabaseException{
         String sql = "UPDATE funcionario SET senha_hash = ? WHERE email = ?";
 
         try (Connection conn = ConectorBD.conectar();
@@ -77,8 +84,59 @@ public class FuncionarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro no banco de dados: " + e);
+            throw new DatabaseException("Erro no banco de dados:" + e);
         }
+    }
+
+    public void deletarFuncionario(String cpf) throws DatabaseException{
+        String query = "DELETE FROM funcionario WHERE cpf = ?;";
+
+        try(Connection con = ConectorBD.conectar();
+        PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, cpf);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro no banco de dados:" + e);
+        }
+
+    }
+
+    public List<Funcionario> listarFuncionarios() throws DatabaseException{
+        String query = "SELECT * FROM funcionario;";
+        List<Funcionario> funcionarios = new ArrayList<>();
+
+        try(Connection con = ConectorBD.conectar();
+        PreparedStatement ps = con.prepareStatement(query)){
+
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next()){
+                    Funcionario funcionario = mapearFuncionario(rs);
+                    funcionarios.add(funcionario);
+                }
+            }
+
+            return funcionarios;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro no banco de dados:" + e);
+        }
+    }
+
+    private Funcionario mapearFuncionario(ResultSet rs) throws SQLException{
+        return new Funcionario(
+                rs.getInt("id"),
+                rs.getString("nome"),
+                rs.getString("cpf"),
+                Cargo.fromString(rs.getString("cargo")),
+                rs.getString("telefone"),
+                rs.getString("email"),
+                rs.getDate("data_admissao"),
+                rs.getString("senha_hash")
+        );
     }
    
 }

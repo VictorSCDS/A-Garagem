@@ -27,7 +27,7 @@ public class ClienteDAO {
             ps.setString(3, cliente.getTelefone());
             ps.setString(4, cliente.getEmail());
 
-            ps.execute();
+            ps.executeUpdate();
 
         } catch (SQLException e){
             throw new DatabaseException("Erro ao conectar com o banco de dados: " + e.getMessage());
@@ -73,12 +73,13 @@ public class ClienteDAO {
         List<Cliente> clientes = new ArrayList<>();
 
         try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery()){
+            PreparedStatement ps = con.prepareStatement(query)){
 
-            while(rs.next()) {
-                Cliente c = mapearCliente(rs);
-                clientes.add(c);
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next()) {
+                    Cliente c = mapearCliente(rs);
+                    clientes.add(c);
+                }
             }
 
             return clientes;
