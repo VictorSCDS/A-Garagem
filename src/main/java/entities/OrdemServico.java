@@ -1,5 +1,7 @@
 package entities;
 
+import entities.enums.Estado;
+
 import java.sql.Date;
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package entities;
+package entities.enums;
 
 public enum Estado {
     NAO_PAGO,

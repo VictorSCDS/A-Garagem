@@ -75,7 +75,26 @@ public class VeiculoDAO {
 
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar veículos do clinte de CPF " + cpf);
+            throw new DatabaseException("Erro ao buscar veículos do cliente de CPF " + cpf);
+        }
+    }
+
+    public void atualizarVeiculoPorPlaca(Veiculo veiculo, String placaAntiga) throws DatabaseException {
+        String query = "UPDATE veiculo SET placa = ?, marca = ?, modelo = ? WHERE placa = ?;";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, veiculo.getPlaca());
+            ps.setString(2, veiculo.getMarca());
+            ps.setString(3, veiculo.getModelo());
+            ps.setString(4, placaAntiga);
+
+            ps.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao atualizar veículo de placa " + placaAntiga);
         }
     }
 

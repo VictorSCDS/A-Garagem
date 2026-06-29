@@ -4,17 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import entities.Cargo;
+import entities.enums.Cargo;
 import entities.Funcionario;
 import exceptions.DatabaseException;
 import utils.ConectorBD;
-
-import javax.xml.crypto.Data;
 
 public class FuncionarioDAO {
 
@@ -37,7 +34,7 @@ public class FuncionarioDAO {
 
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro no banco de dados: " + e);
+            throw new DatabaseException("Erro ao cadastrar funcionário");
         }
 
     }
@@ -59,7 +56,7 @@ public class FuncionarioDAO {
                             Cargo.fromString(rs.getString("cargo")),
                             rs.getString("telefone"),
                             rs.getString("email"),
-                            Date.valueOf(rs.getString("data_admissao")),
+                            rs.getDate("data_admissao"),
                             rs.getString("senha_hash")
                     );
                     return Optional.of(funcionario);
@@ -67,7 +64,7 @@ public class FuncionarioDAO {
             }
         } catch(SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro no banco de dados: " + e);
+            throw new DatabaseException("Erro ao buscar funcionário pelo email " + email);
         }
         return Optional.empty();
     }
@@ -84,7 +81,28 @@ public class FuncionarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro no banco de dados:" + e);
+            throw new DatabaseException("Erro ao atualizar senha do funcionário de email " + email);
+        }
+    }
+
+    public void atualizarFuncionarioPorCpf(Funcionario funcionario, String cpfAntigo) throws DatabaseException {
+        String query = "UPDATE funcionario SET nome = ?, cpf = ?, cargo = ?, telefone = ?, email = ? WHERE cpf = ?;";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, funcionario.getNome());
+            ps.setString(2, funcionario.getCpf());
+            ps.setString(3, Cargo.cargoToString(funcionario.getCargo()));
+            ps.setString(4, funcionario.getTelefone());
+            ps.setString(5, funcionario.getEmail());
+            ps.setString(6, cpfAntigo);
+
+            ps.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao atualizar funcionário de CPF " + cpfAntigo);
         }
     }
 
@@ -99,7 +117,7 @@ public class FuncionarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro no banco de dados:" + e);
+            throw new DatabaseException("Erro ao deletar funcionario de CPF " + cpf);
         }
 
     }
@@ -122,7 +140,7 @@ public class FuncionarioDAO {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro no banco de dados:" + e);
+            throw new DatabaseException("Erro ao listar funcionários");
         }
     }
 

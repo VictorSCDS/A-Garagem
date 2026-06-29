@@ -1,5 +1,7 @@
 package entities;
 
+import entities.enums.Cargo;
+
 import java.sql.Date;
 import java.util.Objects;
 

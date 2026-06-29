@@ -44,10 +44,7 @@ public class ItemDAO {
             PreparedStatement ps = con.prepareStatement(query);
             ResultSet rs = ps.executeQuery()){
 
-            while(rs.next()){
-                Item i = mapearItem(rs);
-                itens.add(i);
-            }
+            while(rs.next()) itens.add(mapearItem(rs));
 
             return itens;
 
@@ -96,6 +93,29 @@ public class ItemDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DatabaseException("Erro ao buscar itens pelo nome " + nome);
+        }
+    }
+
+    public List<Item> buscarPecasPorOrdemServico(int idOrdemServico) throws DatabaseException {
+        String query = "SELECT item.* FROM item " +
+                "INNER JOIN item_servico ON item.id = item_servico.id_item " +
+                "WHERE item_servico.id_ordem_servico = ?";
+        List<Item> itens = new ArrayList<>();
+
+        try (Connection con = ConectorBD.conectar();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, idOrdemServico);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) itens.add(mapearItem(rs));
+            }
+
+            return itens;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar peças da ordem de serviço");
         }
     }
 
