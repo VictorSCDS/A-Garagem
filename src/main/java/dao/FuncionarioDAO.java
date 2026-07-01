@@ -72,19 +72,7 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
             stmt.setString(1, email);
 
             try(ResultSet rs = stmt.executeQuery()){
-                if(rs.next()) {
-                    Funcionario funcionario = new Funcionario(
-                            rs.getInt("id"),
-                            rs.getString("nome"),
-                            rs.getString("cpf"),
-                            Cargo.fromString(rs.getString("cargo")),
-                            rs.getString("telefone"),
-                            rs.getString("email"),
-                            rs.getDate("data_admissao"),
-                            rs.getString("senha_hash")
-                    );
-                    return Optional.of(funcionario);
-                }
+                if(rs.next()) return Optional.of(mapearFuncionario(rs));
             }
         } catch(SQLException e) {
             e.printStackTrace();
