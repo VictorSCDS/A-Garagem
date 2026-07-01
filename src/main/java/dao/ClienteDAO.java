@@ -1,6 +1,7 @@
 package dao;
 
 import entities.Cliente;
+import entities.Funcionario;
 import exceptions.DatabaseException;
 import utils.ConectorBD;
 
@@ -13,9 +14,10 @@ import java.util.Optional;
 
 import java.util.List;
 
-public class ClienteDAO {
+public class ClienteDAO implements GenericDAO<Cliente, String> {
 
-    public void cadastrarCliente(Cliente cliente) throws DatabaseException{
+    @Override
+    public void criar(Cliente cliente) throws DatabaseException {
         String query = "INSERT INTO cliente (nome, cpf, telefone, email) VALUES (?, ?, ?, ?);";
 
         try(Connection con = ConectorBD.conectar();
@@ -34,7 +36,8 @@ public class ClienteDAO {
         }
     }
 
-    public List<Cliente> listarClientes() throws DatabaseException{
+    @Override
+    public List<Cliente> buscarTodos() throws DatabaseException {
         String query = "SELECT * FROM cliente;";
         List<Cliente> clientes = new ArrayList<>();
 
@@ -56,7 +59,8 @@ public class ClienteDAO {
         }
     }
 
-    public Optional<Cliente> buscarClientePorCpf(String cpf) throws DatabaseException{
+    @Override
+    public Optional<Cliente> buscarPorAtributoIdentificador(String cpf) throws DatabaseException {
         String query = "SELECT * FROM cliente WHERE cpf = ?";
 
         try(Connection con = ConectorBD.conectar();
@@ -74,6 +78,43 @@ public class ClienteDAO {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public void atualizar(Cliente cliente, String cpf) throws DatabaseException {
+        String query = "UPDATE cliente SET nome = ?, cpf = ?, telefone = ?, email = ? WHERE cpf = ?;";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, cliente.getNome());
+            ps.setString(2, cliente.getCpf());
+            ps.setString(3, cliente.getTelefone());
+            ps.setString(4, cliente.getEmail());
+            ps.setString(5, cpf);
+
+            ps.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao atualizar cliente de CPF " + cpf);
+        }
+    }
+
+    @Override
+    public void deletar(String cpf) throws DatabaseException {
+        String query = "DELETE FROM cliente WHERE cpf = ?;";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, cpf);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao deletar cliente de CPF " + cpf);
+        }
     }
 
     public List<Cliente> buscarClientePorNome(String nome) throws DatabaseException {
@@ -116,44 +157,7 @@ public class ClienteDAO {
             e.printStackTrace();
             throw new DatabaseException("Erro ao buscar cliente pela placa " + placa);
         }
-
         return Optional.empty();
-    }
-
-    public void atualizarCliente(Cliente cliente) throws DatabaseException{
-        String query = "UPDATE cliente SET nome = ?, cpf = ?, telefone = ?, email = ? WHERE cpf = ?;";
-
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query)){
-
-            ps.setString(1, cliente.getNome());
-            ps.setString(2, cliente.getCpf());
-            ps.setString(3, cliente.getTelefone());
-            ps.setString(4, cliente.getEmail());
-            ps.setString(5, cliente.getCpf());
-
-            ps.executeUpdate();
-
-        } catch(SQLException e){
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao atualizar cliente de CPF " + cliente.getCpf());
-        }
-
-    }
-
-    public void deletarCliente(String cpf) throws DatabaseException{
-        String query = "DELETE FROM cliente WHERE cpf = ?;";
-
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query)){
-
-            ps.setString(1, cpf);
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar cliente de CPF " + cpf);
-        }
     }
 
     private Cliente mapearCliente(ResultSet rs) throws SQLException{
@@ -165,4 +169,5 @@ public class ClienteDAO {
                 rs.getString("email")
         );
     }
+
 }

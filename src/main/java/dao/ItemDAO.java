@@ -1,5 +1,6 @@
 package dao;
 
+import entities.Cliente;
 import entities.Item;
 import exceptions.DatabaseException;
 import utils.ConectorBD;
@@ -12,9 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ItemDAO {
+public class ItemDAO implements GenericDAO<Item, String> {
 
-    public void cadastrarItem(Item item) throws DatabaseException {
+    @Override
+    public void criar(Item item) throws DatabaseException {
         String query = "INSERT INTO item (nome, codigo, marca, quantidade, valor_compra, valor_venda) " +
                 "VALUES (?, ?, ?, ?, ?, ?);";
 
@@ -36,7 +38,8 @@ public class ItemDAO {
         }
     }
 
-    public List<Item> buscarTodosItens() throws DatabaseException {
+    @Override
+    public List<Item> buscarTodos() throws DatabaseException {
         String query = "SELECT * FROM item";
         List<Item> itens = new ArrayList<>();
 
@@ -52,10 +55,10 @@ public class ItemDAO {
             e.printStackTrace();
             throw new DatabaseException("Erro ao buscar os itens");
         }
-
     }
 
-    public Optional<Item> buscarPorCodigo(String codigo) throws DatabaseException {
+    @Override
+    public Optional<Item> buscarPorAtributoIdentificador(String codigo) throws DatabaseException {
         String query = "SELECT * FROM item WHERE codigo = ?";
 
         try (Connection con = ConectorBD.conectar();
@@ -73,6 +76,46 @@ public class ItemDAO {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public void atualizar(Item item, String codigo) throws DatabaseException {
+        String query = "UPDATE item SET nome = ?, codigo = ?, marca = ?, quantidade = ?, " +
+                "valor_compra = ?, valor_venda = ? WHERE codigo = ?";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, item.getNome());
+            ps.setString(2, item.getCodigo());
+            ps.setString(3, item.getMarca());
+            ps.setInt(4, item.getQuantidade());
+            ps.setBigDecimal(5, item.getValorCompra());
+            ps.setBigDecimal(6, item.getValorVenda());
+            ps.setString(7, codigo);
+
+            ps.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao editar o item de código " + codigo);
+        }
+    }
+
+    @Override
+    public void deletar(String codigo) throws DatabaseException {
+        String query = "DELETE FROM item WHERE codigo = ?";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, codigo);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao deletar o item de código " + codigo);
+        }
     }
 
     public List<Item> buscarItensPorNome(String nome) throws DatabaseException {
@@ -116,44 +159,6 @@ public class ItemDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DatabaseException("Erro ao buscar peças da ordem de serviço");
-        }
-    }
-
-    public void editarItem(Item item, String codigo) throws DatabaseException {
-        String query = "UPDATE item SET nome = ?, codigo = ?, marca = ?, quantidade = ?, " +
-                "valor_compra = ?, valor_venda = ? WHERE codigo = ?";
-
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query)){
-
-            ps.setString(1, item.getNome());
-            ps.setString(2, item.getCodigo());
-            ps.setString(3, item.getMarca());
-            ps.setInt(4, item.getQuantidade());
-            ps.setBigDecimal(5, item.getValorCompra());
-            ps.setBigDecimal(6, item.getValorVenda());
-            ps.setString(7, codigo);
-
-            ps.executeUpdate();
-
-        } catch(SQLException e){
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao editar o item de código " + codigo);
-        }
-    }
-
-    public void deletarItemPorCodigo(String codigo) throws DatabaseException {
-        String query = "DELETE FROM item WHERE codigo = ?";
-
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query)){
-
-            ps.setString(1, codigo);
-            ps.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar o item de código " + codigo);
         }
     }
 

@@ -10,8 +10,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class TipoServicoDAO {
+public class TipoServicoDAO implements GenericDAO<TipoServico, Integer> {
+
+    @Override
+    public void criar(TipoServico tipoServico) throws DatabaseException {
+        throw new UnsupportedOperationException("Método inválido para este caso! Utilize registrarTipoServico(...).");
+    }
+
+    @Override
+    public List<TipoServico> buscarTodos() throws DatabaseException {
+        throw new UnsupportedOperationException("Método inválido para este caso! Utilize buscarTiposServicoEmOrdemServicoPorId(...).");
+    }
+
+    @Override
+    public Optional<TipoServico> buscarPorAtributoIdentificador(Integer id) throws DatabaseException {
+        throw new UnsupportedOperationException("Método inválido!");
+    }
+
+    @Override
+    public void atualizar(TipoServico tipoServico, Integer id) throws DatabaseException {
+        throw new UnsupportedOperationException("Método inválido!");
+    }
+
+    @Override
+    public void deletar(Integer id) throws DatabaseException {
+        throw new UnsupportedOperationException("Método inválido!");
+    }
 
     public int registrarTipoServico(String tipoServico) throws DatabaseException{
         String query = "INSERT INTO tipo_servico (descricao) VALUES (?);";
@@ -34,7 +60,7 @@ public class TipoServicoDAO {
         }
     }
 
-    public List<TipoServico> buscarTipoServicoEmOrdemServicoPorId(int id) throws DatabaseException {
+    public List<TipoServico> buscarTiposServicoEmOrdemServicoPorId(int id) throws DatabaseException {
         String query = "SELECT tipo_servico.* FROM tipo_servico " +
                 "INNER JOIN servico_aplicado ON tipo_servico.id = servico_aplicado.id_tipo_servico " +
                 "WHERE servico_aplicado.id_ordem_servico = ?";
@@ -63,5 +89,4 @@ public class TipoServicoDAO {
                 rs.getString("descricao")
         );
     }
-
 }

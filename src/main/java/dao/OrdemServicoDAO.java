@@ -14,7 +14,73 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class OrdemServicoDAO {
+public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
+
+    @Override
+    public void criar(OrdemServico ordemServico) throws DatabaseException {
+        throw new UnsupportedOperationException("Método inválido para este caso! Utilize cadastrarOrdemServico(...).");
+    }
+
+    @Override
+    public List<OrdemServico> buscarTodos() throws DatabaseException {
+        String query = "SELECT * FROM ordem_servico;";
+        List<OrdemServico> ordemServicos = new ArrayList<>();
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery()){
+
+            while(rs.next()) ordemServicos.add(mapearOrdemServico(rs));
+
+            return ordemServicos;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar ordens de serviço");
+        }
+    }
+
+    @Override
+    public Optional<OrdemServico> buscarPorAtributoIdentificador(Integer id) throws DatabaseException {
+        String query = "SELECT * FROM ordem_servico WHERE id = ?";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setInt(1, id);
+
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()) return Optional.of(mapearOrdemServico(rs));
+            }
+
+            return Optional.empty();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar ordem de serviço");
+        }
+    }
+
+    @Override
+    public void atualizar(OrdemServico ordemServico, Integer identificador) throws DatabaseException {
+        throw new UnsupportedOperationException("Método inválido para este caso! Utilize cancelarOrdemServico(...) ou cancelarOrdemServico(...).");
+    }
+
+    @Override
+    public void deletar(Integer id) throws DatabaseException {
+        String query = "DELETE FROM ordem_servico WHERE id = ?;";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setInt(1, id);
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao deletar ordem de serviço");
+        }
+    }
 
     public void cadastrarOrdemServico(OrdemServico ordemServico, int idVeiculo, int idFuncionario)
             throws DatabaseException{
@@ -86,44 +152,6 @@ public class OrdemServicoDAO {
             throw new DatabaseException("Erro ao buscar custo do serviço");
         }
 
-    }
-
-    public Optional<OrdemServico> buscarOrdemServicoPorId(int id) throws DatabaseException {
-        String query = "SELECT * FROM ordem_servico WHERE id = ?";
-
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query)){
-
-            ps.setInt(1, id);
-
-            try(ResultSet rs = ps.executeQuery()){
-                if(rs.next()) return Optional.of(mapearOrdemServico(rs));
-            }
-
-            return Optional.empty();
-
-        } catch(SQLException e){
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar ordem de serviço");
-        }
-    }
-
-    public List<OrdemServico> buscarTodasOrdensServico() throws DatabaseException {
-        String query = "SELECT * FROM ordem_servico;";
-        List<OrdemServico> ordemServicos = new ArrayList<>();
-
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query);
-            ResultSet rs = ps.executeQuery()){
-
-            while(rs.next()) ordemServicos.add(mapearOrdemServico(rs));
-
-            return ordemServicos;
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar ordens de serviço");
-        }
     }
 
     public void cancelarOrdemServico(int id) throws DatabaseException {
@@ -201,5 +229,4 @@ public class OrdemServicoDAO {
                 rs.getInt("id_funcionario_responsavel")
         );
     }
-
 }

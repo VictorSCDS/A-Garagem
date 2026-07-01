@@ -12,9 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class VeiculoDAO {
+public class VeiculoDAO implements GenericDAO<Veiculo, String> {
 
-    public void cadastrarVeiculo(Veiculo veiculo) throws DatabaseException{
+    @Override
+    public void criar(Veiculo veiculo) throws DatabaseException {
         String query = "INSERT INTO veiculo (placa, marca, modelo) VALUES (?, ?, ?);";
 
         try(Connection con = ConectorBD.conectar();
@@ -32,7 +33,13 @@ public class VeiculoDAO {
         }
     }
 
-    public Optional<Veiculo> buscarVeiculoPorPlaca(String placa) throws DatabaseException{
+    @Override
+    public List<Veiculo> buscarTodos() throws DatabaseException {
+        throw new UnsupportedOperationException("Método inválido!");
+    }
+
+    @Override
+    public Optional<Veiculo> buscarPorAtributoIdentificador(String placa) throws DatabaseException {
         String query = "SELECT * FROM veiculo WHERE placa = ?";
 
         try(Connection con = ConectorBD.conectar();
@@ -50,6 +57,42 @@ public class VeiculoDAO {
         }
 
         return Optional.empty();
+    }
+
+    @Override
+    public void atualizar(Veiculo veiculo, String placaAntiga) throws DatabaseException {
+        String query = "UPDATE veiculo SET placa = ?, marca = ?, modelo = ? WHERE placa = ?;";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, veiculo.getPlaca());
+            ps.setString(2, veiculo.getMarca());
+            ps.setString(3, veiculo.getModelo());
+            ps.setString(4, placaAntiga);
+
+            ps.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao atualizar veículo de placa " + placaAntiga);
+        }
+    }
+
+    @Override
+    public void deletar(String placa) throws DatabaseException {
+        String query = "DELETE FROM veiculo WHERE placa = ?";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, placa);
+            ps.executeUpdate();
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao deletar veículo de placa " + placa);
+        }
     }
 
     public List<Veiculo> buscarTodosVeiculosDeCliente(String cpf) throws DatabaseException{
@@ -79,40 +122,6 @@ public class VeiculoDAO {
         }
     }
 
-    public void atualizarVeiculoPorPlaca(Veiculo veiculo, String placaAntiga) throws DatabaseException {
-        String query = "UPDATE veiculo SET placa = ?, marca = ?, modelo = ? WHERE placa = ?;";
-
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query)){
-
-            ps.setString(1, veiculo.getPlaca());
-            ps.setString(2, veiculo.getMarca());
-            ps.setString(3, veiculo.getModelo());
-            ps.setString(4, placaAntiga);
-
-            ps.executeUpdate();
-
-        } catch(SQLException e){
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao atualizar veículo de placa " + placaAntiga);
-        }
-    }
-
-    public void deletarVeiculoPorPlaca(String placa) throws DatabaseException{
-        String query = "DELETE FROM veiculo WHERE placa = ?";
-
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query)){
-
-            ps.setString(1, placa);
-            ps.executeUpdate();
-
-        } catch (SQLException e){
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar veículo de placa " + placa);
-        }
-    }
-
     private Veiculo mapearVeiculo(ResultSet rs) throws SQLException{
         return new Veiculo(
                 rs.getInt("id"),
@@ -121,5 +130,4 @@ public class VeiculoDAO {
                 rs.getString("modelo")
         );
     }
-
 }

@@ -13,14 +13,15 @@ import entities.Funcionario;
 import exceptions.DatabaseException;
 import utils.ConectorBD;
 
-public class FuncionarioDAO {
+public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
 
-    public void cadastrarFuncionario(Funcionario funcionario) throws DatabaseException{
+    @Override
+    public void criar(Funcionario funcionario) throws DatabaseException {
         String query = "INSERT INTO funcionario (nome, cpf, cargo, telefone, email, data_admissao, senha_hash) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?);";
 
         try(Connection con = ConectorBD.conectar();
-        PreparedStatement ps = con.prepareStatement(query)){
+            PreparedStatement ps = con.prepareStatement(query)){
 
             ps.setString(1, funcionario.getNome());
             ps.setString(2, funcionario.getCpf());
@@ -36,10 +37,33 @@ public class FuncionarioDAO {
             e.printStackTrace();
             throw new DatabaseException("Erro ao cadastrar funcionário");
         }
-
     }
 
-    public Optional<Funcionario> buscarPorEmail(String email) throws DatabaseException {
+    @Override
+    public List<Funcionario> buscarTodos() throws DatabaseException {
+        String query = "SELECT * FROM funcionario;";
+        List<Funcionario> funcionarios = new ArrayList<>();
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            try(ResultSet rs = ps.executeQuery()){
+                while(rs.next()){
+                    Funcionario funcionario = mapearFuncionario(rs);
+                    funcionarios.add(funcionario);
+                }
+            }
+
+            return funcionarios;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao listar funcionários");
+        }
+    }
+
+    @Override
+    public Optional<Funcionario> buscarPorAtributoIdentificador(String email) throws DatabaseException {
         String sql = "SELECT * FROM funcionario WHERE email = ?";
 
         try (Connection conn = ConectorBD.conectar();
@@ -68,24 +92,9 @@ public class FuncionarioDAO {
         }
         return Optional.empty();
     }
-    
-    public void atualizarSenha(String email, String senhaHash) throws DatabaseException{
-        String sql = "UPDATE funcionario SET senha_hash = ? WHERE email = ?";
 
-        try (Connection conn = ConectorBD.conectar();
-             PreparedStatement stmt = conn.prepareStatement(sql);) {
-
-            stmt.setString(1, senhaHash);
-            stmt.setString(2, email);
-            stmt.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new DatabaseException("Erro ao atualizar senha do funcionário de email " + email);
-        }
-    }
-
-    public void atualizarFuncionarioPorCpf(Funcionario funcionario, String cpfAntigo) throws DatabaseException {
+    @Override
+    public void atualizar(Funcionario funcionario, String cpfAntigo) throws DatabaseException {
         String query = "UPDATE funcionario SET nome = ?, cpf = ?, cargo = ?, telefone = ?, email = ? WHERE cpf = ?;";
 
         try(Connection con = ConectorBD.conectar();
@@ -106,11 +115,12 @@ public class FuncionarioDAO {
         }
     }
 
-    public void deletarFuncionario(String cpf) throws DatabaseException{
+    @Override
+    public void deletar(String cpf) throws DatabaseException {
         String query = "DELETE FROM funcionario WHERE cpf = ?;";
 
         try(Connection con = ConectorBD.conectar();
-        PreparedStatement ps = con.prepareStatement(query)){
+            PreparedStatement ps = con.prepareStatement(query)){
 
             ps.setString(1, cpf);
             ps.executeUpdate();
@@ -119,28 +129,21 @@ public class FuncionarioDAO {
             e.printStackTrace();
             throw new DatabaseException("Erro ao deletar funcionario de CPF " + cpf);
         }
-
     }
+    
+    public void atualizarSenha(String email, String novaSenhaHash) throws DatabaseException{
+        String sql = "UPDATE funcionario SET senha_hash = ? WHERE email = ?";
 
-    public List<Funcionario> listarFuncionarios() throws DatabaseException{
-        String query = "SELECT * FROM funcionario;";
-        List<Funcionario> funcionarios = new ArrayList<>();
+        try (Connection conn = ConectorBD.conectar();
+             PreparedStatement stmt = conn.prepareStatement(sql);) {
 
-        try(Connection con = ConectorBD.conectar();
-        PreparedStatement ps = con.prepareStatement(query)){
-
-            try(ResultSet rs = ps.executeQuery()){
-                while(rs.next()){
-                    Funcionario funcionario = mapearFuncionario(rs);
-                    funcionarios.add(funcionario);
-                }
-            }
-
-            return funcionarios;
+            stmt.setString(1, novaSenhaHash);
+            stmt.setString(2, email);
+            stmt.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao listar funcionários");
+            throw new DatabaseException("Erro ao atualizar senha do funcionário de email " + email);
         }
     }
 
@@ -156,5 +159,4 @@ public class FuncionarioDAO {
                 rs.getString("senha_hash")
         );
     }
-   
 }
