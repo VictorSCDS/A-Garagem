@@ -94,7 +94,7 @@ public class TelaCadastrarSenha extends JFrame {
             	FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
 
                 try{
-                    if(funcionarioDAO.buscarPorEmail(email) == null) {
+                    if(funcionarioDAO.buscarPorAtributoIdentificador(email) == null) {
                         JOptionPane.showMessageDialog(null, "E-mail não encontrado.");
                         return;
                     }

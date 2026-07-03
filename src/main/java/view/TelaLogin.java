@@ -116,7 +116,7 @@ public class TelaLogin extends JFrame {
 				try{
 					// TODO: CORRIGIR E CHAMAR O CONTROLLER COM UM DTO
 					FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-					Funcionario funcionario = funcionarioDAO.buscarPorEmail(emailDigitado).get();
+					Funcionario funcionario = funcionarioDAO.buscarPorAtributoIdentificador(emailDigitado).get();
 
 					if(funcionario != null && funcionario.getSenhaHash() != null && funcionario.getSenhaHash().equals(hashDigitada)) {
 						TelaHome telaHome = new TelaHome();

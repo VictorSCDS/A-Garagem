@@ -10,6 +10,8 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+
+import exceptions.DatabaseException;
 import utils.Hash;
 import dao.FuncionarioDAO;
 import utils.Sessao;
@@ -103,7 +105,11 @@ public class TelaNovaSenha extends JFrame {
 
                 String hash = Hash.gerarHash(senha);
                 FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+                try {
                 funcionarioDAO.atualizarSenha(Sessao.email, hash);
+                } catch (DatabaseException ex) {
+                    throw new RuntimeException(ex);
+                }
                 Sessao.codigo = null;
                 Sessao.email = null;
                 JOptionPane.showMessageDialog(null, "Senha cadastrada com sucesso!");
