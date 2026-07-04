@@ -10,10 +10,11 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import dao.FuncionarioDAO;
 import utils.Email;
 import utils.Codigo;
 import utils.Sessao;
+import controllers.FuncionarioController;
+import exceptions.DatabaseException;
 
 public class TelaCadastrarSenha extends JFrame {
 
@@ -91,29 +92,35 @@ public class TelaCadastrarSenha extends JFrame {
             	    return;
             	}
 
-            	FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
+            	FuncionarioController controller = new FuncionarioController();
 
-                try{
-                    if(funcionarioDAO.buscarPorAtributoIdentificador(email) == null) {
-                        JOptionPane.showMessageDialog(null, "E-mail não encontrado.");
-                        return;
-                    }
-                } catch (Exception ex) {
-                    throw new RuntimeException(ex);
-                }
+            	 try {
 
-            	String codigo = Codigo.gerar();
-            	Sessao.email = email;
-            	Sessao.codigo = codigo;
-                Email.enviar(email, "Código de recuperação", "Seu código é: " + codigo);
-                JOptionPane.showMessageDialog(null, "Código enviado para o e-mail.");
-                TelaCadastrarSenhaCodigo telaCodigo = new TelaCadastrarSenhaCodigo();
-                
-                telaCodigo.setVisible(true);
-                dispose();
-            }
-        });
+                     if(!controller.emailExiste(email)) {
+                         JOptionPane.showMessageDialog(null, "E-mail não encontrado.");
+                         return;
+                     }
 
+                     String codigo = Codigo.gerar();
+                     Sessao.email = email;
+                     Sessao.codigo = codigo;
+
+                     Email.enviar(email,"Código de recuperação", "Seu código é: " + codigo
+                     );
+
+                     JOptionPane.showMessageDialog(null, "Código enviado para o e-mail.");
+
+                     TelaCadastrarSenhaCodigo telaCodigo = new TelaCadastrarSenhaCodigo();
+                     telaCodigo.setVisible(true);
+                     dispose();
+
+                 } catch (DatabaseException ex) {
+
+                     JOptionPane.showMessageDialog(null, "Erro ao consultar o funcionário.");
+                     ex.printStackTrace();
+                 }
+             }
+         });
         EstilizacaoRedonda.BotaoRedondo botaoSair = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoSair.setForeground(Color.WHITE);
         botaoSair.setFont(new Font("SansSerif", Font.BOLD, 18));

@@ -10,10 +10,8 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-
 import exceptions.DatabaseException;
-import utils.Hash;
-import dao.FuncionarioDAO;
+import controllers.FuncionarioController;
 import utils.Sessao;
 
 public class TelaNovaSenha extends JFrame {
@@ -90,6 +88,7 @@ public class TelaNovaSenha extends JFrame {
         painelBrancoFundo.add(botaoSalvar);
         botaoSalvar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+
                 String senha = new String(senhaAreaText.getPassword());
                 String confirmar = new String(confirmarSenhaAreaText.getPassword());
 
@@ -99,27 +98,31 @@ public class TelaNovaSenha extends JFrame {
                 }
 
                 if(!senha.equals(confirmar)) {
-                	JOptionPane.showMessageDialog(null, "As senhas não coincidem.");
+
+                    JOptionPane.showMessageDialog(null, "As senhas não coincidem.");
+                    return;
+                }
+                
+                FuncionarioController controller = new FuncionarioController();
+                try {
+                    throw new RuntimeException(ex);
+                    controller.alterarSenha(Sessao.email, senha);
+
+                } 
+                catch (DatabaseException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao atualizar a senha.");
+                    ex.printStackTrace();
                     return;
                 }
 
-                String hash = Hash.gerarHash(senha);
-                FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-                try {
-                funcionarioDAO.atualizarSenha(Sessao.email, hash);
-                } catch (DatabaseException ex) {
-                    throw new RuntimeException(ex);
-                }
                 Sessao.codigo = null;
                 Sessao.email = null;
                 JOptionPane.showMessageDialog(null, "Senha cadastrada com sucesso!");
-
                 TelaLogin telaLogin = new TelaLogin();
                 telaLogin.setVisible(true);
                 dispose();
             }
         });
-
         EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoVoltar.setForeground(Color.WHITE);
         botaoVoltar.setFont(new Font("SansSerif", Font.BOLD, 18));

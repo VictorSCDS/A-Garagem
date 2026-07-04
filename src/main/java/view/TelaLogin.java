@@ -15,10 +15,9 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import controllers.FuncionarioController;
+import exceptions.DatabaseException;
 
-import entities.Funcionario;
-import utils.Hash;
-import dao.FuncionarioDAO;
 
 public class TelaLogin extends JFrame {
 
@@ -109,26 +108,35 @@ public class TelaLogin extends JFrame {
 		painelBrancoFundo.add(botaoEntrar);
 		botaoEntrar.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	String emailDigitado = emailAreaText.getText();
-		    	String senhaDigitada = new String(senhaAreaText.getPassword());
-		    	String hashDigitada = Hash.gerarHash(senhaDigitada);
 
-				try{
-					// TODO: CORRIGIR E CHAMAR O CONTROLLER COM UM DTO
-					FuncionarioDAO funcionarioDAO = new FuncionarioDAO();
-					Funcionario funcionario = funcionarioDAO.buscarPorAtributoIdentificador(emailDigitado).get();
+		        String email = emailAreaText.getText();
+		        String senha = new String(senhaAreaText.getPassword());
 
-					if(funcionario != null && funcionario.getSenhaHash() != null && funcionario.getSenhaHash().equals(hashDigitada)) {
-						TelaHome telaHome = new TelaHome();
-						telaHome.setVisible(true);
-						dispose();
-					}
-					else {
-						JOptionPane.showMessageDialog(null,"Email ou senha incorretos.");
-					}
-				} catch (Exception ex) {
-					throw new RuntimeException(ex);
-				}
+		        if(email.isEmpty() || senha.isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "Preencha todos os campos.");
+		            return;
+		        }
+
+		        FuncionarioController controller = new FuncionarioController();
+
+		        try {
+
+		            if(controller.login(email, senha)) {
+		            	
+		                TelaHome telaHome = new TelaHome();
+		                telaHome.setVisible(true);
+		                dispose();
+
+		            } 
+		            else {
+		                JOptionPane.showMessageDialog(null, "E-mail ou senha incorretos.");
+		            }
+
+		        } 
+		        catch (DatabaseException ex) {
+		            JOptionPane.showMessageDialog(null, "Erro ao realizar login.");
+		            ex.printStackTrace();
+		        }
 		    }
 		});
 
