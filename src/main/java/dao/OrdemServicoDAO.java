@@ -129,11 +129,13 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
     }
 
     public Optional<BigDecimal> buscarCustoAtualServico(int idOrdemServico) throws DatabaseException {
-        String query = "SELECT \n" +
-                "200.00 +  COALESCE(SUM(i.valor_compra * is.quantidade), 0) AS custo_atual\n" +
-                "FROM ordem_servico os\n" +
-                "LEFT JOIN item_servico is ON is.id_ordem_servico = os.id\n" +
-                "LEFT JOIN item i ON i.id = is.id_item\n" +
+        String query = "SELECT " +
+                "COALESCE(SUM(ts.valor_servico), 0) + COALESCE(SUM(i.valor_compra * is.quantidade), 0) AS custo_atual " +
+                "FROM ordem_servico os " +
+                "LEFT JOIN servico_aplicado sa ON sa.id_ordem_servico = os.id " +
+                "LEFT JOIN tipo_servico ts ON ts.id = sa.id_tipo_servico " +
+                "LEFT JOIN item_servico is ON is.id_ordem_servico = os.id " +
+                "LEFT JOIN item i ON i.id = is.id_item " +
                 "WHERE os.id = ?";
 
         try(Connection con = ConectorBD.conectar();
