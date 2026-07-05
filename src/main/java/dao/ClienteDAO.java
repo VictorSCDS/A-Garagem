@@ -32,7 +32,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao cadastrar cliente");
+            throw new DatabaseException("Erro ao cadastrar cliente", e);
         }
     }
 
@@ -55,7 +55,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao listar clientes");
+            throw new DatabaseException("Erro ao listar clientes", e);
         }
     }
 
@@ -74,7 +74,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar cliente de CPF " + cpf);
+            throw new DatabaseException("Erro ao buscar cliente de CPF " + cpf, e);
         }
 
         return Optional.empty();
@@ -97,7 +97,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao atualizar cliente de CPF " + cpf);
+            throw new DatabaseException("Erro ao atualizar cliente de CPF " + cpf, e);
         }
     }
 
@@ -113,7 +113,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar cliente de CPF " + cpf);
+            throw new DatabaseException("Erro ao deletar cliente de CPF " + cpf, e);
         }
     }
 
@@ -134,7 +134,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar cliente de nome " + nome);
+            throw new DatabaseException("Erro ao buscar cliente por nome : " + nome, e);
         }
     }
 
@@ -155,7 +155,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar cliente pela placa " + placa);
+            throw new DatabaseException("Erro ao buscar cliente pela placa", e);
         }
         return Optional.empty();
     }
@@ -169,5 +169,4 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
                 rs.getString("email")
         );
     }
-
 }

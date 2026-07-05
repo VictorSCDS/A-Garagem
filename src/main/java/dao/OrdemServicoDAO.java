@@ -36,7 +36,7 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar ordens de serviço");
+            throw new DatabaseException("Erro ao buscar ordens de serviço", e);
         }
     }
 
@@ -57,7 +57,7 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar ordem de serviço");
+            throw new DatabaseException("Erro ao buscar ordem de serviço", e);
         }
     }
 
@@ -78,7 +78,7 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar ordem de serviço");
+            throw new DatabaseException("Erro ao deletar ordem de serviço", e);
         }
     }
 
@@ -102,7 +102,7 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao cadastrar ordem de serviço");
+            throw new DatabaseException("Erro ao cadastrar ordem de serviço", e);
         }
 
     }
@@ -124,7 +124,7 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar ordens de serviço");
+            throw new DatabaseException("Erro ao buscar ordens de serviço", e);
         }
     }
 
@@ -149,7 +149,7 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar custo do serviço");
+            throw new DatabaseException("Erro ao buscar custo do serviço", e);
         }
 
     }
@@ -167,7 +167,7 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao cancelar ordem de serviço");
+            throw new DatabaseException("Erro ao cancelar ordem de serviço", e);
         }
     }
 
@@ -213,7 +213,7 @@ public class OrdemServicoDAO implements GenericDAO<OrdemServico, Integer> {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao editar ordem de serviço");
+            throw new DatabaseException("Erro ao editar ordem de serviço", e);
         }
 
     }

@@ -29,7 +29,7 @@ public class VeiculoDAO implements GenericDAO<Veiculo, String> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao cadastrar veículo");
+            throw new DatabaseException("Erro ao cadastrar veículo", e);
         }
     }
 
@@ -53,7 +53,7 @@ public class VeiculoDAO implements GenericDAO<Veiculo, String> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar o veículo de placa " + placa);
+            throw new DatabaseException("Erro ao buscar o veículo de placa " + placa, e);
         }
 
         return Optional.empty();
@@ -75,7 +75,7 @@ public class VeiculoDAO implements GenericDAO<Veiculo, String> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao atualizar veículo de placa " + placaAntiga);
+            throw new DatabaseException("Erro ao atualizar veículo de placa " + placaAntiga, e);
         }
     }
 
@@ -91,7 +91,7 @@ public class VeiculoDAO implements GenericDAO<Veiculo, String> {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar veículo de placa " + placa);
+            throw new DatabaseException("Erro ao deletar veículo de placa " + placa, e);
         }
     }
 
@@ -118,7 +118,7 @@ public class VeiculoDAO implements GenericDAO<Veiculo, String> {
 
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar veículos do cliente de CPF " + cpf);
+            throw new DatabaseException("Erro ao buscar veículos do cliente de CPF " + cpf, e);
         }
     }
 

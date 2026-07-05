@@ -34,7 +34,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao cadastrar o item");
+            throw new DatabaseException("Erro ao cadastrar o item", e);
         }
     }
 
@@ -53,7 +53,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar os itens");
+            throw new DatabaseException("Erro ao buscar os itens", e);
         }
     }
 
@@ -72,7 +72,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar item de código " + codigo);
+            throw new DatabaseException("Erro ao buscar item de código " + codigo, e);
         }
 
         return Optional.empty();
@@ -98,7 +98,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao editar o item de código " + codigo);
+            throw new DatabaseException("Erro ao editar o item de código " + codigo, e);
         }
     }
 
@@ -114,7 +114,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar o item de código " + codigo);
+            throw new DatabaseException("Erro ao deletar o item de código " + codigo, e);
         }
     }
 
@@ -135,7 +135,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar itens pelo nome " + nome);
+            throw new DatabaseException("Erro ao buscar itens pelo nome " + nome, e);
         }
     }
 
@@ -158,7 +158,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar peças da ordem de serviço");
+            throw new DatabaseException("Erro ao buscar peças da ordem de serviço", e);
         }
     }
 
@@ -180,7 +180,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao diminuir a quantidade no estoque");
+            throw new DatabaseException("Erro ao diminuir a quantidade no estoque", e);
         }
     }
 
