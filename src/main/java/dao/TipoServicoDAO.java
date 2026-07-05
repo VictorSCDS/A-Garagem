@@ -56,7 +56,7 @@ public class TipoServicoDAO implements GenericDAO<TipoServico, Integer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao cadastrar tipo de serviço", e);
+            throw new DatabaseException("Erro ao cadastrar tipo de serviço no banco de dados", e);
         }
     }
 
@@ -79,7 +79,7 @@ public class TipoServicoDAO implements GenericDAO<TipoServico, Integer> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar tipos de serviço.", e);
+            throw new DatabaseException("Erro ao buscar tipos de serviço registrados no banco de dados", e);
         }
     }
 

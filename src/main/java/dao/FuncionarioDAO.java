@@ -35,7 +35,7 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
 
         }catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao cadastrar funcionário", e);
+            throw new DatabaseException("Erro ao cadastrar funcionário no banco de dados", e);
         }
     }
 
@@ -58,7 +58,7 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao listar funcionários", e);
+            throw new DatabaseException("Erro ao listar funcionários registrados no banco de dados", e);
         }
     }
 
@@ -76,7 +76,7 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
             }
         } catch(SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar funcionário pelo email " + email, e);
+            throw new DatabaseException("Erro ao buscar funcionário no banco de dados", e);
         }
         return Optional.empty();
     }
@@ -99,7 +99,7 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao atualizar funcionário de CPF " + cpfAntigo, e);
+            throw new DatabaseException("Erro ao atualizar funcionário no banco de dados", e);
         }
     }
 
@@ -115,7 +115,7 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar funcionario de CPF " + cpf, e);
+            throw new DatabaseException("Erro ao deletar funcionario no banco de dados", e);
         }
     }
     
@@ -131,7 +131,7 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao atualizar senha do funcionário de email " + email, e);
+            throw new DatabaseException("Erro ao atualizar senha do funcionário no banco de dados", e);
         }
     }
 

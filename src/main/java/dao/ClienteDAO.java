@@ -32,7 +32,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao cadastrar cliente", e);
+            throw new DatabaseException("Erro ao cadastrar cliente no banco de dados", e);
         }
     }
 
@@ -55,7 +55,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao listar clientes", e);
+            throw new DatabaseException("Erro ao listar clientes registrados no banco de dados", e);
         }
     }
 
@@ -74,7 +74,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar cliente de CPF " + cpf, e);
+            throw new DatabaseException("Erro ao buscar cliente no banco de dados", e);
         }
 
         return Optional.empty();
@@ -97,7 +97,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch(SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao atualizar cliente de CPF " + cpf, e);
+            throw new DatabaseException("Erro ao atualizar cliente no banco de dados", e);
         }
     }
 
@@ -113,7 +113,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar cliente de CPF " + cpf, e);
+            throw new DatabaseException("Erro ao deletar cliente do banco de dados", e);
         }
     }
 
@@ -134,7 +134,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar cliente por nome : " + nome, e);
+            throw new DatabaseException("Erro ao buscar cliente no banco de dados", e);
         }
     }
 
@@ -155,7 +155,7 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
         } catch (SQLException e){
             e.printStackTrace();
-            throw new DatabaseException("Erro ao buscar cliente pela placa", e);
+            throw new DatabaseException("Erro ao buscar cliente no banco de dados", e);
         }
         return Optional.empty();
     }
