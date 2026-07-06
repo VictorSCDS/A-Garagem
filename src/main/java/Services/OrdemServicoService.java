@@ -12,7 +12,6 @@ import java.util.Optional;
 
 public class OrdemServicoService {
     private OrdemServicoDAO ordemServicoDao;
-    private final String MENSAGEM_PADRAO_EXCECAO = "Erro ao cadastrar ordem de serviço";
 
     public OrdemServicoService(OrdemServicoDAO ordemServicoDao){
         this.ordemServicoDao = ordemServicoDao;
@@ -24,7 +23,7 @@ public class OrdemServicoService {
             ordemServicoDao.cadastrarOrdemServico(ordemServico, idVeiculo, idFuncionario);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException(MENSAGEM_PADRAO_EXCECAO);
+            throw new ServiceException("Erro ao cadastrar ordem de serviço");
         }
     }
 
@@ -33,7 +32,7 @@ public class OrdemServicoService {
             return ordemServicoDao.buscarTodos();
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException(MENSAGEM_PADRAO_EXCECAO);
+            throw new ServiceException("Erro ao buscar todas ordens de serviço");
         }
     }
 
@@ -43,7 +42,7 @@ public class OrdemServicoService {
             return ordemServicoDao.buscarPorAtributoIdentificador(id);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException(MENSAGEM_PADRAO_EXCECAO);
+            throw new ServiceException("Erro ao buscar ordem de serviço de id " + id);
         }
     }
 
@@ -53,7 +52,7 @@ public class OrdemServicoService {
             ordemServicoDao.deletar(id);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException(MENSAGEM_PADRAO_EXCECAO);
+            throw new ServiceException("Erro ao deletar ordem de serviço de id " + id);
         }
     }
 
@@ -63,7 +62,7 @@ public class OrdemServicoService {
             return ordemServicoDao.buscarHistoricoVeiculo(idVeiculo);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException(MENSAGEM_PADRAO_EXCECAO);
+            throw new ServiceException("Erro ao buscar histórico de veículo");
         }
     }
 
@@ -73,7 +72,7 @@ public class OrdemServicoService {
             return ordemServicoDao.buscarCustoAtualServico(idOrdemServico);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException(MENSAGEM_PADRAO_EXCECAO);
+            throw new ServiceException("Erro ao buscar o atual custo do serviço");
         }
     }
 
@@ -83,7 +82,7 @@ public class OrdemServicoService {
             ordemServicoDao.cancelarOrdemServico(id);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException(MENSAGEM_PADRAO_EXCECAO);
+            throw new ServiceException("Erro ao canelar ordem de serviço");
         }
     }
 
@@ -96,7 +95,7 @@ public class OrdemServicoService {
             ordemServicoDao.editarOrdemServico(ordemServico, idsItensPecas, idsTiposServico);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException(MENSAGEM_PADRAO_EXCECAO);
+            throw new ServiceException("Erro ao editar ordem de serviço");
         }
     }
 
