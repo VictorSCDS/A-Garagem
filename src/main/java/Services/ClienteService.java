@@ -94,6 +94,8 @@ public class ClienteService {
     }
 
     private void validarCampos(Cliente cliente){
+        if(cliente.getNome().isEmpty()) throw new ServiceException("Nome vazio");
+
         try{
             if(!DocumentUtils.isCpfValido(cliente.getCpf())){
                 throw new ServiceException("CPF inválido");
@@ -112,6 +114,8 @@ public class ClienteService {
     }
 
     private void validarCamposUpdate(Cliente cliente, String cpfAntigo){
+        if(cliente.getNome().isEmpty()) throw new ServiceException("Nome vazio");
+
         try{
             if(!DocumentUtils.isCpfValido(cpfAntigo)){
                 throw new ServiceException("CPF inválido");
