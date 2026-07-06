@@ -20,9 +20,14 @@ public class ItemService {
         validarCampos(item);
 
         try{
+            Optional<Item> itemOpt = itemDao.buscarPorAtributoIdentificador(item.getCodigo());
 
+            if(itemOpt.isEmpty()){
+                itemDao.criar(item);
+            } else{
+                throw new ServiceException("Código " + item.getCodigo() + " já existente no item " + itemOpt.get().getNome());
+            }
 
-            itemDao.criar(item);
         } catch (DatabaseException e) {
             e.printStackTrace();
             throw new ServiceException("Erro ao cadastrar item");
@@ -52,7 +57,15 @@ public class ItemService {
     public void atualizarItem(Item item, String codigo) throws ServiceException {
         validarCampos(item);
         try{
-            itemDao.atualizar(item, codigo);
+            Optional<Item> itemOpt = itemDao.buscarPorAtributoIdentificador(item.getCodigo());
+
+            if(itemOpt.isPresent() && !itemOpt.get().getCodigo().equals(codigo)){
+                throw new ServiceException("Código " + item.getCodigo() + " já cadastrado no item " + itemOpt.get().getNome());
+
+            } else{
+                itemDao.atualizar(item, codigo);
+            }
+
         } catch (DatabaseException e) {
             e.printStackTrace();
             throw new ServiceException("Erro ao atualizar item de código " + codigo);
@@ -95,7 +108,18 @@ public class ItemService {
         validarCodigo(codigoItem);
 
         try{
-            itemDao.diminuirQuantidade(codigoItem, quantidadeUsada);
+            Optional<Item> itemOpt = itemDao.buscarPorAtributoIdentificador(codigoItem);
+
+            if(itemOpt.isEmpty()){
+                throw new ServiceException("Item de código " + codigoItem + " inexistente");
+
+            } else if(quantidadeUsada > itemOpt.get().getQuantidade()) {
+                throw new ServiceException("Quantidade inválida. Atual quantidade em estoque: " + itemOpt.get().getQuantidade());
+
+            } else{
+                itemDao.diminuirQuantidade(codigoItem, quantidadeUsada);
+            }
+
         } catch (DatabaseException e) {
             e.printStackTrace();
             throw new ServiceException("Erro ao diminuir quantidade do item de código" + codigoItem);
