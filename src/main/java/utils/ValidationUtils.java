@@ -15,7 +15,7 @@ public class ValidationUtils {
     private ValidationUtils() { throw new UnsupportedOperationException("Classe utilitária"); }
 
     public static boolean isEmailValido(String email){
-        if(email.isBlank()) throw new IllegalArgumentException("E-mail vazio.");
+        if(email == null || email.isEmpty()) throw new IllegalArgumentException("E-mail vazio");
 
         try {
             InternetAddress internetAddress = new InternetAddress(email);
@@ -28,7 +28,7 @@ public class ValidationUtils {
     }
 
     public static boolean isTelefoneValido(String telefone){
-        if(telefone.isBlank()) throw new IllegalArgumentException("Telefone vazio.");
+        if(telefone == null || telefone.isEmpty()) throw new IllegalArgumentException("Telefone vazio");
 
         Matcher matcher = TELEFONE_PATTERN.matcher(telefone);
 
@@ -37,7 +37,7 @@ public class ValidationUtils {
 
     public static boolean isPlacaValida(String placa) {
 
-        if(placa.isBlank()) throw new IllegalArgumentException("Placa vazia");
+        if(placa == null || placa.isEmpty()) throw new IllegalArgumentException("Placa vazia");
 
         Matcher matcherAntigo = PLACA_ANTIGA_PATTERN.matcher(placa);
         Matcher matcherAtual = PLACA_ATUAL_PATTERN.matcher(placa);
