@@ -3,6 +3,7 @@ package controllers;
 import Services.ClienteService;
 import dao.ClienteDAO;
 import entities.Cliente;
+import exceptions.ControllerException;
 import exceptions.ServiceException;
 
 import java.util.List;
@@ -20,10 +21,16 @@ public class ClienteController {
                           String cpf,
                           String telefone,
                           String email)
-            throws ServiceException {
+            throws ControllerException {
 
         Cliente cliente = new Cliente(0, nome, cpf, telefone, email);
-        clienteService.criarCliente(cliente);
+
+        try {
+            clienteService.criarCliente(cliente);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
     public void editar(String nome,
@@ -31,33 +38,74 @@ public class ClienteController {
                        String telefone,
                        String email,
                        String cpfAntigo)
-            throws ServiceException {
+            throws ControllerException {
 
         Cliente cliente = new Cliente(0, nome, cpfNovo, telefone, email);
-        clienteService.atualizarCliente(cliente, cpfAntigo);
+
+        try {
+            clienteService.atualizarCliente(cliente, cpfAntigo);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public void excluir(String cpf) throws ServiceException {
-        clienteService.deletarCliente(cpf);
+    public void excluir(String cpf) throws ControllerException {
+
+        try {
+            clienteService.deletarCliente(cpf);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public Optional<Cliente> buscarPorCpf(String cpf) throws ServiceException {
-        return clienteService.buscarClientePorAtributoIdentificador(cpf);
+    public Optional<Cliente> buscarPorCpf(String cpf) throws ControllerException {
+
+        try {
+            return clienteService.buscarClientePorAtributoIdentificador(cpf);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public List<Cliente> buscarPorNome(String nome) throws ServiceException {
-        return clienteService.buscarClientePorNome(nome);
+    public List<Cliente> buscarPorNome(String nome) throws ControllerException {
+
+        try {
+            return clienteService.buscarClientePorNome(nome);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public Optional<Cliente> buscarPorPlaca(String placa) throws ServiceException {
-        return clienteService.buscarClientePorPlaca(placa);
+    public Optional<Cliente> buscarPorPlaca(String placa) throws ControllerException {
+
+        try {
+            return clienteService.buscarClientePorPlaca(placa);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public List<Cliente> listarTodos() throws ServiceException {
-        return clienteService.buscarTodosClientes();
+    public List<Cliente> listarTodos() throws ControllerException {
+
+        try {
+            return clienteService.buscarTodosClientes();
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public boolean cpfExiste(String cpf) throws ServiceException {
-        return clienteService.buscarClientePorAtributoIdentificador(cpf).isPresent();
+    public boolean cpfExiste(String cpf) throws ControllerException {
+        try {
+            return clienteService.buscarClientePorAtributoIdentificador(cpf).isPresent();
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import Services.TipoServicoService;
 import dao.TipoServicoDAO;
 import entities.TipoServico;
+import exceptions.ControllerException;
 import exceptions.ServiceException;
 
 public class TipoServicoController {
@@ -15,15 +16,33 @@ public class TipoServicoController {
         this.tipoServicoService = new TipoServicoService(new TipoServicoDAO());
     }
 
-    public int registrarTipoServico(String descricao) throws ServiceException {
-        return tipoServicoService.registrarTipoServico(descricao);
+    public int registrarTipoServico(String descricao) throws ControllerException {
+
+        try {
+            return tipoServicoService.registrarTipoServico(descricao);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public List<TipoServico> listarTodos() throws ServiceException {
-        return tipoServicoService.buscarTodosTiposServicos();
+    public List<TipoServico> listarTodos() throws ControllerException {
+
+        try {
+            return tipoServicoService.buscarTodosTiposServicos();
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public List<TipoServico> buscarPorOrdemServico(int idOrdemServico) throws ServiceException {
-        return tipoServicoService.buscarTiposServicoEmOrdemServicoPorId(idOrdemServico);
+    public List<TipoServico> buscarPorOrdemServico(int idOrdemServico) throws ControllerException {
+
+        try {
+            return tipoServicoService.buscarTiposServicoEmOrdemServicoPorId(idOrdemServico);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 }
