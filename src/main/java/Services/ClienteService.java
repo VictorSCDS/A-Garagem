@@ -51,7 +51,7 @@ public class ClienteService {
         }
     }
 
-    public void ataulizarCliente(Cliente cliente, String cpfAntigo) throws ServiceException{
+    public void atualizarCliente(Cliente cliente, String cpfAntigo) throws ServiceException{
 
         validarCamposUpdate(cliente, cpfAntigo);
 
