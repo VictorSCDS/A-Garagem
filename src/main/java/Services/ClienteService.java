@@ -63,22 +63,20 @@ public class ClienteService {
         }
     }
 
-    public void atualizarCliente(Cliente cliente, String cpfAntigo) throws ServiceException{
+    public void atualizarCliente(Cliente cliente, String cpfAntigo) throws ServiceException {
         validarCamposUpdate(cliente, cpfAntigo);
 
-        try{
-            List<String> cpfsRegistrados = clienteDao.buscarTodos()
-                    .stream()
-                    .map(Cliente::getCpf)
-                    .filter(cpf -> cpf.equals(cliente.getCpf()) && !cpf.equals(cpfAntigo))
-                    .toList();
+        try {
+            Optional<Cliente> clienteComCpf = clienteDao.buscarPorAtributoIdentificador(cliente.getCpf());
+            Optional<Cliente> clienteComEmail = clienteDao.buscarClientePorEmail(cliente.getEmail());
 
-            if(cpfsRegistrados.isEmpty()) {
-                clienteDao.atualizar(cliente, cpfAntigo);
+            if(clienteComCpf.isPresent() && !clienteComCpf.get().getCpf().equals(cpfAntigo))
+                throw new ServiceException("CPF " + cliente.getCpf() + " já registrado");
 
-            } else {
-                throw new ServiceException("Cliente de cpf " + cpfsRegistrados.getFirst() + " já registrado");
-            }
+            if(clienteComEmail.isPresent() && !clienteComEmail.get().getCpf().equals(cpfAntigo))
+                throw new ServiceException("E-mail " + cliente.getEmail() + " já registrado");
+
+            clienteDao.atualizar(cliente, cpfAntigo);
 
         } catch (DatabaseException e) {
             e.printStackTrace();

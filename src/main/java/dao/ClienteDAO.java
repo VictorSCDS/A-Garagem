@@ -160,6 +160,25 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
         return Optional.empty();
     }
 
+    public Optional<Cliente> buscarClientePorEmail(String email) throws DatabaseException {
+        String query = "SELECT * FROM cliente WHERE email = ?";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, email);
+
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()) return Optional.of(mapearCliente(rs));
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar cliente no banco de dados", e);
+        }
+        return Optional.empty();
+    }
+
     private Cliente mapearCliente(ResultSet rs) throws SQLException{
         return new Cliente(
                 rs.getInt("id"),

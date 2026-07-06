@@ -20,6 +20,8 @@ public class ItemService {
         validarCampos(item);
 
         try{
+
+
             itemDao.criar(item);
         } catch (DatabaseException e) {
             e.printStackTrace();
