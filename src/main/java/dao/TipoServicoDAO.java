@@ -21,7 +21,21 @@ public class TipoServicoDAO implements GenericDAO<TipoServico, Integer> {
 
     @Override
     public List<TipoServico> buscarTodos() throws DatabaseException {
-        throw new UnsupportedOperationException("Método inválido para este caso! Utilize buscarTiposServicoEmOrdemServicoPorId(...).");
+        String query = "SELECT * FROM tipo_servico;";
+        List<TipoServico> tipoServicos = new ArrayList<>();
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query);
+            ResultSet rs = ps.executeQuery()){
+
+            while(rs.next()) tipoServicos.add(mapearTipoServico(rs));
+
+            return tipoServicos;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar tipos de serviço no banco de dados", e);
+        }
     }
 
     @Override
@@ -86,7 +100,8 @@ public class TipoServicoDAO implements GenericDAO<TipoServico, Integer> {
     private TipoServico mapearTipoServico(ResultSet rs) throws SQLException {
         return new TipoServico(
                 rs.getInt("id"),
-                rs.getString("descricao")
+                rs.getString("descricao"),
+                rs.getBigDecimal("valor_servico")
         );
     }
 }
