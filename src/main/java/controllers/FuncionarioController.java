@@ -19,7 +19,7 @@ public class FuncionarioController {
 
     public FuncionarioController() {
         funcionarioDAO = new FuncionarioDAO();
-        funcionarioService = new FuncionarioService();
+        funcionarioService = new FuncionarioService(funcionarioDAO);
     }
 
 

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import entities.Cliente;
 import entities.enums.Cargo;
 import entities.Funcionario;
 import exceptions.DatabaseException;
@@ -133,6 +134,27 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
             e.printStackTrace();
             throw new DatabaseException("Erro ao atualizar senha do funcionário no banco de dados", e);
         }
+    }
+
+    public Optional<Funcionario> buscarFuncionarioPorCpf(String Cpf) throws DatabaseException {
+        String query = "SELECT * FROM funcionario WHERE cpf = ?";
+
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, cpf);
+
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()) return Optional.of(mapearFuncionario(rs));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar Funcionario no banco de dados", e);
+        }
+
+        return Optional.empty();
     }
 
     private Funcionario mapearFuncionario(ResultSet rs) throws SQLException{
