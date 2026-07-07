@@ -21,7 +21,12 @@ public class VeiculoService {
     public void criarVeiculo(Veiculo veiculo) throws ServiceException {
         validarCampos(veiculo);
         try{
+            Optional<Veiculo> veiculoOpt = veiculoDao.buscarPorAtributoIdentificador(veiculo.getPlaca());
+
+            if(veiculoOpt.isPresent()) throw new ServiceException("Placa " + veiculo.getPlaca() + " já cadastrada");
+
             veiculoDao.criar(veiculo);
+
         } catch (DatabaseException e) {
             e.printStackTrace();
             throw new ServiceException("Erro ao criar veículo");
@@ -58,6 +63,10 @@ public class VeiculoService {
         validarCampos(veiculo);
 
         try{
+            Optional<Veiculo> veiculoOpt = veiculoDao.buscarPorAtributoIdentificador(veiculo.getPlaca());
+
+            if(veiculoOpt.isPresent() && !veiculoOpt.get().getPlaca().equals(placaAntiga)) throw new ServiceException("Placa " + veiculo.getPlaca() + " já cadastrada");
+
             veiculoDao.atualizar(veiculo, placaAntiga);
         } catch (DatabaseException e) {
             e.printStackTrace();
