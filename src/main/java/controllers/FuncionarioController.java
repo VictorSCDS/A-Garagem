@@ -1,39 +1,24 @@
 package controllers;
 
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Optional;
-
 import Services.FuncionarioService;
 import dao.FuncionarioDAO;
 import entities.Funcionario;
 import entities.enums.Cargo;
-import exceptions.DatabaseException;
-import utils.Hash;
+import exceptions.ControllerException;
+import exceptions.ServiceException;
+
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Optional;
 
 public class FuncionarioController {
 
-    private final FuncionarioDAO funcionarioDAO;
     private final FuncionarioService funcionarioService;
 
     public FuncionarioController() {
-        funcionarioDAO = new FuncionarioDAO();
-        funcionarioService = new FuncionarioService(funcionarioDAO);
-    }
-
-
-    public boolean login(String email, String senha)  throws DatabaseException {
-
-        Optional<Funcionario> funcionarioOptional = funcionarioDAO.buscarPorAtributoIdentificador(email);
-        
-        if (funcionarioOptional.isEmpty()) {
-            return false;
-        }
-
-        Funcionario funcionario = funcionarioOptional.get();
-        String senhaHash = Hash.gerarHash(senha);
-        return senhaHash.equals(funcionario.getSenhaHash());
+        this.funcionarioService = new FuncionarioService(new FuncionarioDAO());
     }
 
     public void cadastrar(String nome,
@@ -41,17 +26,21 @@ public class FuncionarioController {
                            String cargo,
                            String telefone,
                            String email,
-                           String dataAdmissao)
-            throws DatabaseException {
+                           String dataAdmissao,
+                           String senhaHash)
+            throws ControllerException {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate data = LocalDate.parse(dataAdmissao, formatter);
-        Funcionario funcionario = new Funcionario(0, nome, cpf, Cargo.fromString(cargo), telefone, email, Date.valueOf(data), null);
+        Funcionario funcionario = new Funcionario(0, nome, cpf, Cargo.fromString(cargo), telefone, email, Date.valueOf(data), senhaHash);
 
-        funcionarioService.validarFuncionario(funcionario);
-        funcionarioDAO.criar(funcionario);
+        try {
+            funcionarioService.criarfuncionario(funcionario);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
-
 
     public void editar(String nome,
                        String cpfNovo,
@@ -59,27 +48,85 @@ public class FuncionarioController {
                        String telefone,
                        String email,
                        String cpfAntigo)
-            throws DatabaseException {
+            throws ControllerException {
 
         Funcionario funcionario = new Funcionario(0, nome, cpfNovo, Cargo.fromString(cargo), telefone, email, null, null);
-        funcionarioService.validarFuncionario(funcionario);
-        funcionarioDAO.atualizar(funcionario, cpfAntigo);
+
+        try {
+            funcionarioService.atualizarFuncionario(funcionario, cpfAntigo);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public void excluir(String cpf) throws DatabaseException {
-        funcionarioDAO.deletar(cpf);
+    public void excluir(String cpf) throws ControllerException {
+
+        try {
+            funcionarioService.deletarFuncionario(cpf);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public Optional<Funcionario> buscarFuncionario(String email) throws DatabaseException {
-        return funcionarioDAO.buscarPorAtributoIdentificador(email);
+    public Optional<Funcionario> buscarFuncionario(String email) throws ControllerException {
+
+        try {
+            return funcionarioService.buscarFuncionarioPorAtributoIdentificador(email);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public boolean emailExiste(String email) throws DatabaseException {
-        return funcionarioDAO.buscarPorAtributoIdentificador(email).isPresent();
+    public Optional<Funcionario> buscarFuncionarioPorCpf(String cpf) throws ControllerException {
+
+        try {
+            return funcionarioService.buscarFuncionarioPorCpf(cpf);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 
-    public void alterarSenha(String email, String novaSenha) throws DatabaseException {
-        String senhaHash = Hash.gerarHash(novaSenha);
-        funcionarioDAO.atualizarSenha(email, senhaHash);
+    public List<Funcionario> listarTodos() throws ControllerException {
+
+        try {
+            return funcionarioService.buscarTodosFuncionarios();
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public void alterarSenha(String email, String novaSenha) throws ControllerException {
+
+        try {
+            funcionarioService.atualizarSenha(email, novaSenha);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public boolean emailExiste(String email) throws ControllerException {
+
+        try {
+            return funcionarioService.buscarFuncionarioPorAtributoIdentificador(email).isPresent();
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public boolean cpfExiste(String cpf) throws ControllerException {
+
+        try {
+            return funcionarioService.buscarFuncionarioPorCpf(cpf).isPresent();
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
     }
 }
