@@ -143,7 +143,7 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
         try(Connection con = ConectorBD.conectar();
             PreparedStatement ps = con.prepareStatement(query)){
 
-            ps.setString(1, cpf);
+            ps.setString(1, Cpf);
 
             try(ResultSet rs = ps.executeQuery()){
                 if(rs.next()) return Optional.of(mapearFuncionario(rs));

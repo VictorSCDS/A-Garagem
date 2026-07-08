@@ -6,6 +6,7 @@ import entities.Funcionario;
 import entities.enums.Cargo;
 import exceptions.ControllerException;
 import exceptions.ServiceException;
+import utils.Hash;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -127,6 +128,26 @@ public class FuncionarioController {
 
         } catch (ServiceException e) {
             throw new ControllerException(e.getMessage(), e);
+        }
+    }
+    
+    public boolean login(String email, String senha) throws ControllerException {
+        try {
+            Optional<Funcionario> funcionarioOpt = funcionarioService.buscarFuncionarioPorAtributoIdentificador(email);
+            
+            if (funcionarioOpt.isPresent()) {
+                Funcionario funcionario = funcionarioOpt.get();
+                
+                String senhaDigitadaHash = Hash.gerarHash(senha);
+                
+                if (funcionario.getSenhaHash().equals(senhaDigitadaHash)) {
+                    return true;
+                }
+            }
+            return false; 
+
+        } catch (ServiceException e) {
+            throw new ControllerException("Erro ao processar o login: " + e.getMessage(), e);
         }
     }
 }

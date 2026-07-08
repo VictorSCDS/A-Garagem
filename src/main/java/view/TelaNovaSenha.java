@@ -10,9 +10,9 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import exceptions.DatabaseException;
 import controllers.FuncionarioController;
 import utils.Sessao;
+import exceptions.ControllerException;
 
 public class TelaNovaSenha extends JFrame {
 
@@ -104,13 +104,12 @@ public class TelaNovaSenha extends JFrame {
                 }
                 
                 FuncionarioController controller = new FuncionarioController();
+
                 try {
-                    throw new RuntimeException(ex);
                     controller.alterarSenha(Sessao.email, senha);
 
-                } 
-                catch (DatabaseException ex) {
-                    JOptionPane.showMessageDialog(null, "Erro ao atualizar a senha.");
+                } catch (ControllerException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro ao atualizar a senha: " + ex.getMessage());
                     ex.printStackTrace();
                     return;
                 }

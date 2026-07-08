@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import controllers.FuncionarioController;
-import exceptions.DatabaseException;
+import exceptions.ControllerException;
 
 
 public class TelaLogin extends JFrame {
@@ -132,9 +132,8 @@ public class TelaLogin extends JFrame {
 		                JOptionPane.showMessageDialog(null, "E-mail ou senha incorretos.");
 		            }
 
-		        } 
-		        catch (DatabaseException ex) {
-		            JOptionPane.showMessageDialog(null, "Erro ao realizar login.");
+		        } catch (ControllerException ex) {
+		            JOptionPane.showMessageDialog(null, "Erro ao realizar login: " + ex.getMessage());
 		            ex.printStackTrace();
 		        }
 		    }

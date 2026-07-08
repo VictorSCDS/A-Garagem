@@ -14,7 +14,7 @@ import utils.Email;
 import utils.Codigo;
 import utils.Sessao;
 import controllers.FuncionarioController;
-import exceptions.DatabaseException;
+import exceptions.ControllerException;
 
 public class TelaCadastrarSenha extends JFrame {
 
@@ -114,11 +114,10 @@ public class TelaCadastrarSenha extends JFrame {
                      telaCodigo.setVisible(true);
                      dispose();
 
-                 } catch (DatabaseException ex) {
-
-                     JOptionPane.showMessageDialog(null, "Erro ao consultar o funcionário.");
-                     ex.printStackTrace();
-                 }
+            	 } catch (ControllerException ex) {
+            		    JOptionPane.showMessageDialog(null, "Erro ao consultar o funcionário: " + ex.getMessage());
+            		    ex.printStackTrace();
+            		}
              }
          });
         EstilizacaoRedonda.BotaoRedondo botaoSair = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
