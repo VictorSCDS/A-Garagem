@@ -1,5 +1,12 @@
 package view;
 
+import controllers.ClienteController;
+import entities.Cliente;
+import exceptions.ControllerException;
+import java.util.Optional;
+import java.util.List;
+import javax.swing.JOptionPane;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -15,9 +22,17 @@ public class TelaClientes extends JFrame {
     private static final long serialVersionUID = 1L;
     private JPanel painelPretoFundo;
     private EstilizacaoRedonda.PainelRedondo painelCliente;
+    private ClienteController clienteController;
+    private Cliente clienteVisualizado;
+    private JLabel nomeCliente;
+    private JLabel cpfCliente;
+    private JLabel emailCliente;
+    private JLabel telefoneCliente;
 
     public TelaClientes() {
 
+        this.clienteController = new ClienteController();
+        
         setBackground(Color.DARK_GRAY);
         setSize(1280, 720);
         setMaximizedBounds(new Rectangle(0, 0, 1280, 720));
@@ -91,6 +106,52 @@ public class TelaClientes extends JFrame {
             System.out.println("Ícone do botão buscar não encontrado!");
         }
         painelPretoFundo.add(botaoBuscar);
+        
+        botaoBuscar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String textoBusca = campoBusca.getText().trim();
+                
+                if (textoBusca.isEmpty() || textoBusca.equals("Buscar")) {
+                    JOptionPane.showMessageDialog(null, "Digite alguma informação para buscar.");
+                    return;
+                }
+
+                try {
+                    Optional<Cliente> resultado = Optional.empty();
+
+                    resultado = clienteController.buscarPorCpf(textoBusca);
+
+                    if (!resultado.isPresent()) {
+                        resultado = clienteController.buscarPorPlaca(textoBusca);
+                    }
+
+                    if (!resultado.isPresent()) {
+                        List<Cliente> listaNomes = clienteController.buscarPorNome(textoBusca);
+                        if (!listaNomes.isEmpty()) {
+                            resultado = Optional.of(listaNomes.get(0)); 
+                        }
+                    }
+                    
+                    if (resultado.isPresent()) {
+                        clienteVisualizado = resultado.get();
+                        
+                        nomeCliente.setText("Nome: " + clienteVisualizado.getNome());
+                        cpfCliente.setText("CPF: " + clienteVisualizado.getCpf());
+                        emailCliente.setText("E-mail: " + clienteVisualizado.getEmail());
+                        telefoneCliente.setText("Telefone: " + clienteVisualizado.getTelefone());
+                        
+                        painelCliente.setVisible(true);
+                        
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Nenhum cliente encontrado com a informação: " + textoBusca);
+                        clienteVisualizado = null;
+                        painelCliente.setVisible(false);
+                    }
+                } catch (ControllerException ex) {
+                    JOptionPane.showMessageDialog(null, "Erro na busca: " + ex.getMessage());
+                }
+            }
+        });
 
         EstilizacaoRedonda.BotaoRedondo botaoCadastrar = new EstilizacaoRedonda.BotaoRedondo("CADASTRAR CLIENTE",Color.BLACK, Color.DARK_GRAY, Color.GRAY,40);
         botaoCadastrar.setForeground(Color.WHITE);
@@ -105,44 +166,36 @@ public class TelaClientes extends JFrame {
         });
         
         painelPretoFundo.add(botaoCadastrar);
+        
         painelCliente = new EstilizacaoRedonda.PainelRedondo(null, 30, 4, Color.WHITE, Color.BLACK);
         painelCliente.setBounds(40, 250, 1160, 170);
+        painelCliente.setVisible(false);
         painelPretoFundo.add(painelCliente);
 
-        JLabel nomeCliente = new JLabel("Nome:");
+        nomeCliente = new JLabel("Nome:");
         nomeCliente.setFont(new Font("SansSerif", Font.PLAIN, 24));
         nomeCliente.setBounds(30, 20, 180, 60);
         painelCliente.add(nomeCliente);
 
-        JLabel cpfCliente = new JLabel("CPF:");
+        cpfCliente = new JLabel("CPF:");
         cpfCliente.setFont(new Font("SansSerif", Font.PLAIN, 24));
         cpfCliente.setBounds(190, 20, 220, 60);
         painelCliente.add(cpfCliente);
 
-        JLabel emailCliente = new JLabel("E-mail:");
+        emailCliente = new JLabel("E-mail:");
         emailCliente.setFont(new Font("SansSerif", Font.PLAIN, 24));
         emailCliente.setBounds(430, 20, 300, 60);
         painelCliente.add(emailCliente);
 
-        JLabel telefoneCliente = new JLabel("Telefone:");
+        telefoneCliente = new JLabel("Telefone:");
         telefoneCliente.setFont(new Font("SansSerif", Font.PLAIN, 24));
         telefoneCliente.setBounds(730, 20, 250, 60);
         painelCliente.add(telefoneCliente);
 
-        JLabel placaVeiculo = new JLabel("Placa do Veículo:");
-        placaVeiculo.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        placaVeiculo.setBounds(30, 90, 360, 60);
-        painelCliente.add(placaVeiculo);
-
-        JLabel modeloVeiculo = new JLabel("Modelo do veículo:");
-        modeloVeiculo.setFont(new Font("SansSerif", Font.PLAIN, 24));
-        modeloVeiculo.setBounds(430, 98, 250, 60);
-        painelCliente.add(modeloVeiculo);
-        
         EstilizacaoRedonda.BotaoRedondo botaoEditar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoEditar.setForeground(Color.WHITE);
         botaoEditar.setFont(new Font("SansSerif", Font.BOLD, 18));
-        botaoEditar.setBounds(1070, 58, 60, 50);
+        botaoEditar.setBounds(1000, 92, 60, 50);
         java.net.URL urlIconeEditar = getClass().getResource("/assets/imagens/iconeEditar.png"); 
         if (urlIconeEditar != null) {
             java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeEditar).getImage();
@@ -160,6 +213,34 @@ public class TelaClientes extends JFrame {
                 dispose();
             }
         });
+        
+        EstilizacaoRedonda.BotaoRedondo botaoDetalhes = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
+        botaoDetalhes.setForeground(Color.WHITE);
+        botaoDetalhes.setFont(new Font("SansSerif", Font.BOLD, 18));
+        botaoDetalhes.setBounds(1000, 20, 60, 50);
+        java.net.URL urlIconeDetalhes = getClass().getResource("/assets/imagens/iconeEditar.png"); 
+        if (urlIconeDetalhes != null) {
+            java.awt.Image iconeOriginal = new javax.swing.ImageIcon(urlIconeDetalhes).getImage();
+            java.awt.Image iconeRedimensionado = iconeOriginal.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH);
+            botaoDetalhes.setIcon(new javax.swing.ImageIcon(iconeRedimensionado));
+            botaoDetalhes.setIconTextGap(10); 
+        } else {
+            System.out.println("Ícone do botão detalhes não encontrado!");
+        }
+        painelCliente.add(botaoDetalhes);
+        
+        botaoDetalhes.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (clienteVisualizado != null) {
+                    String cpf = clienteVisualizado.getCpf();
+                    String nome = clienteVisualizado.getNome();
+                    ModalVeiculos modal = new ModalVeiculos(TelaClientes.this, cpf, nome);
+                    modal.setVisible(true); 
+                } else {
+                    JOptionPane.showMessageDialog(null, "Busque e selecione um cliente primeiro para ver seus veículos.");
+                }
+            }
+        });
 
         EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
         botaoVoltar.setForeground(Color.WHITE);
@@ -175,6 +256,7 @@ public class TelaClientes extends JFrame {
             System.out.println("Ícone do botão sair não encontrado!");
         }
         painelPretoFundo.add(botaoVoltar);
+        
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TelaHome telaHome = new TelaHome();
@@ -183,5 +265,5 @@ public class TelaClientes extends JFrame {
             }
         });
 
-            }
-        }
+    }
+}
