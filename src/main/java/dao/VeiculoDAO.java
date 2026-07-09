@@ -122,6 +122,23 @@ public class VeiculoDAO implements GenericDAO<Veiculo, String> {
         }
     }
 
+    public String buscarPlacaPorIdVeiculo(int idVeiculo) throws DatabaseException {
+        String query = "SELECT placa FROM veiculo WHERE id = ?";
+        try (Connection con = ConectorBD.conectar();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, idVeiculo);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getString("placa");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar placa do veículo");
+        }
+        return "Não encontrada";
+    }
+
     private Veiculo mapearVeiculo(ResultSet rs) throws SQLException{
         return new Veiculo(
                 rs.getInt("id"),

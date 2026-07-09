@@ -157,6 +157,34 @@ public class FuncionarioDAO implements GenericDAO<Funcionario, String> {
         return Optional.empty();
     }
 
+    public Optional<Funcionario> buscarFuncionarioPorId(int id) throws DatabaseException {
+        String query = "SELECT * FROM funcionario WHERE id = ?";
+        try (Connection con = ConectorBD.conectar();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setInt(1, id);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(new Funcionario(
+                            rs.getInt("id"),
+                            rs.getString("nome"),
+                            rs.getString("cpf"),
+                            entities.enums.Cargo.fromString(rs.getString("cargo")),
+                            rs.getString("telefone"),
+                            rs.getString("email"),
+                            rs.getDate("data_admissao"),
+                            rs.getString("senha_hash")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar funcionário por ID");
+        }
+        return Optional.empty();
+    }
+
     private Funcionario mapearFuncionario(ResultSet rs) throws SQLException{
         return new Funcionario(
                 rs.getInt("id"),
