@@ -1,14 +1,24 @@
 package view;
 
+import utils.Constantes;
+import utils.PermissaoAcesso;
+
+import controllers.FuncionarioController;
+import entities.enums.Cargo;
+import exceptions.ControllerException;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.JOptionPane;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class TelaCadastrarFuncionario extends JFrame {
 
@@ -20,14 +30,26 @@ public class TelaCadastrarFuncionario extends JFrame {
 
     private EstilizacaoRedonda.CaixaTextoRedonda nomeAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda cpfAreaText;
-    private EstilizacaoRedonda.CaixaTextoRedonda cargoAreaText;
+    private EstilizacaoRedonda.ComboBoxRedondo<String> cargoComboBox;
     private EstilizacaoRedonda.CaixaTextoRedonda telefoneAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda emailAreaText;
     private EstilizacaoRedonda.CaixaTextoRedonda dataAdmissaoAreaText;
+    
+    private FuncionarioController funcionarioController;
 
     public TelaCadastrarFuncionario() {
+        if (!PermissaoAcesso.autorizar(this, PermissaoAcesso.podeAcessarEquipe(), "Equipe")) {
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                new TelaHome().setVisible(true);
+                dispose();
+            });
+            return;
+        }
 
-        setBackground(Color.WHITE);
+        
+        this.funcionarioController = new FuncionarioController();
+
+        setBackground(Constantes.CINZA_CLARO);
         setSize(1280, 720);
         setMaximizedBounds(new Rectangle(0, 0, 1280, 720));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,19 +57,19 @@ public class TelaCadastrarFuncionario extends JFrame {
         setResizable(false);
 
         painelPretoFundo = new JPanel();
-        painelPretoFundo.setBackground(Color.WHITE);
+        painelPretoFundo.setBackground(Constantes.CINZA_CLARO);
         painelPretoFundo.setLayout(null);
         setContentPane(painelPretoFundo);
 
         faixaTitulo = new JPanel();
-        faixaTitulo.setBackground(Color.DARK_GRAY);
+        faixaTitulo.setBackground(Constantes.PRETO_FOSCO);
         faixaTitulo.setLayout(null);
         faixaTitulo.setBounds(0, 0, 1280, 80);
         painelPretoFundo.add(faixaTitulo);
 
         JLabel titulo = new JLabel("Cadastrar Funcionário");
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
-        titulo.setForeground(Color.WHITE);
+        titulo.setForeground(Constantes.CINZA_CLARO);
         titulo.setFont(new Font("SansSerif", Font.BOLD, 32));
         titulo.setBounds(340, 10, 600, 50);
         faixaTitulo.add(titulo);
@@ -62,11 +84,11 @@ public class TelaCadastrarFuncionario extends JFrame {
             logoGaragem.setIcon(new javax.swing.ImageIcon(imagemRedimensionada));
         } else {
             logoGaragem.setText("Logo Aqui");
-            logoGaragem.setForeground(Color.WHITE);
+            logoGaragem.setForeground(Constantes.CINZA_CLARO);
         }
         faixaTitulo.add(logoGaragem);
         
-        painelBrancoFundo = new EstilizacaoRedonda.PainelRedondo(null, 0, 0, Color.WHITE, Color.WHITE);
+        painelBrancoFundo = new EstilizacaoRedonda.PainelRedondo(null, 0, 0, Constantes.CINZA_CLARO, Constantes.CINZA_CLARO);
         painelBrancoFundo.setBounds(0, 80, 1280, 640);
         painelBrancoFundo.setLayout(null);
         painelPretoFundo.add(painelBrancoFundo);
@@ -77,9 +99,14 @@ public class TelaCadastrarFuncionario extends JFrame {
         lblNome.setBounds(160, 110, 200, 35);
         painelBrancoFundo.add(lblNome);
         
-        nomeAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o nome", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
+        nomeAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o nome", Constantes.PRETO_FOSCO, Constantes.CINZA_CLARO, Constantes.PRETO_FOSCO, 2, 25);
         nomeAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         nomeAreaText.setBounds(100, 160, 320, 50);
+        nomeAreaText.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(nomeAreaText.getText().equals("Digite o nome")) nomeAreaText.setText("");
+            }
+        });
         painelBrancoFundo.add(nomeAreaText);
 
         JLabel lblCpf = new JLabel("CPF");
@@ -88,9 +115,14 @@ public class TelaCadastrarFuncionario extends JFrame {
         lblCpf.setBounds(540, 110, 200, 35);
         painelBrancoFundo.add(lblCpf);
         
-        cpfAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o CPF", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
+        cpfAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o CPF", Constantes.PRETO_FOSCO, Constantes.CINZA_CLARO, Constantes.PRETO_FOSCO, 2, 25);
         cpfAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         cpfAreaText.setBounds(480, 160, 320, 50);
+        cpfAreaText.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(cpfAreaText.getText().equals("Digite o CPF")) cpfAreaText.setText("");
+            }
+        });
         painelBrancoFundo.add(cpfAreaText);
 
         JLabel lblCargo = new JLabel("Cargo");
@@ -98,11 +130,17 @@ public class TelaCadastrarFuncionario extends JFrame {
         lblCargo.setFont(new Font("Liberation Serif", Font.BOLD, 28));
         lblCargo.setBounds(920, 110, 200, 35);
         painelBrancoFundo.add(lblCargo);
+
+        Cargo[] cargosEnum = Cargo.values();
+        String[] opcoesCargo = new String[cargosEnum.length];
+        for (int i = 0; i < cargosEnum.length; i++) {
+            opcoesCargo[i] = Cargo.cargoToString(cargosEnum[i]); 
+        }
         
-        cargoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o cargo", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
-        cargoAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
-        cargoAreaText.setBounds(860, 160, 320, 50);
-        painelBrancoFundo.add(cargoAreaText);
+        cargoComboBox = new EstilizacaoRedonda.ComboBoxRedondo<>(opcoesCargo, Constantes.CINZA_CLARO, Constantes.PRETO_FOSCO, 2, 25);
+        cargoComboBox.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        cargoComboBox.setBounds(860, 160, 320, 50);
+        painelBrancoFundo.add(cargoComboBox);
 
         JLabel lblTelefone = new JLabel("Telefone");
         lblTelefone.setHorizontalAlignment(SwingConstants.CENTER);
@@ -110,9 +148,14 @@ public class TelaCadastrarFuncionario extends JFrame {
         lblTelefone.setBounds(160, 310, 200, 35);
         painelBrancoFundo.add(lblTelefone);
         
-        telefoneAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o telefone", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
+        telefoneAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o telefone", Constantes.PRETO_FOSCO, Constantes.CINZA_CLARO, Constantes.PRETO_FOSCO, 2, 25);
         telefoneAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         telefoneAreaText.setBounds(100, 360, 320, 50);
+        telefoneAreaText.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(telefoneAreaText.getText().equals("Digite o telefone")) telefoneAreaText.setText("");
+            }
+        });
         painelBrancoFundo.add(telefoneAreaText);
 
         JLabel lblEmail = new JLabel("E-mail");
@@ -121,9 +164,14 @@ public class TelaCadastrarFuncionario extends JFrame {
         lblEmail.setBounds(540, 310, 200, 35);
         painelBrancoFundo.add(lblEmail);
         
-        emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o e-mail", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
+        emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite o e-mail", Constantes.PRETO_FOSCO, Constantes.CINZA_CLARO, Constantes.PRETO_FOSCO, 2, 25);
         emailAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         emailAreaText.setBounds(480, 360, 320, 50);
+        emailAreaText.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(emailAreaText.getText().equals("Digite o e-mail")) emailAreaText.setText("");
+            }
+        });
         painelBrancoFundo.add(emailAreaText);
 
         JLabel lblDataAdmissao = new JLabel("Data admissão");
@@ -132,26 +180,74 @@ public class TelaCadastrarFuncionario extends JFrame {
         lblDataAdmissao.setBounds(920, 310, 200, 35);
         painelBrancoFundo.add(lblDataAdmissao);
         
-        dataAdmissaoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("DD/MM/AAAA", Color.GRAY, Color.WHITE, Color.GRAY, 2, 25);
+        dataAdmissaoAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("DD/MM/AAAA", Constantes.PRETO_FOSCO, Constantes.CINZA_CLARO, Constantes.PRETO_FOSCO, 2, 25);
         dataAdmissaoAreaText.setFont(new Font("SansSerif", Font.PLAIN, 18));
         dataAdmissaoAreaText.setBounds(860, 360, 320, 50);
+        dataAdmissaoAreaText.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if(dataAdmissaoAreaText.getText().equals("DD/MM/AAAA")) dataAdmissaoAreaText.setText("");
+            }
+        });
         painelBrancoFundo.add(dataAdmissaoAreaText);
 
-        EstilizacaoRedonda.BotaoRedondo botaoAdicionar = new EstilizacaoRedonda.BotaoRedondo("ADICIONAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
-        botaoAdicionar.setForeground(Color.WHITE);
+        EstilizacaoRedonda.BotaoRedondo botaoAdicionar = new EstilizacaoRedonda.BotaoRedondo("ADICIONAR", Constantes.VERMELHO_FERRARI, Constantes.AMARELO_OURO, Constantes.PRETO_FOSCO, 40);
+        botaoAdicionar.setForeground(Constantes.CINZA_CLARO);
         botaoAdicionar.setFont(new Font("SansSerif", Font.BOLD, 18));
         botaoAdicionar.setBounds(510, 520, 260, 50);
         painelBrancoFundo.add(botaoAdicionar);
+        
         botaoAdicionar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	TelaEquipe telaEquipe = new TelaEquipe();
-                telaEquipe.setVisible(true);
-                dispose();
+                String nome = nomeAreaText.getText().trim();
+                String cpf = cpfAreaText.getText().trim();
+                String telefone = telefoneAreaText.getText().trim();
+                String email = emailAreaText.getText().trim();
+                String dataAdmissao = dataAdmissaoAreaText.getText().trim();
+                String cargoStr = (String) cargoComboBox.getSelectedItem();
+
+                if (nome.isEmpty() || nome.startsWith("Digite") ||
+                    cpf.isEmpty() || cpf.startsWith("Digite") ||
+                    telefone.isEmpty() || telefone.startsWith("Digite") ||
+                    email.isEmpty() || email.startsWith("Digite") ||
+                    dataAdmissao.isEmpty() || dataAdmissao.equals("DD/MM/AAAA")) {
+                    
+                    JOptionPane.showMessageDialog(null, "Preencha todos os campos para cadastrar.", "Aviso", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
+
+                try {
+                    String cargoConvertido = cargoStr.replace(" ", "_").toUpperCase();
+                    
+                    String senhaPadrao = FuncionarioController.gerarHashSenhaInicialFuncionario();
+
+                    funcionarioController.cadastrar(
+                        nome, 
+                        cpf, 
+                        cargoConvertido, 
+                        telefone, 
+                        email, 
+                        dataAdmissao, 
+                        senhaPadrao
+                    );
+
+                    JOptionPane.showMessageDialog(null, 
+                        "Funcionário cadastrado com sucesso!\n\nSenha padrão provisória: 123456", 
+                        "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+                    TelaEquipe telaEquipe = new TelaEquipe();
+                    telaEquipe.setVisible(true);
+                    dispose();
+                    
+                } catch (ControllerException ex) {
+                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Erro no Cadastro", JOptionPane.ERROR_MESSAGE);
+                } catch (Exception exHash) {
+                    JOptionPane.showMessageDialog(null, "Erro interno de segurança: " + exHash.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         
-        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 40);
-        botaoVoltar.setForeground(Color.WHITE);
+        EstilizacaoRedonda.BotaoRedondo botaoVoltar = new EstilizacaoRedonda.BotaoRedondo("", Constantes.VERMELHO_FERRARI, Constantes.AMARELO_OURO, Constantes.PRETO_FOSCO, 40);
+        botaoVoltar.setForeground(Constantes.CINZA_CLARO);
         botaoVoltar.setFont(new Font("SansSerif", Font.BOLD, 18));
         botaoVoltar.setBounds(1100, 520, 90, 50);
         java.net.URL urlIconeSair = getClass().getResource("/assets/imagens/iconVoltar.png"); 
@@ -160,10 +256,9 @@ public class TelaCadastrarFuncionario extends JFrame {
             java.awt.Image iconeRedimensionado = iconeOriginal.getScaledInstance(100, 100, java.awt.Image.SCALE_SMOOTH);
             botaoVoltar.setIcon(new javax.swing.ImageIcon(iconeRedimensionado));
             botaoVoltar.setIconTextGap(10); 
-        } else {
-            System.out.println("Ícone do botão sair não encontrado!");
         }
         painelBrancoFundo.add(botaoVoltar);
+        
         botaoVoltar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 TelaEquipe telaEquipe = new TelaEquipe();

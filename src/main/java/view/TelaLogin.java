@@ -1,5 +1,7 @@
 package view;
 
+import utils.Constantes;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -15,9 +17,9 @@ import javax.swing.SwingConstants;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import utils.Hash;
-import dao.UsuarioDAO;
-import model.Usuario;
+import controllers.FuncionarioController;
+import exceptions.ControllerException;
+
 
 public class TelaLogin extends JFrame {
 
@@ -27,7 +29,7 @@ public class TelaLogin extends JFrame {
 	private EstilizacaoRedonda.CaixaSenhaRedonda senhaAreaText;
 	
 	public TelaLogin() {
-		setBackground(Color.DARK_GRAY);
+		setBackground(Constantes.PRETO_FOSCO);
 		setSize(1280, 720);
 		setMaximizedBounds(new Rectangle(0, 0, 1280, 720));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,23 +37,23 @@ public class TelaLogin extends JFrame {
 		setResizable(false);
 		
 		painelPretoFundo = new JPanel();
-		painelPretoFundo.setBackground(Color.DARK_GRAY);
+		painelPretoFundo.setBackground(Constantes.PRETO_FOSCO);
 		painelPretoFundo.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(painelPretoFundo);
 		painelPretoFundo.setLayout(null);
 		
 		JPanel painelBrancoFundo = new JPanel();
-		painelBrancoFundo.setBackground(Color.WHITE);
+		painelBrancoFundo.setBackground(Constantes.CINZA_CLARO);
 		painelBrancoFundo.setBounds(640, 0, 640, 720);
 		painelPretoFundo.add(painelBrancoFundo);
 		painelBrancoFundo.setLayout(null);
 		
 		JLabel tituloBemvind = new JLabel("Bem-Vindo!");
-		tituloBemvind.setBackground(Color.DARK_GRAY);
+		tituloBemvind.setBackground(Constantes.PRETO_FOSCO);
 		tituloBemvind.setBounds(170, 82, 300, 50);
 		painelBrancoFundo.add(tituloBemvind);
 		tituloBemvind.setHorizontalAlignment(SwingConstants.CENTER);
-		tituloBemvind.setForeground(Color.DARK_GRAY);
+		tituloBemvind.setForeground(Constantes.PRETO_FOSCO);
 		tituloBemvind.setFont(new Font("Liberation Serif", Font.BOLD, 42));
 		
 		JTextPane textoFacaLog = new JTextPane();
@@ -59,36 +61,40 @@ public class TelaLogin extends JFrame {
 		painelBrancoFundo.add(textoFacaLog);
 		textoFacaLog.setText("Faça Login para acessar o sistema.");
 		textoFacaLog.setOpaque(false);
-		textoFacaLog.setForeground(Color.DARK_GRAY);
+		textoFacaLog.setForeground(Constantes.PRETO_FOSCO);
 		textoFacaLog.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		textoFacaLog.setEditable(false);
 		
 		JLabel tituloEmail = new JLabel("E-mail");
 		tituloEmail.setHorizontalAlignment(SwingConstants.CENTER);
-		tituloEmail.setForeground(Color.DARK_GRAY);
+		tituloEmail.setForeground(Constantes.PRETO_FOSCO);
 		tituloEmail.setFont(new Font("Liberation Serif", Font.BOLD, 28));
 		tituloEmail.setBounds(100, 220, 440, 35);
 		painelBrancoFundo.add(tituloEmail);
 		
-		emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite seu e-mail", Color.GRAY, Color.WHITE,Color.GRAY,2, 25);
+		emailAreaText = new EstilizacaoRedonda.CaixaTextoRedonda("Digite seu e-mail", Constantes.PRETO_FOSCO, Constantes.CINZA_CLARO,Constantes.PRETO_FOSCO,2, 25);
 		emailAreaText.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		emailAreaText.setBounds(100, 260, 440, 45);
 		painelBrancoFundo.add(emailAreaText);
 	
 		JLabel tituloSenha = new JLabel("Senha");
 		tituloSenha.setHorizontalAlignment(SwingConstants.CENTER);
-		tituloSenha.setForeground(Color.DARK_GRAY);
+		tituloSenha.setForeground(Constantes.PRETO_FOSCO);
 		tituloSenha.setFont(new Font("Liberation Serif", Font.BOLD, 28));
 		tituloSenha.setBounds(100, 340, 440, 35);
 		painelBrancoFundo.add(tituloSenha);
 		
-		senhaAreaText = new EstilizacaoRedonda.CaixaSenhaRedonda("Digite sua senha",Color.GRAY,Color.WHITE,Color.GRAY,2,25);
+		senhaAreaText = new EstilizacaoRedonda.CaixaSenhaRedonda("Digite sua senha",Constantes.PRETO_FOSCO,Constantes.CINZA_CLARO,Constantes.PRETO_FOSCO,2,25);
 		senhaAreaText.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		senhaAreaText.setBounds(100, 380, 440, 45);
 		painelBrancoFundo.add(senhaAreaText);
+
+		EstilizacaoRedonda.BotaoRedondo botaoOlhoSenha = EstilizacaoRedonda.criarBotaoAlternarVisibilidadeSenha(senhaAreaText);
+		botaoOlhoSenha.setBounds(550, 380, 45, 45);
+		painelBrancoFundo.add(botaoOlhoSenha);
 		
-		EstilizacaoRedonda.BotaoRedondo botaoCadastrarSenha = new EstilizacaoRedonda.BotaoRedondo("Cadastrar Senha", Color.WHITE, new Color(240, 240, 240), Color.LIGHT_GRAY, 20);
-		botaoCadastrarSenha.setForeground(Color.DARK_GRAY);
+		EstilizacaoRedonda.BotaoRedondo botaoCadastrarSenha = new EstilizacaoRedonda.BotaoRedondo("Cadastrar Senha", Constantes.CINZA_CLARO, Constantes.AMARELO_OURO, Constantes.PRETO_FOSCO, 20);
+		botaoCadastrarSenha.setForeground(Constantes.PRETO_FOSCO);
 		botaoCadastrarSenha.setFont(new Font("SansSerif", Font.BOLD, 14));
 		botaoCadastrarSenha.setBounds(220, 437, 190, 35);
 		painelBrancoFundo.add(botaoCadastrarSenha);
@@ -101,28 +107,48 @@ public class TelaLogin extends JFrame {
 			}
 		});
 		
-		EstilizacaoRedonda.BotaoRedondo botaoEntrar = new EstilizacaoRedonda.BotaoRedondo("Entrar", Color.DARK_GRAY, Color.GRAY, Color.BLACK, 30);
-		botaoEntrar.setForeground(Color.WHITE);
+		EstilizacaoRedonda.BotaoRedondo botaoEntrar = new EstilizacaoRedonda.BotaoRedondo("Entrar", Constantes.VERMELHO_FERRARI, Constantes.AMARELO_OURO, Constantes.PRETO_FOSCO, 30);
+		botaoEntrar.setForeground(Constantes.CINZA_CLARO);
 		botaoEntrar.setFont(new Font("SansSerif", Font.BOLD, 18));
 		botaoEntrar.setBounds(220, 550, 200, 50);
 		painelBrancoFundo.add(botaoEntrar);
 		botaoEntrar.addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-		    	String emailDigitado = emailAreaText.getText();
-		    	String senhaDigitada = new String(senhaAreaText.getPassword());
-		    	String hashDigitada = Hash.gerarHash(senhaDigitada);
-		    	
-		    	UsuarioDAO usuarioDAO = new UsuarioDAO();
-		    	Usuario usuario = usuarioDAO.buscarPorEmail(emailDigitado);
 
-		    	if(usuario != null && usuario.getSenhaHash() != null && usuario.getSenhaHash().equals(hashDigitada)) {
-		    	    TelaHome telaHome = new TelaHome();
-		    	    telaHome.setVisible(true);
-		    	    dispose();
-		    	}
-		    	else {
-		    	    JOptionPane.showMessageDialog(null,"Email ou senha incorretos.");
-		    	}
+		        String email = emailAreaText.getText();
+		        String senha = new String(senhaAreaText.getPassword());
+
+		        if(email.isEmpty() || senha.isEmpty()) {
+		            JOptionPane.showMessageDialog(null, "Preencha todos os campos.");
+		            return;
+		        }
+
+		        FuncionarioController controller = new FuncionarioController();
+
+		        try {
+
+		            if(controller.login(email, senha)) {
+		            	
+		                TelaHome telaHome = new TelaHome();
+		                telaHome.setVisible(true);
+		                dispose();
+
+		            } 
+		            else {
+		                if (controller.emailExiste(email) && controller.precisaCadastrarSenha(email)) {
+		                    JOptionPane.showMessageDialog(null,
+		                            "Este funcionário ainda não cadastrou uma senha. Use a opção Cadastrar Senha.",
+		                            "Senha não cadastrada",
+		                            JOptionPane.INFORMATION_MESSAGE);
+		                } else {
+		                    JOptionPane.showMessageDialog(null, "E-mail ou senha incorretos.");
+		                }
+		            }
+
+		        } catch (ControllerException ex) {
+		            JOptionPane.showMessageDialog(null, "Erro ao realizar login: " + ex.getMessage());
+		            ex.printStackTrace();
+		        }
 		    }
 		});
 
@@ -151,7 +177,7 @@ public class TelaLogin extends JFrame {
 		JLabel tituloGaragem = new JLabel("A Garagem");
 		tituloGaragem.setHorizontalAlignment(SwingConstants.CENTER);
 		tituloGaragem.setFont(new Font("Liberation Serif", Font.BOLD, 42));
-		tituloGaragem.setForeground(new Color(240, 240, 240));
+		tituloGaragem.setForeground(Constantes.CINZA_CLARO);
 		tituloGaragem.setBounds(170, 200, 300, 50);
 		painelPretoFundo.add(tituloGaragem);
 		
@@ -162,7 +188,7 @@ public class TelaLogin extends JFrame {
 		textoParagrafo.setText(textoBemv);
 		textoParagrafo.setEditable(false);
 		textoParagrafo.setOpaque(false);
-		textoParagrafo.setForeground(Color.WHITE);
+		textoParagrafo.setForeground(Constantes.CINZA_CLARO);
 		textoParagrafo.setFont(new Font("SansSerif", Font.PLAIN, 18));
 		StyledDocument doc = textoParagrafo.getStyledDocument();
 		SimpleAttributeSet formatoJustificado = new SimpleAttributeSet();

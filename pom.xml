@@ -38,6 +38,20 @@
 	    <version>9.7.0</version>
 	    <scope>compile</scope>
 	</dependency>
+
+      <dependency>
+          <groupId>br.com.caelum.stella</groupId>
+          <artifactId>caelum-stella-core</artifactId>
+          <version>2.1.2</version>
+          <scope>compile</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>org.apache.pdfbox</groupId>
+          <artifactId>pdfbox</artifactId>
+          <version>3.0.7</version>
+          <scope>compile</scope>
+      </dependency>
 	
   </dependencies>
 
