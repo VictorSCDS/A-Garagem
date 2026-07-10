@@ -1,5 +1,8 @@
 package view;
 
+import utils.Constantes;
+import utils.PermissaoAcesso;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -27,6 +30,16 @@ public class ModalVeiculos extends JDialog {
 
     public ModalVeiculos(JFrame parent, String cpfCliente, String nomeCliente) {
         super(parent, "Veículos do Cliente", true);
+
+        if (!PermissaoAcesso.autorizar(this, PermissaoAcesso.podeAcessarClientes(), "Clientes")) {
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                new TelaHome().setVisible(true);
+                dispose();
+            });
+            return;
+        }
+
+
         this.veiculoController = new VeiculoController();
 
         setSize(700, 500);
@@ -35,26 +48,26 @@ public class ModalVeiculos extends JDialog {
         setLocationRelativeTo(parent);
 
         painelFundo = new JPanel();
-        painelFundo.setBackground(Color.WHITE);
+        painelFundo.setBackground(Constantes.CINZA_CLARO);
         painelFundo.setBounds(0, 0, 700, 500);
         painelFundo.setLayout(null);
-        painelFundo.setBorder(new javax.swing.border.LineBorder(Color.BLACK, 2));
+        painelFundo.setBorder(new javax.swing.border.LineBorder(Constantes.PRETO_FOSCO, 2));
         add(painelFundo);
 
         JPanel barraSuperior = new JPanel();
-        barraSuperior.setBackground(Color.DARK_GRAY);
+        barraSuperior.setBackground(Constantes.PRETO_FOSCO);
         barraSuperior.setBounds(0, 0, 700, 60);
         barraSuperior.setLayout(null);
         painelFundo.add(barraSuperior);
 
         JLabel titulo = new JLabel("Motos de " + nomeCliente.split(" ")[0]);
-        titulo.setForeground(Color.WHITE);
+        titulo.setForeground(Constantes.CINZA_CLARO);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Liberation Serif", Font.BOLD, 24));
         titulo.setBounds(150, 10, 400, 40);
         barraSuperior.add(titulo);
 
-        EstilizacaoRedonda.PainelRedondo painelTabela = new EstilizacaoRedonda.PainelRedondo(new BorderLayout(), 30, 2, Color.WHITE, Color.BLACK);
+        EstilizacaoRedonda.PainelRedondo painelTabela = new EstilizacaoRedonda.PainelRedondo(new BorderLayout(), 30, 2, Constantes.CINZA_CLARO, Constantes.PRETO_FOSCO);
         painelTabela.setBounds(30, 80, 640, 320);
         painelFundo.add(painelTabela);
 
@@ -69,8 +82,8 @@ public class ModalVeiculos extends JDialog {
         scroll.getViewport().setOpaque(false);
         painelTabela.add(scroll);
 
-        EstilizacaoRedonda.BotaoRedondo botaoSair = new EstilizacaoRedonda.BotaoRedondo("FECHAR", Color.BLACK, Color.DARK_GRAY, Color.GRAY, 30);
-        botaoSair.setForeground(Color.WHITE);
+        EstilizacaoRedonda.BotaoRedondo botaoSair = new EstilizacaoRedonda.BotaoRedondo("FECHAR", Constantes.VERMELHO_FERRARI, Constantes.AMARELO_OURO, Constantes.PRETO_FOSCO, 30);
+        botaoSair.setForeground(Constantes.CINZA_CLARO);
         botaoSair.setFont(new Font("SansSerif", Font.BOLD, 14));
         botaoSair.setBounds(275, 420, 150, 45);
         botaoSair.addActionListener(e -> dispose());
