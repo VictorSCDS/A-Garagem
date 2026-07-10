@@ -103,17 +103,50 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
 
     @Override
     public void deletar(String cpf) throws DatabaseException {
-        String query = "DELETE FROM cliente WHERE cpf = ?;";
+        String selectVeiculos = "SELECT cv.id_veiculo FROM cliente_veiculo cv INNER JOIN cliente c ON cv.id_cliente = c.id WHERE c.cpf = ?;";
+        String deleteVinculos = "DELETE FROM cliente_veiculo WHERE id_cliente = (SELECT id FROM cliente WHERE cpf = ?);";
+        String deleteVeiculo = "DELETE FROM veiculo WHERE id = ?;";
+        String deleteCliente = "DELETE FROM cliente WHERE cpf = ?;";
 
-        try(Connection con = ConectorBD.conectar();
-            PreparedStatement ps = con.prepareStatement(query)){
+        try (Connection con = ConectorBD.conectar()) {
+            con.setAutoCommit(false);
+            try {
+                List<Integer> idsVeiculos = new ArrayList<>();
+                try (PreparedStatement psSelect = con.prepareStatement(selectVeiculos)) {
+                    psSelect.setString(1, cpf);
+                    try (ResultSet rs = psSelect.executeQuery()) {
+                        while (rs.next()) {
+                            idsVeiculos.add(rs.getInt("id_veiculo"));
+                        }
+                    }
+                }
+                try (PreparedStatement psVinculos = con.prepareStatement(deleteVinculos)) {
+                    psVinculos.setString(1, cpf);
+                    psVinculos.executeUpdate();
+                }
+                if (!idsVeiculos.isEmpty()) {
+                    try (PreparedStatement psVeiculo = con.prepareStatement(deleteVeiculo)) {
+                        for (Integer idVeiculo : idsVeiculos) {
+                            psVeiculo.setInt(1, idVeiculo);
+                            psVeiculo.addBatch();
+                        }
+                        psVeiculo.executeBatch();
+                    }
+                }
+                try (PreparedStatement psCliente = con.prepareStatement(deleteCliente)) {
+                    psCliente.setString(1, cpf);
+                    psCliente.executeUpdate();
+                }
+                con.commit();
 
-            ps.setString(1, cpf);
-            ps.executeUpdate();
+            } catch (SQLException e) {
+                con.rollback();
+                throw e; 
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            throw new DatabaseException("Erro ao deletar cliente do banco de dados", e);
+            throw new DatabaseException("Erro ao deletar o cliente e seus respectivos veículos no banco de dados.", e);
         }
     }
 
@@ -167,6 +200,25 @@ public class ClienteDAO implements GenericDAO<Cliente, String> {
             PreparedStatement ps = con.prepareStatement(query)){
 
             ps.setString(1, email);
+
+            try(ResultSet rs = ps.executeQuery()){
+                if(rs.next()) return Optional.of(mapearCliente(rs));
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao buscar cliente no banco de dados", e);
+        }
+        return Optional.empty();
+    }
+    
+    public Optional<Cliente> buscarClientePorTelefone(String telefone) throws DatabaseException {
+        String query = "SELECT * FROM cliente WHERE telefone = ?";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, telefone);
 
             try(ResultSet rs = ps.executeQuery()){
                 if(rs.next()) return Optional.of(mapearCliente(rs));

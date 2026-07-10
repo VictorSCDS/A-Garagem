@@ -43,34 +43,51 @@ public class TipoServicoDAO implements GenericDAO<TipoServico, Integer> {
         throw new UnsupportedOperationException("Método inválido!");
     }
 
-    @Override
-    public void atualizar(TipoServico tipoServico, Integer id) throws DatabaseException {
-        throw new UnsupportedOperationException("Método inválido!");
-    }
-
-    @Override
-    public void deletar(Integer id) throws DatabaseException {
-        throw new UnsupportedOperationException("Método inválido!");
-    }
-
-    public int registrarTipoServico(String tipoServico) throws DatabaseException{
-        String query = "INSERT INTO tipo_servico (descricao) VALUES (?);";
-
+    public int registrarTipoServico(TipoServico tipoServico) throws DatabaseException {
+        String query = "INSERT INTO tipo_servico (descricao, valor_servico) VALUES (?, ?);";
         try(Connection con = ConectorBD.conectar();
             PreparedStatement ps = con.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)){
 
-            ps.setString(1, tipoServico);
+            ps.setString(1, tipoServico.getDescricao());
+            ps.setBigDecimal(2, tipoServico.getValorServico());
             ps.executeUpdate();
 
             try(ResultSet rs = ps.getGeneratedKeys()){
                 if (rs.next()) return rs.getInt(1);
             }
-
             throw new DatabaseException("Erro ao recuperar ID do tipo de serviço");
-
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DatabaseException("Erro ao cadastrar tipo de serviço no banco de dados", e);
+        }
+    }
+
+    @Override
+    public void atualizar(TipoServico tipoServico, Integer id) throws DatabaseException {
+        String query = "UPDATE tipo_servico SET descricao = ?, valor_servico = ? WHERE id = ?;";
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+            
+            ps.setString(1, tipoServico.getDescricao());
+            ps.setBigDecimal(2, tipoServico.getValorServico());
+            ps.setInt(3, id);
+            ps.executeUpdate();
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao editar o serviço no banco de dados", e);
+        }
+    }
+
+    @Override
+    public void deletar(Integer id) throws DatabaseException {
+        String query = "DELETE FROM tipo_servico WHERE id = ?";
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao deletar o serviço. Verifique se ele não está vinculado a uma OS existente.", e);
         }
     }
 

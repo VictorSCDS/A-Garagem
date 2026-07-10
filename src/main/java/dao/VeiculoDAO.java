@@ -138,6 +138,25 @@ public class VeiculoDAO implements GenericDAO<Veiculo, String> {
         }
         return "Não encontrada";
     }
+    
+    public void vincularVeiculoAoCliente(String placa, String cpf) throws DatabaseException {
+        String query = "INSERT INTO cliente_veiculo (id_cliente, id_veiculo) " +
+                       "VALUES ((SELECT id FROM cliente WHERE cpf = ?), " +
+                       "(SELECT id FROM veiculo WHERE placa = ?));";
+
+        try(Connection con = ConectorBD.conectar();
+            PreparedStatement ps = con.prepareStatement(query)){
+
+            ps.setString(1, cpf);
+            ps.setString(2, placa);
+
+            ps.executeUpdate();
+
+        } catch(SQLException e){
+            e.printStackTrace();
+            throw new DatabaseException("Erro ao vincular o veículo ao cliente no banco de dados", e);
+        }
+    }
 
     private Veiculo mapearVeiculo(ResultSet rs) throws SQLException{
         return new Veiculo(

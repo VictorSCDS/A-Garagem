@@ -1,6 +1,5 @@
 package dao;
 
-import entities.Cliente;
 import entities.Item;
 import exceptions.DatabaseException;
 import utils.ConectorBD;
@@ -40,7 +39,7 @@ public class ItemDAO implements GenericDAO<Item, String> {
 
     @Override
     public List<Item> buscarTodos() throws DatabaseException {
-        String query = "SELECT * FROM item";
+        String query = "SELECT * FROM item ORDER BY nome";
         List<Item> itens = new ArrayList<>();
 
         try(Connection con = ConectorBD.conectar();
@@ -94,7 +93,11 @@ public class ItemDAO implements GenericDAO<Item, String> {
             ps.setBigDecimal(6, item.getValorVenda());
             ps.setString(7, codigo);
 
-            ps.executeUpdate();
+            int linhasAfetadas = ps.executeUpdate();
+
+            if (linhasAfetadas == 0) {
+                throw new DatabaseException("Nenhum item encontrado para editar com o código " + codigo);
+            }
 
         } catch(SQLException e){
             e.printStackTrace();
@@ -110,7 +113,11 @@ public class ItemDAO implements GenericDAO<Item, String> {
             PreparedStatement ps = con.prepareStatement(query)){
 
             ps.setString(1, codigo);
-            ps.executeUpdate();
+            int linhasAfetadas = ps.executeUpdate();
+
+            if (linhasAfetadas == 0) {
+                throw new DatabaseException("Nenhum item encontrado para apagar com o código " + codigo);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,6 +143,27 @@ public class ItemDAO implements GenericDAO<Item, String> {
         } catch (SQLException e) {
             e.printStackTrace();
             throw new DatabaseException("Erro no banco de dados ao buscar itens pelo nome", e);
+        }
+    }
+
+    public List<Item> buscarItensPorMarca(String marca) throws DatabaseException {
+        String query = "SELECT * FROM item WHERE LOWER(marca) LIKE LOWER(?) ORDER BY nome";
+        List<Item> itens = new ArrayList<>();
+
+        try (Connection con = ConectorBD.conectar();
+             PreparedStatement ps = con.prepareStatement(query)) {
+
+            ps.setString(1, "%" + marca + "%");
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) itens.add(mapearItem(rs));
+            }
+
+            return itens;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new DatabaseException("Erro no banco de dados ao buscar itens pela marca", e);
         }
     }
 
