@@ -30,7 +30,7 @@ public class ItemService {
 
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException("Erro ao cadastrar item");
+            throw new ServiceException("Erro ao cadastrar item: " + e.getMessage());
         }
     }
 
@@ -39,7 +39,7 @@ public class ItemService {
             return itemDao.buscarTodos();
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException("Erro ao buscar todos os itens");
+            throw new ServiceException("Erro ao buscar todos os itens: " + e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class ItemService {
             return itemDao.buscarPorAtributoIdentificador(codigo);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException("Erro ao buscar item de código " + codigo);
+            throw new ServiceException("Erro ao buscar item de código " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -68,7 +68,7 @@ public class ItemService {
 
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException("Erro ao atualizar item de código " + codigo);
+            throw new ServiceException("Erro ao atualizar item de código " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class ItemService {
             itemDao.deletar(codigo);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException("Erro ao deletar item de código " + codigo);
+            throw new ServiceException("Erro ao deletar item de código " + codigo + ": " + e.getMessage());
         }
     }
 
@@ -89,7 +89,18 @@ public class ItemService {
             return itemDao.buscarItensPorNome(nome);
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException("Erro ao buscar itens com o nome " + nome);
+            throw new ServiceException("Erro ao buscar itens com o nome " + nome + ": " + e.getMessage());
+        }
+    }
+
+    public List<Item> buscarItensPorMarca(String marca) throws ServiceException {
+        if(marca == null || marca.trim().isEmpty()) throw new ServiceException("Marca vazia");
+
+        try{
+            return itemDao.buscarItensPorMarca(marca.trim());
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            throw new ServiceException("Erro ao buscar itens com a marca " + marca + ": " + e.getMessage());
         }
     }
 
@@ -147,6 +158,10 @@ public class ItemService {
 
         if(item.getMarca() == null || item.getMarca().isEmpty()){
             throw new ServiceException("Campos de marca vazio");
+        }
+
+        if(item.getQuantidade() < 0){
+            throw new ServiceException("Quantidade em estoque não pode ser negativa");
         }
 
         validarCodigo(item.getCodigo());

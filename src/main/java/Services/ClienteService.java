@@ -117,6 +117,34 @@ public class ClienteService {
             throw new ServiceException("Erro ao buscar cliente por placa de veículo " + placa);
         }
     }
+    
+    public Optional<Cliente> buscarClientePorEmail(String email) throws ServiceException {
+        try{
+            if(!ValidationUtils.isEmailValido(email)){
+                throw new ServiceException("Formato de E-mail inválido para busca");
+            }
+            return clienteDao.buscarClientePorEmail(email);
+
+        } catch (IllegalArgumentException e){
+            throw new ServiceException(e.getMessage());
+        } catch (DatabaseException e) {
+            throw new ServiceException("Erro ao buscar cliente por e-mail " + email);
+        }
+    }
+
+    public Optional<Cliente> buscarClientePorTelefone(String telefone) throws ServiceException {
+        try{
+            if(!ValidationUtils.isTelefoneValido(telefone)){
+                throw new ServiceException("Formato de Telefone inválido para busca");
+            }
+            return clienteDao.buscarClientePorTelefone(telefone);
+
+        } catch (IllegalArgumentException e){
+            throw new ServiceException(e.getMessage());
+        } catch (DatabaseException e) {
+            throw new ServiceException("Erro ao buscar cliente por telefone " + telefone);
+        }
+    }
 
     private void validarCampos(Cliente cliente){
         if(cliente.getNome().isEmpty()) throw new ServiceException("Nome vazio");

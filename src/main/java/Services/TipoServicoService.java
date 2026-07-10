@@ -24,12 +24,29 @@ public class TipoServicoService {
         }
     }
 
-    public int registrarTipoServico(String tipoServico) throws ServiceException {
+    public int registrarTipoServico(TipoServico tipoServico) throws ServiceException {
+        validarCampos(tipoServico);
         try{
             return tipoServicoDao.registrarTipoServico(tipoServico);
         } catch (DatabaseException e) {
-            e.printStackTrace();
-            throw new ServiceException("Erro ao registrar o tipo de serviço \"" + tipoServico + "\"");
+            throw new ServiceException("Erro ao registrar o tipo de serviço", e);
+        }
+    }
+
+    public void atualizarTipoServico(TipoServico tipoServico, int id) throws ServiceException {
+        validarCampos(tipoServico);
+        try {
+            tipoServicoDao.atualizar(tipoServico, id);
+        } catch (DatabaseException e) {
+            throw new ServiceException("Erro ao atualizar serviço", e);
+        }
+    }
+
+    public void deletarTipoServico(int id) throws ServiceException {
+        try {
+            tipoServicoDao.deletar(id);
+        } catch (DatabaseException e) {
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 

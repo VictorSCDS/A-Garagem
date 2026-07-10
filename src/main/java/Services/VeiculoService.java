@@ -33,6 +33,18 @@ public class VeiculoService {
         }
     }
 
+    public void vincularVeiculoAoCliente(String placa, String cpf) throws ServiceException {
+        validarPlaca(placa);
+        if(!DocumentUtils.isCpfValido(cpf)) throw new ServiceException("CPF inválido para vínculo");
+
+        try {
+            veiculoDao.vincularVeiculoAoCliente(placa, cpf);
+        } catch (DatabaseException e) {
+            e.printStackTrace();
+            throw new ServiceException("Erro ao vincular a moto de placa " + placa + " ao cliente de CPF " + cpf);
+        }
+    }
+
     public List<Veiculo> buscarTodosVeiculosDeCliente(String cpf) throws ServiceException {
         if(!DocumentUtils.isCpfValido(cpf)) throw new ServiceException("CPF inválido");
         try{

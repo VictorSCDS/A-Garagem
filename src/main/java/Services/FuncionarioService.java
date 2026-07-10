@@ -13,6 +13,8 @@ import java.util.Optional;
 
 public class FuncionarioService {
 
+    public static final String SENHA_INICIAL_FUNCIONARIO = "__FUNCIONARIO_AGUARDANDO_CADASTRO_DE_SENHA__";
+
     private FuncionarioDAO funcionarioDao;
 
     public FuncionarioService(FuncionarioDAO funcionarioDao){this.funcionarioDao = funcionarioDao;}
@@ -21,20 +23,21 @@ public class FuncionarioService {
         try{
             validarFuncionario(funcionario);
 
-            Optional<Funcionario> funcionarioOpt = funcionarioDao.buscarPorAtributoIdentificador(funcionario.getCpf());
-            if (funcionarioOpt.isEmpty()){
-                funcionarioDao.criar(funcionario);
-
-            }
-            else {
-                if(funcionarioOpt.get().getEmail().equals(funcionario.getEmail())) throw new ServiceException("E-mail " + funcionario.getEmail() + " já cadastrado");
-
+            Optional<Funcionario> funcionarioComCpf = funcionarioDao.buscarFuncionarioPorCpf(funcionario.getCpf());
+            if (funcionarioComCpf.isPresent()) {
                 throw new ServiceException("Funcionario de cpf " + funcionario.getCpf() + " já cadastrado");
             }
 
+            Optional<Funcionario> funcionarioComEmail = funcionarioDao.buscarPorAtributoIdentificador(funcionario.getEmail());
+            if (funcionarioComEmail.isPresent()) {
+                throw new ServiceException("E-mail " + funcionario.getEmail() + " já cadastrado");
+            }
+
+            funcionarioDao.criar(funcionario);
+
         } catch(DatabaseException e){
             e.printStackTrace();
-            throw new ServiceException("Erro ao cadastrar funcionario");
+            throw new ServiceException("Erro ao cadastrar funcionario", e);
         }
     }
 
@@ -44,22 +47,19 @@ public class FuncionarioService {
 
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException("Erro ao listar clientes");
+            throw new ServiceException("Erro ao listar funcionários", e);
         }
     }
 
 
     public Optional<Funcionario> buscarFuncionarioPorAtributoIdentificador(String email) throws ServiceException {
+        validarEmail(email);
         try{
-            Optional<Funcionario> funcionarioOpt = funcionarioDao.buscarPorAtributoIdentificador(email);
-
-            if(funcionarioOpt.isEmpty()) throw new ServiceException("Funcionario de email " + email + " inexistente");
-
-            return funcionarioOpt;
+            return funcionarioDao.buscarPorAtributoIdentificador(email.trim());
 
         } catch (DatabaseException e){
             e.printStackTrace();
-            throw new ServiceException("Erro ao buscar funcionario de email " + email);
+            throw new ServiceException("Erro ao buscar funcionario de email " + email, e);
         }
     }
 
@@ -68,7 +68,7 @@ public class FuncionarioService {
         try{
             return funcionarioDao.buscarFuncionarioPorCpf(cpf);
         } catch (DatabaseException e) {
-            throw new ServiceException("Erro ao buscar funcionario de cpf: " + cpf);
+            throw new ServiceException("Erro ao buscar funcionario de cpf: " + cpf, e);
         }
     }
 
@@ -90,7 +90,7 @@ public class FuncionarioService {
 
         } catch (DatabaseException e) {
             e.printStackTrace();
-            throw new ServiceException("Erro ao atualizar cliente de CPF " + cpfAntigo);
+            throw new ServiceException("Erro ao atualizar funcionário de CPF " + cpfAntigo, e);
         }
     }
 
@@ -103,25 +103,48 @@ public class FuncionarioService {
         } catch (IllegalArgumentException e){
             throw new ServiceException(e.getMessage());
         } catch (DatabaseException e){
-            throw new ServiceException("Erro ao deletar funcionario de CPF " + cpf);
+            throw new ServiceException("Erro ao deletar funcionario de CPF " + cpf, e);
         }
     }
 
     public void atualizarSenha(String email, String novaSenha) throws ServiceException{
         try{
             validarEmail(email);
-            Optional<Funcionario> funcionarioOpt = funcionarioDao.buscarPorAtributoIdentificador(email);
+            validarNovaSenha(novaSenha);
+
+            Optional<Funcionario> funcionarioOpt = funcionarioDao.buscarPorAtributoIdentificador(email.trim());
             if (funcionarioOpt.isEmpty()){
                 throw new ServiceException("Não existe funcionário cadastrado com o Email: " + email);
             }
             String novaSenhaHash =  Hash.gerarHash(novaSenha);
-            funcionarioDao.atualizarSenha(email, novaSenhaHash);
+            funcionarioDao.atualizarSenha(email.trim(), novaSenhaHash);
 
         }
         catch (DatabaseException e) {
             e.printStackTrace();
             throw new ServiceException("Erro ao atualizar senha do funcionário", e);
         }
+    }
+
+    public boolean funcionarioPrecisaCadastrarSenha(String email) throws ServiceException {
+        Optional<Funcionario> funcionarioOpt = buscarFuncionarioPorAtributoIdentificador(email);
+        if (funcionarioOpt.isEmpty()) {
+            return false;
+        }
+
+        String senhaHash = funcionarioOpt.get().getSenhaHash();
+        if (senhaHash == null || senhaHash.trim().isEmpty()) {
+            return true;
+        }
+
+        String hashSenhaInicial = Hash.gerarHash(SENHA_INICIAL_FUNCIONARIO);
+        String hashSenhaPadraoAntiga = Hash.gerarHash("123456");
+
+        return senhaHash.equals(hashSenhaInicial) || senhaHash.equals(hashSenhaPadraoAntiga);
+    }
+
+    public static String gerarHashSenhaInicialFuncionario() {
+        return Hash.gerarHash(SENHA_INICIAL_FUNCIONARIO);
     }
 
 
@@ -137,18 +160,30 @@ public class FuncionarioService {
         if (!DocumentUtils.isCpfValido(cpf)) {
             throw new ServiceException("Cpf inválido: " + cpf);
         }
-        }
+    }
 
     private void validarEmail(String email){
-            if (!ValidationUtils.isEmailValido(email)){
-                throw new ServiceException("Email Inválido: " + email);
-            };
+        if (email == null || email.trim().isEmpty()) {
+            throw new ServiceException("Email não informado");
+        }
+        if (!ValidationUtils.isEmailValido(email.trim())){
+            throw new ServiceException("Email Inválido: " + email);
+        }
     }
 
     private void validarTel(String telefone){
         if (!ValidationUtils.isTelefoneValido(telefone)){
             throw new ServiceException("Telefone inválido: " + telefone);
-        };
+        }
+    }
+
+    private void validarNovaSenha(String senha) {
+        if (senha == null || senha.trim().isEmpty()) {
+            throw new ServiceException("A senha não pode ficar vazia.");
+        }
+        if (senha.length() < 6) {
+            throw new ServiceException("A senha deve ter pelo menos 6 caracteres.");
+        }
     }
 
 }
