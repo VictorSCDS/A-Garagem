@@ -116,8 +116,8 @@ EMAIL_SENHA=[SENHA_DO_APP_DO_EMAIL]
 
 ## 👨‍💻 Autores
 
-Desenvolvido como projeto acadêmico para o 3° período do curso de **Análise e Desenvolvimento de Sistemas** pelos alunos:
-- [David Willyam](https://github.com/DavidOliveira2678)
-- [Lucas Leandro](https://github.com/Lucas5812)
-- [Ronaldo Cesar](https://github.com/odlaanoR)
-- [Victor Soares](https://github.com/VictorSCDS/)
+Desenvolvido como projeto acadêmico para a disciplina de Análise e Projeto de Sistemas do curso de **Análise e Desenvolvimento de Sistemas** do IFPE - Campus Paulista pelos alunos:
+- [David Willyam Felipe Marques de Oliveira](https://github.com/DavidOliveira2678)
+- [Lucas Leandro Coelho da Silva](https://github.com/Lucas5812)
+- [Ronaldo Cesar Rocha Leite](https://github.com/odlaanoR)
+- [Victor Soares Couto da Silva](https://github.com/VictorSCDS/)
