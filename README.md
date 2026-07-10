@@ -18,6 +18,18 @@ A Garagem é um sistema desktop desenvolvido em Java que permite a gestão compl
 
 ---
 
+## 🗄️ Modelo de banco de dados
+
+### Modelo Conceitual
+
+![Modelo Conceitual](imagens_banco/garagemConceitual.png)
+
+### Modelo Lógico
+
+![Modelo Lógico](imagens_banco/A-Garagem_Lógico.png)
+
+---
+
 ## 🏗️ Arquitetura
 
 O projeto segue a arquitetura em camadas **MVC** estendida:
