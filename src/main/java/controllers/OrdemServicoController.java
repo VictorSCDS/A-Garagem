@@ -8,6 +8,9 @@ import java.util.Optional;
 import Services.OrdemServicoService;
 import dao.OrdemServicoDAO;
 import entities.OrdemServico;
+import entities.Cliente;
+import entities.Funcionario;
+import entities.Veiculo;
 import entities.enums.Estado;
 import exceptions.ControllerException;
 import exceptions.ServiceException;
@@ -20,12 +23,12 @@ public class OrdemServicoController {
         this.ordemServicoService = new OrdemServicoService(new OrdemServicoDAO());
     }
 
-    public void cadastrar(String problema, Estado estado, String descricao, Date dataRegistro, int idVeiculo, int idFuncionario) throws ControllerException {
+public void cadastrar(String problema, Estado estado, String descricao, Date dataRegistro, int idVeiculo, int idFuncionario, List<Integer> idsItensPecas, List<Integer> idsTiposServico) throws ControllerException {
+        
         OrdemServico ordemServico = new OrdemServico(0, problema, estado, descricao, dataRegistro, idVeiculo, idFuncionario);
 
         try {
-            ordemServicoService.cadastrarOrdemServico(ordemServico, idVeiculo, idFuncionario);
-
+            ordemServicoService.cadastrarOrdemServico(ordemServico, idVeiculo, idFuncionario, idsItensPecas, idsTiposServico);
         } catch (ServiceException e) {
             throw new ControllerException(e.getMessage(), e);
         }
@@ -61,6 +64,93 @@ public class OrdemServicoController {
         }
     }
 
+
+    public List<OrdemServico> buscarPorCpfCliente(String cpf) throws ControllerException {
+
+        try {
+            return ordemServicoService.buscarPorCpfCliente(cpf);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public List<OrdemServico> buscarPorPlacaVeiculo(String placa) throws ControllerException {
+
+        try {
+            return ordemServicoService.buscarPorPlacaVeiculo(placa);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public List<OrdemServico> buscarPorNomeCliente(String nomeCliente) throws ControllerException {
+
+        try {
+            return ordemServicoService.buscarPorNomeCliente(nomeCliente);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public String buscarNomeFuncionarioResponsavel(int idFuncionarioResponsavel) throws ControllerException {
+        try {
+            return ordemServicoService.buscarNomeFuncionarioResponsavel(idFuncionarioResponsavel);
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public String buscarPlacaVeiculo(int idVeiculo) throws ControllerException {
+        try {
+            return ordemServicoService.buscarPlacaVeiculo(idVeiculo);
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public Optional<Cliente> buscarClientePorOrdemServico(int idOrdemServico) throws ControllerException {
+        try {
+            return ordemServicoService.buscarClientePorOrdemServico(idOrdemServico);
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public Optional<Veiculo> buscarVeiculoPorId(int idVeiculo) throws ControllerException {
+        try {
+            return ordemServicoService.buscarVeiculoPorId(idVeiculo);
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public Optional<Funcionario> buscarFuncionarioResponsavelCompleto(int idFuncionarioResponsavel) throws ControllerException {
+        try {
+            return ordemServicoService.buscarFuncionarioResponsavelCompleto(idFuncionarioResponsavel);
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public List<String> buscarServicosAplicadosDetalhados(int idOrdemServico) throws ControllerException {
+        try {
+            return ordemServicoService.buscarServicosAplicadosDetalhados(idOrdemServico);
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public List<String> buscarPecasAplicadasDetalhadas(int idOrdemServico) throws ControllerException {
+        try {
+            return ordemServicoService.buscarPecasAplicadasDetalhadas(idOrdemServico);
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
     public List<OrdemServico> buscarHistoricoVeiculo(int idVeiculo) throws ControllerException {
 
         try {
@@ -76,6 +166,15 @@ public class OrdemServicoController {
         try {
             return ordemServicoService.buscarCustoAtualServico(idOrdemServico);
 
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+
+    public List<Estado> listarEstadosDisponiveis() throws ControllerException {
+        try {
+            return ordemServicoService.listarEstadosDisponiveis();
         } catch (ServiceException e) {
             throw new ControllerException(e.getMessage(), e);
         }

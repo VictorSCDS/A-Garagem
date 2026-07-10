@@ -57,6 +57,15 @@ public class VeiculoController {
             throw new ControllerException(e.getMessage(), e);
         }
     }
+    
+    public void vincularVeiculoAoCliente(String placa, String cpf) throws ControllerException {
+        try {
+            veiculoService.vincularVeiculoAoCliente(placa, cpf);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
 
     public Optional<Veiculo> buscarPorPlaca(String placa) throws ControllerException {
 

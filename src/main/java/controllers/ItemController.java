@@ -85,6 +85,16 @@ public class ItemController {
         }
     }
 
+    public List<Item> buscarPorMarca(String marca) throws ControllerException {
+
+        try {
+            return itemService.buscarItensPorMarca(marca);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
     public List<Item> listarTodos() throws ControllerException {
 
         try {

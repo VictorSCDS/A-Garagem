@@ -99,6 +99,24 @@ public class ClienteController {
             throw new ControllerException(e.getMessage(), e);
         }
     }
+    
+    public Optional<Cliente> buscarPorEmail(String email) throws ControllerException {
+        try {
+            return clienteService.buscarClientePorEmail(email);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public Optional<Cliente> buscarPorTelefone(String telefone) throws ControllerException {
+        try {
+            return clienteService.buscarClientePorTelefone(telefone);
+
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
 
     public boolean cpfExiste(String cpf) throws ControllerException {
         try {

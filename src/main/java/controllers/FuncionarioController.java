@@ -7,6 +7,7 @@ import entities.enums.Cargo;
 import exceptions.ControllerException;
 import exceptions.ServiceException;
 import utils.Hash;
+import utils.Sessao;
 
 import java.sql.Date;
 import java.time.LocalDate;
@@ -130,6 +131,18 @@ public class FuncionarioController {
             throw new ControllerException(e.getMessage(), e);
         }
     }
+
+    public boolean precisaCadastrarSenha(String email) throws ControllerException {
+        try {
+            return funcionarioService.funcionarioPrecisaCadastrarSenha(email);
+        } catch (ServiceException e) {
+            throw new ControllerException(e.getMessage(), e);
+        }
+    }
+
+    public static String gerarHashSenhaInicialFuncionario() {
+        return FuncionarioService.gerarHashSenhaInicialFuncionario();
+    }
     
     public boolean login(String email, String senha) throws ControllerException {
         try {
@@ -137,10 +150,19 @@ public class FuncionarioController {
             
             if (funcionarioOpt.isPresent()) {
                 Funcionario funcionario = funcionarioOpt.get();
+                String senhaHashCadastrada = funcionario.getSenhaHash();
+
+                if (senhaHashCadastrada == null || senhaHashCadastrada.trim().isEmpty()) {
+                    return false;
+                }
                 
                 String senhaDigitadaHash = Hash.gerarHash(senha);
                 
-                if (funcionario.getSenhaHash().equals(senhaDigitadaHash)) {
+                if (senhaHashCadastrada.equals(senhaDigitadaHash)) {
+                    Sessao.funcionarioLogado = funcionario;
+                    Sessao.email = funcionario.getEmail();
+                    Sessao.codigo = null;
+                    Sessao.codigoSenhaValidado = false;
                     return true;
                 }
             }
