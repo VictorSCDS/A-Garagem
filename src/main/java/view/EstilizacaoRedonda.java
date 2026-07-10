@@ -1,5 +1,7 @@
 package view;
 
+import utils.Constantes;
+
 import javax.swing.*;
 import javax.swing.JPasswordField;
 import java.awt.*;
@@ -121,7 +123,7 @@ public class EstilizacaoRedonda {
                 public void focusGained(FocusEvent e) {
                     if (CaixaTextoRedonda.super.getText().equals(espacoTexto)) {
                         setText("");
-                        setForeground(Color.BLACK);
+                        setForeground(Constantes.PRETO_FOSCO);
                     }
                 }
             });
@@ -170,6 +172,8 @@ public class EstilizacaoRedonda {
         private final int espessuraBordaSenha;
         private final int raioArredondadoSenha;
         private final String senhaFantasma;
+        private final char echoCharPadrao;
+        private boolean senhaVisivel = false;
 
         public CaixaSenhaRedonda(String texto, Color contorno, Color fundo, Color corBase, int espessura, int raio) {
             super();
@@ -179,6 +183,7 @@ public class EstilizacaoRedonda {
             this.raioArredondadoSenha = raio;
             this.espacoCorSenha = corBase;
             this.senhaFantasma = espacoTextoSenha;
+            this.echoCharPadrao = getEchoChar();
 
             setOpaque(false);
             setBackground(fundo);
@@ -189,12 +194,23 @@ public class EstilizacaoRedonda {
                 public void focusGained(FocusEvent e) {
                     if (CaixaSenhaRedonda.super.getText().equals(espacoTextoSenha)) {
                         setText("");
-                        setForeground(Color.BLACK);
+                        setForeground(Constantes.PRETO_FOSCO);
+                        atualizarEchoChar();
                     }
+                }
+
+                @Override
+                public void focusLost(FocusEvent e) {
+                    if (new String(CaixaSenhaRedonda.super.getPassword()).isEmpty()) {
+                        setText(espacoTextoSenha);
+                        setForeground(espacoCorSenha);
+                    }
+                    atualizarEchoChar();
                 }
             });
             setText(espacoTextoSenha);
             setForeground(espacoCorSenha);
+            atualizarEchoChar();
 
             addMouseListener(new MouseAdapter() {
                 @Override
@@ -202,6 +218,27 @@ public class EstilizacaoRedonda {
                     repaint();
                 }
             });
+        }
+
+        public void setSenhaVisivel(boolean senhaVisivel) {
+            this.senhaVisivel = senhaVisivel;
+            atualizarEchoChar();
+        }
+
+        public boolean isSenhaVisivel() {
+            return senhaVisivel;
+        }
+
+        private boolean estaComTextoFantasma() {
+            return CaixaSenhaRedonda.super.getText().equals(senhaFantasma);
+        }
+
+        private void atualizarEchoChar() {
+            if (estaComTextoFantasma()) {
+                setEchoChar((char) 0);
+            } else {
+                setEchoChar(senhaVisivel ? (char) 0 : echoCharPadrao);
+            }
         }
 
         @Override
@@ -231,6 +268,46 @@ public class EstilizacaoRedonda {
             return txt.equals(senhaFantasma) ? new char[0] : super.getPassword();
         }
     }
+
+    public static BotaoRedondo criarBotaoAlternarVisibilidadeSenha(CaixaSenhaRedonda campoSenha) {
+        BotaoRedondo botaoOlho = new BotaoRedondo("", Constantes.CINZA_CLARO, Constantes.AMARELO_OURO, Constantes.PRETO_FOSCO, 25);
+        botaoOlho.setToolTipText("Mostrar senha");
+        botaoOlho.setFocusable(false);
+        botaoOlho.setMargin(new Insets(0, 0, 0, 0));
+        aplicarIconeBotaoSenha(botaoOlho, "/assets/imagens/IconeOlhoTraco.png", 30, 30, "Ver");
+
+        botaoOlho.addActionListener(e -> {
+            boolean novaVisibilidade = !campoSenha.isSenhaVisivel();
+            campoSenha.setSenhaVisivel(novaVisibilidade);
+
+            if (novaVisibilidade) {
+                aplicarIconeBotaoSenha(botaoOlho, "/assets/imagens/IconeOlho.png", 30, 30, "Ver");
+                botaoOlho.setToolTipText("Ocultar senha");
+            } else {
+                aplicarIconeBotaoSenha(botaoOlho, "/assets/imagens/IconeOlhoTraco.png", 30, 30, "Ver");
+                botaoOlho.setToolTipText("Mostrar senha");
+            }
+
+            campoSenha.requestFocusInWindow();
+        });
+
+        return botaoOlho;
+    }
+
+    private static void aplicarIconeBotaoSenha(AbstractButton botao, String caminhoIcone, int largura, int altura, String textoFallback) {
+        java.net.URL urlIcone = EstilizacaoRedonda.class.getResource(caminhoIcone);
+
+        if (urlIcone != null) {
+            Image iconeOriginal = new ImageIcon(urlIcone).getImage();
+            Image iconeRedimensionado = iconeOriginal.getScaledInstance(largura, altura, Image.SCALE_SMOOTH);
+            botao.setIcon(new ImageIcon(iconeRedimensionado));
+            botao.setText("");
+        } else {
+            botao.setIcon(null);
+            botao.setText(textoFallback);
+            botao.setForeground(Constantes.PRETO_FOSCO);
+        }
+    }
     public static class ComboBoxRedondo<E> extends JComboBox<E> {
 
         private final int raioArredondado;
@@ -249,7 +326,7 @@ public class EstilizacaoRedonda {
             setFocusable(false);
 
             setBackground(fundo);
-            setForeground(Color.BLACK);
+            setForeground(Constantes.PRETO_FOSCO);
 
             setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
@@ -260,7 +337,7 @@ public class EstilizacaoRedonda {
                     botao.setBorder(BorderFactory.createEmptyBorder());
                     botao.setFocusable(false);
                     botao.setContentAreaFilled(false);
-                    botao.setForeground(Color.BLACK);
+                    botao.setForeground(Constantes.PRETO_FOSCO);
                     return botao;
                 }
             });
